@@ -17,7 +17,7 @@ services:
     volumes:
       - ./mountPoint/mariadb:/var/lib/mysql
   mediawiki:
-    image: aqua-1.35
+    image: fantasticofox/pkc
     restart: always
     ports:
       - ${PORT_NUMBER}:80
