@@ -27,8 +27,7 @@ services:
     volumes:
       - ./mountPoint/images:/var/www/html/images
       - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
-      - ./mountPoint/install_pkc.sh:/var/www/html/aqua/install_pkc.sh
-      - ./mountPoint/extraAquaSettings.txt:/var/www/html/aqua/extraAquaSettings.txt
+      - ./aqua:/var/www/html/aqua
       # After initial setup, download LocalSettings.php to the same directory as
       # this yaml and uncomment the following line and use compose to restart
       # the mediawiki service
