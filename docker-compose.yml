@@ -21,6 +21,7 @@ services:
     restart: always
     ports:
       - ${PORT_NUMBER}:80
+    #entrypoint: ['/var/www/html/maintenance/update.php']
     links:
       - database
     volumes:
