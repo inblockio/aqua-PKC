@@ -7,8 +7,7 @@ This should work for other environments like Windows and Mac if the dependancies
 ## Pre-Installation:
 
 Resolving dependencies:
-1. install git:<br>
- * sudo apt-get install git
+1. install git: sudo apt-get install git
 2. install docker. Follow: https://docs.docker.com/engine/install/ubuntu/
 3. 'git clone https://github.com/FantasticoFox/micro-PKC' to your computer.
 
@@ -19,11 +18,12 @@ Resolving dependencies:
 
 Test if deployment was successful:
 Go to localhost:9352 and see if you can open your 'Personal Knowledge Container'
-==> ERROR 1: You see the website but it tells you to setup mediawiki, you failed on step 3. Do docker-compose down and start over.
-==> ERROR 2: You see the Personal-Knowledge-Container, you can login but the special pages on the left side (MediaWiki:Sidebar) do not load (invalid special page). 
-If this error appears you failed to run the setup.sh before the docker-compose up. Do docker-compose down and start over. 
-
 If the special pags work, congratulations! You successfully deployed PKC!
+
+Error Handling:
+==> ERROR 1: You see the website but it tells you to setup mediawiki, you failed on step 3. Do docker-compose down and start over.
+==> ERROR 2: You see the Personal-Knowledge-Container, you can login but the special pages on the left side (MediaWiki:Sidebar) do not load (invalid special page). If this error appears you failed to run the setup.sh before the docker-compose up. Do docker-compose down and start over. 
+
 
 ## POST Installation (installation of remote verification tools):
 * You have the choice to use the commandline verification tool or the online-chrome extension (recommanded) to verify your page.
