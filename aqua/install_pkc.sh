@@ -23,6 +23,9 @@ php maintenance/install.php --server="http://localhost:9352" \
 # Extend settings
 cat aqua/extraAquaSettings.txt >> LocalSettings.php
 
+# Disable VisualEditor
+sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );/" LocalSettings.php
+
 # Update sidebar
 php maintenance/edit.php -s "Use PKC sidebar" -u Admin MediaWiki:Sidebar < aqua/sidebar.wiki
 
