@@ -6,7 +6,9 @@ mkdir -p mountPoint/extensions
 
 if [ ! -d ../DataAccounting ]; then
     echo "DataAccounting repo doesn't exist. Downloading..."
-    cd .. && git clone https://github.com/FantasticoFox/DataAccounting.git
+    # We need to do this line in a subshell so that the current directory is
+    # not modified.
+    (cd .. && git clone https://github.com/FantasticoFox/DataAccounting.git)
 fi
 PARENTDIR="$(dirname "$PWD")"
 echo "Making a symlink for the DataAccounting repo..."
