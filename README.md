@@ -9,11 +9,11 @@ This should work for other environments like Windows and Mac if the dependancies
 Resolving dependencies:
 1. install git: sudo apt-get install git
 2. install docker. Follow: https://docs.docker.com/engine/install/ubuntu/
-3. `git clone https://github.com/FantasticoFox/micro-PKC` to your computer.
+3. `git clone https://github.com/FantasticoFox/micro-PKC`
 
 ## Installation:
-Run the `./setup.sh` within the micro-pkc folder.
-Be prepared to type your password for `sudo`.
+1. `cd micro-PKC`
+2. Run `./setup.sh` without sudo. But it will automatically ask for a sudo password later.
 
 Test if deployment was successful:
 Go to localhost:9352 and see if you can open your 'Personal Knowledge Container'
