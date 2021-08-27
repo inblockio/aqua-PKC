@@ -20,7 +20,7 @@ ln -sf "$SOURCE" mountPoint/extensions/DataAccounting
 echo "Executing docker-compose up -d. Be prepared to type your password."
 sudo docker-compose up -d
 # Sleep; just to be sure that the container has initialized well.
-sleep 3
+sleep 10
 
 echo "Installing MediaWiki"
 sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh
