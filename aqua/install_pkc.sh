@@ -21,7 +21,7 @@ php maintenance/install.php --server="http://localhost:9352" \
                 "Admin"
 
 # Extend settings
-cat aqua/extraAquaSettings.txt >> LocalSettings.php
+cat aqua/extraAquaSettings.php >> LocalSettings.php
 
 # Disable VisualEditor
 sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );/" LocalSettings.php
