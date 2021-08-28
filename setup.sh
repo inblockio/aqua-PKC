@@ -2,6 +2,11 @@
 
 set -e
 
+if [ "$EUID" -eq 0 ]; then
+    echo "Please don't run as root"
+    exit 1
+fi
+
 mkdir -p mountPoint/extensions
 
 if [ ! -d ../DataAccounting ]; then
