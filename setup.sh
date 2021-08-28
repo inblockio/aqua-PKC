@@ -38,13 +38,20 @@ if [ ! -d ../DataAccounting ]; then
     # We need to do this line in a subshell so that the current directory is
     # not modified.
     (cd .. && git clone https://github.com/FantasticoFox/DataAccounting.git)
+else
+    echo "DataAccounting repo exists. But you may want to update it after this setup."
 fi
 
 PARENTDIR="$(dirname "$PWD")"
-echo "Making a symlink for the DataAccounting repo..."
-SOURCE="$PARENTDIR/DataAccounting"
-echo "Source: $SOURCE"
-ln -sf "$SOURCE" mountPoint/extensions/DataAccounting
+DEST=mountPoint/extensions/DataAccounting
+if [[ -L "$DEST" && -d "$DEST" ]]; then
+    true
+else
+    echo "Making a symlink for the DataAccounting repo..."
+    SOURCE="$PARENTDIR/DataAccounting"
+    echo "Source: $SOURCE"
+    ln -sf "$SOURCE" "$DEST"
+fi
 
 echo "Executing docker-compose up -d. Be prepared to type your password."
 sudo docker-compose up -d
