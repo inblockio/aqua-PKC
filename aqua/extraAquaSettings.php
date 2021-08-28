@@ -23,3 +23,12 @@ function StripLogin(&$personal_urls, &$wgTitle) {
 
 # Disable StripLogin for now
 # $wgHooks['PersonalUrls'][] = 'StripLogin';
+
+# Disable reading by anonymous users
+$wgGroupPermissions['*']['read'] = false;
+
+# Disable anonymous editing
+$wgGroupPermissions['*']['edit'] = false;
+
+# Prevent new user registrations except by sysops
+# $wgGroupPermissions['*']['createaccount'] = false;
