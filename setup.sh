@@ -3,7 +3,31 @@
 set -e
 
 if [ "$EUID" -eq 0 ]; then
-    echo "Please don't run as root"
+    echo "Please don't run as root."
+    exit 1
+fi
+
+# Check Docker installation
+if [[ -x "$(command -v docker)" ]]; then
+    true
+else
+    echo "Docker is not yet installed. Aborting PKC installation."
+    exit 1
+fi
+
+# Check docker-compose installation
+if [[ -x "$(command -v docker-compose)" ]]; then
+    true
+else
+    echo "docker-compose is not yet installed. Aborting PKC installation."
+    exit 1
+fi
+
+# Check git installation
+if [[ -x "$(command -v git)" ]]; then
+    true
+else
+    echo "Git is not yet installed. Aborting PKC installation."
     exit 1
 fi
 
