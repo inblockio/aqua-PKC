@@ -21,6 +21,9 @@ services:
     restart: always
     ports:
       - ${PORT_NUMBER}:80
+      # This port is for testing the EAuth code. TODO remove this once we have
+      # added the Docker for EAuth here.
+      - 8080:8080
     #entrypoint: ['/var/www/html/maintenance/update.php']
     links:
       - database
