@@ -49,5 +49,9 @@ services:
       - 8080:8080
     links:
       - database
+    volumes:
+      - ./aqua/eauth_seed.js:/usr/src/app/components/seeders/20190725062038-oauth_clients.js
+      # TODO this will become obsolete after pelith fixes their installation bug
+      - ./aqua/eauth_config.json:/usr/src/app/config/config.json
     depends_on:
       - database

@@ -61,4 +61,7 @@ sleep 10
 echo "Installing MediaWiki"
 sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh
 
+echo "Setting up Eauth Server (Ethereum single sign-on)"
+sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all
+
 echo "Done!"

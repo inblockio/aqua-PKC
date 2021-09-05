@@ -1,0 +1,7 @@
+{
+    "username": "wikiuser",
+    "password": "example",
+    "database": "eauth",
+    "host": "database",
+    "dialect": "mysql"
+}
