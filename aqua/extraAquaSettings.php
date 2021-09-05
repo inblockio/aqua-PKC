@@ -25,7 +25,9 @@ function StripLogin(&$personal_urls, &$wgTitle) {
 # $wgHooks['PersonalUrls'][] = 'StripLogin';
 
 # Disable reading by anonymous users
-$wgGroupPermissions['*']['read'] = false;
+# WARNING: If you uncomment this line, remote verification via API will be
+# denied access.
+# $wgGroupPermissions['*']['read'] = false;
 
 # Disable anonymous editing
 $wgGroupPermissions['*']['edit'] = false;
