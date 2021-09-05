@@ -10,20 +10,21 @@ services:
     #entrypoint: mysqld_safe --skip-grant-tables --user=wikiuser
     environment:
       # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
-      MYSQL_DATABASE: my_wiki
+      # The following line is replaced by a script in
+      # provision/mariadb/01-databases.sql because we need to initialize 2
+      # databases: my_wiki and eauth.
+      # MYSQL_DATABASE: my_wiki
       MYSQL_USER: wikiuser
       MYSQL_PASSWORD: example
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
     volumes:
       - ./mountPoint/mariadb:/var/lib/mysql
+      - ./provision/mariadb:/docker-entrypoint-initdb.d
   mediawiki:
-    image: fantasticofox/pkc
+    image: fantasticofox/pkc:latest
     restart: always
     ports:
       - ${PORT_NUMBER}:80
-      # This port is for testing the EAuth code. TODO remove this once we have
-      # added the Docker for EAuth here.
-      - 8080:8080
     #entrypoint: ['/var/www/html/maintenance/update.php']
     links:
       - database
@@ -36,5 +37,17 @@ services:
       # the mediawiki service
       #- .mountPoint/LocalSettings.php:/var/www/html/LocalSettings.php
 
+    depends_on:
+      - database
+      - eauth
+  eauth:
+    image: pelith/node-eauth-server:latest
+    restart: always
+    env_file:
+      - eauth-vars.env
+    ports:
+      - 8080:8080
+    links:
+      - database
     depends_on:
       - database

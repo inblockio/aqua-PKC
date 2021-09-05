@@ -38,8 +38,8 @@ $wgOAuth2Client['client']['id']     = 'pkc'; // The client ID assigned to you by
 $wgOAuth2Client['client']['secret'] = 'pkc'; // The client secret assigned to you by the provider
 
 $wgOAuth2Client['configuration']['authorize_endpoint']     = 'http://localhost:8080/oauth/authorize'; // Authorization URL
-$wgOAuth2Client['configuration']['access_token_endpoint']  = 'http://localhost:8080/oauth/token'; // Token URL
-$wgOAuth2Client['configuration']['api_endpoint']           = 'http://localhost:8080/oauth/user'; // URL to fetch user JSON
+$wgOAuth2Client['configuration']['access_token_endpoint']  = 'http://eauth:8080/oauth/token'; // Token URL
+$wgOAuth2Client['configuration']['api_endpoint']           = 'http://eauth:8080/oauth/user'; // URL to fetch user JSON
 $wgOAuth2Client['configuration']['redirect_uri']           = 'http://localhost:9352/index.php/Special:OAuth2Client/callback'; // URL for OAuth2 server to redirect to
 
 $wgOAuth2Client['configuration']['username'] = 'address'; // JSON path to username
