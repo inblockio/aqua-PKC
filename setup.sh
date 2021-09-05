@@ -62,8 +62,10 @@ echo "Installing MediaWiki"
 sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh
 
 echo "Setting up Eauth Server (Ethereum single sign-on)"
-sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli init
-sudo docker exec -it micro-pkc_eauth_1 cp /usr/src/app/config/eauth_config.json /usr/src/app/config/config.json
+sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all || true
+sudo docker exec -it micro-pkc_eauth_1 pkill node
+echo "Sleeping for 3s before seeding again"
+sleep 3
 sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all
 
 echo "Done!"
