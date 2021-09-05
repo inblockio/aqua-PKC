@@ -46,5 +46,5 @@ $wgOAuth2Client['configuration']['username'] = 'address'; // JSON path to userna
 $wgOAuth2Client['configuration']['email'] = 'email'; // JSON path to email
 
 $wgOAuth2Client['configuration']['scopes'] = 'openid email profile'; //Permissions
-$wgOAuth2Client['configuration']['service_login_link_text'] = 'Login via Ethereum wallet'; // the text of the login link
+$wgOAuth2Client['configuration']['service_login_link_text'] = 'Login with Ethereum wallet'; // the text of the login link
 $wgWhitelistRead = ['Special:OAuth2Client', 'Special:OAuth2Client/redirect'];
