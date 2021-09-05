@@ -6,6 +6,11 @@ WALLET_ADDRESS="$1"
 
 BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,ConfirmEdit,EmbedVideo,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SpamBlacklist,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
 EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,MW-OAuth2Client"
+
+admin_password="$(openssl rand -base64 20)"
+
+echo "Your admin password is $admin_password"
+
 # TODO install intersection extension
 # --quiet
 # --wiki=domain_id
@@ -15,7 +20,7 @@ php maintenance/install.php --server="http://localhost:9352" \
                 --dbpass=example \
                 --dbname=my_wiki \
                 --dbserver="database:3306" \
-                --pass=metalanguage \
+                --pass="$admin_password" \
                 --skins=Medik \
                 --with-extensions="$EXTENSIONS" \
                 --scriptpath="" \
