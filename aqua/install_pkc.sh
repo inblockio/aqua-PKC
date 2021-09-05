@@ -2,6 +2,8 @@
 
 set -ex
 
+WALLET_ADDRESS="$1"
+
 BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,ConfirmEdit,EmbedVideo,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SpamBlacklist,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
 EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,MW-OAuth2Client"
 # TODO install intersection extension
@@ -18,7 +20,7 @@ php maintenance/install.php --server="http://localhost:9352" \
                 --with-extensions="$EXTENSIONS" \
                 --scriptpath="" \
                 "Personal Knowledge Container" \
-                "Admin"
+                "$WALLET_ADDRESS"
 
 # Extend settings
 cat aqua/extraAquaSettings.php >> LocalSettings.php

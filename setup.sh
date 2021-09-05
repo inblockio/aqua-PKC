@@ -7,6 +7,51 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
+usage() {
+    cat <<'EOF'
+Usage:
+  setup.sh --wallet-address <your crypto wallet address>
+  setup.sh --help
+EOF
+}
+
+args="$(getopt -o '' --long help,wallet-address: -n "$0" -- "$@")"
+eval "set -- $args"
+while true; do
+    case "$1" in
+        --help)
+            usage
+            exit 0
+            ;;
+        --wallet-address)
+            WALLET_ADDRESS="$2"
+            shift
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+    esac
+done
+
+if [ -z "$WALLET_ADDRESS" ]; then
+    echo "Error: you must specify the wallet address."
+    usage
+    exit 1
+fi
+
+# https://ethereum.stackexchange.com/questions/1374/how-can-i-check-if-an-ethereum-address-is-valid
+# TODO make this address validation more comprehensive.
+if [[ ! "$WALLET_ADDRESS" =~ ^(0x)?[0-9a-fA-F]{40}$ ]]; then
+    echo "Your wallet address is not a valid Ethereum address."
+    exit 1
+fi
+
+# Convert wallet address to lower case
+# This is because the address returned in Metamask API is in lower case
+WALLET_ADDRESS=${WALLET_ADDRESS,,}
+
 # Check Docker installation
 if [[ -x "$(command -v docker)" ]]; then
     true
@@ -59,7 +104,7 @@ sudo docker-compose up -d
 sleep 10
 
 echo "Installing MediaWiki"
-sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh
+sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS"
 
 echo "Setting up Eauth Server (Ethereum single sign-on)"
 sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all || true
