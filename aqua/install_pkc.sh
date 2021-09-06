@@ -37,4 +37,8 @@ sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );
 php maintenance/edit.php -s "Use PKC sidebar" -u Admin MediaWiki:Sidebar < aqua/sidebar.wiki
 
 # Populate a page
-php maintenance/edit.php -a -u Admin "Moore's Law" < aqua/MooresLaw.wiki
+php maintenance/edit.php -a -u Admin "Moores Law" < aqua/MooresLaw.wiki
+
+# Ensure the config file can be written from the backend
+chown www-data:www-data /var/www/html/data_accounting_config.json
+
