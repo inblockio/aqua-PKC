@@ -26,6 +26,7 @@ check_wallet_is_specified() {
 }
 
 # We don't use getopt because we want to support running micro-pkc on macOS.
+# macOS has getopt, but it doesn't have `long` option
 # See https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 while [[ $# -gt 0 ]]; do
     key="$1"
