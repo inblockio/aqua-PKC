@@ -15,36 +15,42 @@ Usage:
 EOF
 }
 
-args="$(getopt -o '' --long help,wallet-address: -n "$0" -- "$@")"
-eval "set -- $args"
-while true; do
-    case "$1" in
+check_wallet_is_specified() {
+    if [ -z "$WALLET_ADDRESS" ]; then
+        echo "Error: you must specify the wallet address."
+        usage
+        exit 1
+    fi
+}
+
+# We don't use getopt because we want to support running micro-pkc on macOS.
+# See https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
         --help)
             usage
             exit 0
             ;;
         --wallet-address)
             WALLET_ADDRESS="$2"
+            check_wallet_is_specified
             shift
             shift
             ;;
-        --)
-            shift
-            break
+        *)    # unknown option
+            usage
+            exit 0
             ;;
     esac
 done
 
-if [ -z "$WALLET_ADDRESS" ]; then
-    echo "Error: you must specify the wallet address."
-    usage
-    exit 1
-fi
+check_wallet_is_specified
 
 # https://ethereum.stackexchange.com/questions/1374/how-can-i-check-if-an-ethereum-address-is-valid
 # TODO make this address validation more comprehensive.
 if [[ ! "$WALLET_ADDRESS" =~ ^(0x)?[0-9a-fA-F]{40}$ ]]; then
-    echo "Your wallet address is not a valid Ethereum address."
+    echo "Error: Your wallet address is not a valid Ethereum address."
     exit 1
 fi
 
