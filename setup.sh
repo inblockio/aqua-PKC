@@ -103,14 +103,13 @@ sudo docker-compose up -d
 # Sleep; just to be sure that the container has initialized well.
 sleep 10
 
+# Restarting the Eauth server so that it can finally have access to the DB.
+sudo docker exec -it micro-pkc_eauth_1 pkill node
+
 echo "Installing MediaWiki"
 sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS"
 
 echo "Setting up Eauth Server (Ethereum single sign-on)"
-sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all || true
-sudo docker exec -it micro-pkc_eauth_1 pkill node
-echo "Sleeping for 3s before seeding again"
-sleep 3
 sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all
 
 echo "Done!"
