@@ -11,6 +11,8 @@ usage() {
     cat <<'EOF'
 Usage:
   setup.sh --wallet-address <your crypto wallet address>
+  or
+  setup.sh -w <your crypto wallet address>
   setup.sh --help
 EOF
 }
@@ -28,11 +30,11 @@ check_wallet_is_specified() {
 while [[ $# -gt 0 ]]; do
     key="$1"
     case $key in
-        --help)
+        -h|--help)
             usage
             exit 0
             ;;
-        --wallet-address)
+        -w|--wallet-address)
             WALLET_ADDRESS="$2"
             check_wallet_is_specified
             shift
