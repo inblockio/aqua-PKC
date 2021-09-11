@@ -59,7 +59,7 @@ fi
 
 # Convert wallet address to lower case
 # This is because the address returned in Metamask API is in lower case
-WALLET_ADDRESS=${WALLET_ADDRESS,,}
+WALLET_ADDRESS="$(echo $WALLET_ADDRESS | tr "[A-Z]" "[a-z]")"
 
 # Check Docker installation
 if [[ -x "$(command -v docker)" ]]; then
