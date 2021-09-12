@@ -110,7 +110,8 @@ fi
 echo "Executing docker-compose up -d. Be prepared to type your password."
 sudo docker-compose up -d
 # Sleep; just to be sure that the container has initialized well.
-sleep 10
+echo "Sleeping for 15 seconds to wait for the database to be ready."
+sleep 15
 
 # Restarting the Eauth server so that it can finally have access to the DB.
 sudo docker exec -it micro-pkc_eauth_1 pkill node
