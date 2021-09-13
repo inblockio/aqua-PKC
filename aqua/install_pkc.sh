@@ -36,6 +36,8 @@ sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );
 # Enable file upload
 sed -i "s/wgEnableUploads = false;/wgEnableUploads = true;/" LocalSettings.php
 
+chown -R www-data:www-data /var/www/html/images
+
 # Update sidebar
 php maintenance/edit.php -s "Use PKC sidebar" -u Admin MediaWiki:Sidebar < aqua/sidebar.wiki
 
