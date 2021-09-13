@@ -33,6 +33,9 @@ cat aqua/extraAquaSettings.php >> LocalSettings.php
 # Disable VisualEditor
 sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );/" LocalSettings.php
 
+# Enable file upload
+sed -i "s/wgEnableUploads = false;/wgEnableUploads = true;/" LocalSettings.php
+
 # Update sidebar
 php maintenance/edit.php -s "Use PKC sidebar" -u Admin MediaWiki:Sidebar < aqua/sidebar.wiki
 
