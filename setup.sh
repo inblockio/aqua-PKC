@@ -122,13 +122,19 @@ echo "Sleeping for 15 seconds to wait for the database to be ready."
 echo "Here's an invitation to grab a ☕ or take a deep breath."
 sleep 15
 
-# Restarting the Eauth server so that it can finally have access to the DB.
-sudo docker exec -it micro-pkc_eauth_1 pkill node
-
 echo "Installing MediaWiki"
 sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS" || true
 
-echo "Setting up Eauth Server (Ethereum single sign-on)"
-sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all
+while true
+do
+    echo "Setting up Eauth Server (Ethereum single sign-on)"
+    # Restarting the Eauth server so that it can finally have access to the DB.
+    sudo docker exec -it micro-pkc_eauth_1 pkill node
+    sleep 2
+    sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all
+    if  [ $? -eq 0 ]; then
+        break
+    fi
+done
 
 echo "Done!"
