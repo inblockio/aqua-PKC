@@ -20,6 +20,8 @@ services:
     volumes:
       - ./mountPoint/mariadb:/var/lib/mysql
       - ./provision/mariadb:/docker-entrypoint-initdb.d
+      - ./mountPoint/backup:/backup
+      - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
   mediawiki:
     image: fantasticofox/pkc:latest
     restart: always
@@ -31,7 +33,9 @@ services:
     volumes:
       - ./mountPoint/images:/var/www/html/images
       - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
+      - ./mountPoint/backup:/backup
       - ./aqua:/var/www/html/aqua
+      - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
       # After initial setup, download LocalSettings.php to the same directory as
       # this yaml and uncomment the following line and use compose to restart
       # the mediawiki service

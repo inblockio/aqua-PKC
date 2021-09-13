@@ -87,6 +87,7 @@ fi
 
 mkdir -p mountPoint/extensions
 
+# Ensure DataAccounting repo exists
 if [ ! -d ../DataAccounting ]; then
     echo "DataAccounting repo doesn't exist. Downloading..."
     # We need to do this line in a subshell so that the current directory is
@@ -95,6 +96,13 @@ if [ ! -d ../DataAccounting ]; then
 else
     echo "DataAccounting repo exists. But you may want to update it after this setup."
 fi
+
+# Ensure MediaWiki_Backup repo exists
+if [ ! -d aqua/MediaWiki_Backup ]; then
+    echo "MediaWiki_Backup repo doesn't exist. Downloading ..."
+    (cd aqua && git clone https://github.com/rht/MediaWiki_Backup.git)
+fi
+ln -sf "$PWD/aqua/MediaWiki_Backup" mountPoint/MediaWiki_Backup
 
 PARENTDIR="$(dirname "$PWD")"
 DEST=mountPoint/extensions/DataAccounting
@@ -111,6 +119,7 @@ echo "Executing docker-compose up -d. Be prepared to type your password."
 sudo docker-compose up -d
 # Sleep; just to be sure that the container has initialized well.
 echo "Sleeping for 15 seconds to wait for the database to be ready."
+echo "Here's an invitation to grab a ☕ or take a deep breath."
 sleep 15
 
 # Restarting the Eauth server so that it can finally have access to the DB.
