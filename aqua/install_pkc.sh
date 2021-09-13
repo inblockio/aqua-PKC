@@ -36,6 +36,7 @@ sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );
 # Enable file upload
 sed -i "s/wgEnableUploads = false;/wgEnableUploads = true;/" LocalSettings.php
 
+# Set required permissions to store images
 chown -R www-data:www-data /var/www/html/images
 
 # Update sidebar
