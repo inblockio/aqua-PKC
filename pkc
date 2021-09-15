@@ -10,10 +10,10 @@ fi
 usage() {
     cat <<'EOF'
 Usage:
-  setup.sh --wallet-address <your crypto wallet address>
+  pkc --wallet-address <your crypto wallet address>
   or
-  setup.sh -w <your crypto wallet address>
-  setup.sh --help
+  pkc -w <your crypto wallet address>
+  pkc --help
 EOF
 }
 

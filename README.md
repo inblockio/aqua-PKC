@@ -13,7 +13,7 @@ Resolving dependencies:
 
 ## Installation:
 1. `cd micro-PKC`
-2. Run `./setup.sh` without sudo. But it will automatically ask for a sudo password later.
+2. Run `./pkc` without sudo. But it will automatically ask for a sudo password later.
 
 Test if deployment was successful:
 Go to localhost:9352 and see if you can open your 'Personal Knowledge Container'
