@@ -7,12 +7,6 @@ if [ -f /backup/LocalSettings.php ]; then
     fi
 fi
 
-if [ -f /backup/data_accounting_config.json ]; then
-    if [ ! -L $MW_DIR/data_accounting_config.json ]; then
-        ln -s /backup/data_accounting_config.json $MW_DIR/data_accounting_config.json
-    fi
-fi
-
 # This is the original MediaWiki entrypoint
 # TODO watch https://github.com/wikimedia/mediawiki-docker. They might change
 # the entrypoint detail at some point in the future!

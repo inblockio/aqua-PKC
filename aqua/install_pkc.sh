@@ -36,6 +36,25 @@ sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );
 # Enable file upload
 sed -i "s/wgEnableUploads = false;/wgEnableUploads = true;/" LocalSettings.php
 
+# Insert domain ID to LocalSettings.php.
+# The first openssl command is for entropy source. The second openssl command
+# is for doing a sha3sum. The xxd command converts the sha sum in binary to hex
+# format. And finally the head commands returns only the first 10 characters.
+DOMAIN_ID=$(openssl rand -hex 64 | openssl dgst -sha3-512 -binary | xxd -p -c 256 | head -c 10)
+echo "\$wgDADomainID = '$DOMAIN_ID';" >> LocalSettings.php
+
+# Insert smart contract address to LocalSettings.php.
+echo "\$wgDASmartContractAddress = '0x45f59310ADD88E6d23ca58A0Fa7A55BEE6d2a611';" >> LocalSettings.php
+
+# Insert witness network to LocalSettings.php
+cat <<EOF >> LocalSettings.php
+# Possible values are:
+# - mainnet
+# - goerli
+# - See more at https://besu.hyperledger.org/en/stable/Concepts/NetworkID-And-ChainID/
+\$wgWitnessNetwork = 'goerli';
+EOF
+
 # Set required permissions to store images
 chown -R www-data:www-data /var/www/html/images
 
@@ -45,16 +64,8 @@ php maintenance/edit.php -s "Use PKC sidebar" -u Admin MediaWiki:Sidebar < aqua/
 # Populate a page
 php maintenance/edit.php -a -u Admin "Moores Law" < aqua/MooresLaw.wiki
 
-# Ensure the config file can be written from the backend
-chown www-data:www-data /var/www/html/data_accounting_config.json
-
 # Move the actual LocalSettings.php file to a backup folder that persists after a
 # docker-compose down.
 MW_DIR=/var/www/html
 mv $MW_DIR/LocalSettings.php /backup/LocalSettings.php
 ln -s /backup/LocalSettings.php $MW_DIR/LocalSettings.php
-
-# Move the actual data_accounting_confing.json file to a backup folder that
-# persists after a docker-compose down.
-mv $MW_DIR/data_accounting_config.json /backup/data_accounting_config.json
-ln -s /backup/data_accounting_config.json $MW_DIR/data_accounting_config.json
