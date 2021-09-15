@@ -9,25 +9,149 @@ fi
 
 usage() {
     cat <<'EOF'
-Usage:
-  pkc --wallet-address <your crypto wallet address>
-  or
-  pkc -w <your crypto wallet address>
-  pkc --help
+Options:
+  --help
+Commands:
+  setup
 EOF
 }
 
-check_wallet_is_specified() {
+usage_setup() {
+    cat <<'EOF'
+Usage:
+  pkc setup --wallet-address <your crypto wallet address>
+  or
+  pkc setup -w <your crypto wallet address>
+EOF
+}
+
+check_wallet_address() {
     if [ -z "$WALLET_ADDRESS" ]; then
         echo "Error: you must specify the wallet address."
-        usage
+        usage_setup
         exit 1
     fi
+
+    # https://ethereum.stackexchange.com/questions/1374/how-can-i-check-if-an-ethereum-address-is-valid
+    # TODO make this address validation more comprehensive.
+    if [[ ! "$WALLET_ADDRESS" =~ ^(0x)?[0-9a-fA-F]{40}$ ]]; then
+        echo "Error: Your wallet address is not a valid Ethereum address."
+        exit 1
+    fi
+}
+
+check_dependencies() {
+    # Check Docker installation
+    if [[ -x "$(command -v docker)" ]]; then
+        true
+    else
+        echo "Docker is not yet installed. Aborting PKC installation."
+        exit 1
+    fi
+
+    # Check docker-compose installation
+    if [[ -x "$(command -v docker-compose)" ]]; then
+        true
+    else
+        echo "docker-compose is not yet installed. Aborting PKC installation."
+        exit 1
+    fi
+
+    # Check git installation
+    if [[ -x "$(command -v git)" ]]; then
+        true
+    else
+        echo "Git is not yet installed. Aborting PKC installation."
+        exit 1
+    fi
+}
+
+run_setup() {
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
+            -h|--help)
+                usage_setup
+                exit 0
+                ;;
+            -w|--wallet-address)
+                WALLET_ADDRESS="$2"
+                shift
+                shift
+                ;;
+            *)    # unknown option
+                usage_setup
+                exit 0
+                ;;
+        esac
+    done
+
+    check_wallet_address
+
+    # Convert wallet address to lower case
+    # This is because the address returned in Metamask API is in lower case
+    WALLET_ADDRESS=$(echo "$WALLET_ADDRESS" | tr "\[A-Z\]" "\[a-z\]")
+
+    check_dependencies
+
+    mkdir -p mountPoint/extensions
+
+    # Ensure DataAccounting repo exists
+    if [ ! -d ../DataAccounting ]; then
+        echo "DataAccounting repo doesn't exist. Downloading..."
+        # We need to do this line in a subshell so that the current directory is
+        # not modified.
+        (cd .. && git clone https://github.com/FantasticoFox/DataAccounting.git)
+    else
+        echo "DataAccounting repo exists. But you may want to update it after this setup."
+    fi
+
+    # Ensure MediaWiki_Backup repo exists
+    if [ ! -d aqua/MediaWiki_Backup ]; then
+        echo "MediaWiki_Backup repo doesn't exist. Downloading ..."
+        (cd aqua && git clone https://github.com/rht/MediaWiki_Backup.git)
+    fi
+    ln -sf "$PWD/aqua/MediaWiki_Backup" mountPoint/MediaWiki_Backup
+
+    PARENTDIR="$(dirname "$PWD")"
+    DEST=mountPoint/extensions/DataAccounting
+    if [[ -L "$DEST" && -d "$DEST" ]]; then
+        true
+    else
+        echo "Making a symlink for the DataAccounting repo..."
+        SOURCE="$PARENTDIR/DataAccounting"
+        echo "Source: $SOURCE"
+        ln -sf "$SOURCE" "$DEST"
+    fi
+
+    echo "Executing docker-compose up -d. Be prepared to type your password."
+    sudo docker-compose up -d
+    # Sleep; just to be sure that the container has initialized well.
+    echo "Sleeping for 15 seconds to wait for the database to be ready."
+    echo "Here's an invitation to grab a ☕ or take a deep breath."
+    sleep 15
+
+    echo "Installing MediaWiki"
+    sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS" || true
+
+    while true
+    do
+        echo "Setting up Eauth Server (Ethereum single sign-on)"
+        # Restarting the Eauth server so that it can finally have access to the DB.
+        sudo docker exec -it micro-pkc_eauth_1 pkill node
+        sleep 2
+        sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all
+        if  [ $? -eq 0 ]; then
+            break
+        fi
+    done
+
+    echo "Done!"
 }
 
 # We don't use getopt because we want to support running micro-pkc on macOS.
 # macOS has getopt, but it doesn't have `long` option
 # See https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
+# https://unix.stackexchange.com/questions/520028/parsing-arguments-with-nested-case-statements
 while [[ $# -gt 0 ]]; do
     key="$1"
     case $key in
@@ -35,11 +159,10 @@ while [[ $# -gt 0 ]]; do
             usage
             exit 0
             ;;
-        -w|--wallet-address)
-            WALLET_ADDRESS="$2"
-            check_wallet_is_specified
+        setup)
             shift
-            shift
+            run_setup "$@"
+            break
             ;;
         *)    # unknown option
             usage
@@ -47,94 +170,3 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
-
-check_wallet_is_specified
-
-# https://ethereum.stackexchange.com/questions/1374/how-can-i-check-if-an-ethereum-address-is-valid
-# TODO make this address validation more comprehensive.
-if [[ ! "$WALLET_ADDRESS" =~ ^(0x)?[0-9a-fA-F]{40}$ ]]; then
-    echo "Error: Your wallet address is not a valid Ethereum address."
-    exit 1
-fi
-
-# Convert wallet address to lower case
-# This is because the address returned in Metamask API is in lower case
-WALLET_ADDRESS="$(echo $WALLET_ADDRESS | tr "[A-Z]" "[a-z]")"
-
-# Check Docker installation
-if [[ -x "$(command -v docker)" ]]; then
-    true
-else
-    echo "Docker is not yet installed. Aborting PKC installation."
-    exit 1
-fi
-
-# Check docker-compose installation
-if [[ -x "$(command -v docker-compose)" ]]; then
-    true
-else
-    echo "docker-compose is not yet installed. Aborting PKC installation."
-    exit 1
-fi
-
-# Check git installation
-if [[ -x "$(command -v git)" ]]; then
-    true
-else
-    echo "Git is not yet installed. Aborting PKC installation."
-    exit 1
-fi
-
-mkdir -p mountPoint/extensions
-
-# Ensure DataAccounting repo exists
-if [ ! -d ../DataAccounting ]; then
-    echo "DataAccounting repo doesn't exist. Downloading..."
-    # We need to do this line in a subshell so that the current directory is
-    # not modified.
-    (cd .. && git clone https://github.com/FantasticoFox/DataAccounting.git)
-else
-    echo "DataAccounting repo exists. But you may want to update it after this setup."
-fi
-
-# Ensure MediaWiki_Backup repo exists
-if [ ! -d aqua/MediaWiki_Backup ]; then
-    echo "MediaWiki_Backup repo doesn't exist. Downloading ..."
-    (cd aqua && git clone https://github.com/rht/MediaWiki_Backup.git)
-fi
-ln -sf "$PWD/aqua/MediaWiki_Backup" mountPoint/MediaWiki_Backup
-
-PARENTDIR="$(dirname "$PWD")"
-DEST=mountPoint/extensions/DataAccounting
-if [[ -L "$DEST" && -d "$DEST" ]]; then
-    true
-else
-    echo "Making a symlink for the DataAccounting repo..."
-    SOURCE="$PARENTDIR/DataAccounting"
-    echo "Source: $SOURCE"
-    ln -sf "$SOURCE" "$DEST"
-fi
-
-echo "Executing docker-compose up -d. Be prepared to type your password."
-sudo docker-compose up -d
-# Sleep; just to be sure that the container has initialized well.
-echo "Sleeping for 15 seconds to wait for the database to be ready."
-echo "Here's an invitation to grab a ☕ or take a deep breath."
-sleep 15
-
-echo "Installing MediaWiki"
-sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS" || true
-
-while true
-do
-    echo "Setting up Eauth Server (Ethereum single sign-on)"
-    # Restarting the Eauth server so that it can finally have access to the DB.
-    sudo docker exec -it micro-pkc_eauth_1 pkill node
-    sleep 2
-    sudo docker exec -it micro-pkc_eauth_1 npx sequelize-cli db:seed:all
-    if  [ $? -eq 0 ]; then
-        break
-    fi
-done
-
-echo "Done!"
