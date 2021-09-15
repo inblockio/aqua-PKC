@@ -14,4 +14,6 @@ if [ -f /backup/data_accounting_config.json ]; then
 fi
 
 # This is the original MediaWiki entrypoint
+# TODO watch https://github.com/wikimedia/mediawiki-docker. They might change
+# the entrypoint detail at some point in the future!
 apache2-foreground
