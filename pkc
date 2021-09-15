@@ -15,6 +15,7 @@ Commands:
   setup     Setup the system for the first time and then run the system
   stop      Gracefully stop the system
   start     Resume running the system from a stopped state
+  backup    Run the backup command
 EOF
 }
 
@@ -173,6 +174,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         start)
             sudo docker-compose up -d
+            break
+            ;;
+        backup)
+            sudo docker exec -it micro-pkc_mediawiki_1 /MediaWiki_Backup/backup.sh -d /backup -w /var/www/html -s -f
             break
             ;;
         *)    # unknown option
