@@ -27,7 +27,7 @@ services:
     restart: always
     ports:
       - ${PORT_NUMBER}:80
-    #entrypoint: ['/var/www/html/maintenance/update.php']
+    entrypoint: '/var/www/html/aqua/entrypoint_mediawiki.sh'
     links:
       - database
     volumes:
@@ -36,11 +36,6 @@ services:
       - ./mountPoint/backup:/backup
       - ./aqua:/var/www/html/aqua
       - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
-      # After initial setup, download LocalSettings.php to the same directory as
-      # this yaml and uncomment the following line and use compose to restart
-      # the mediawiki service
-      #- .mountPoint/LocalSettings.php:/var/www/html/LocalSettings.php
-
     depends_on:
       - database
       - eauth
