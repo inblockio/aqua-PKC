@@ -48,8 +48,13 @@ php maintenance/edit.php -a -u Admin "Moores Law" < aqua/MooresLaw.wiki
 # Ensure the config file can be written from the backend
 chown www-data:www-data /var/www/html/data_accounting_config.json
 
-# Move the actual LocalSettings.php file to a folder that persists after a
+# Move the actual LocalSettings.php file to a backup folder that persists after a
 # docker-compose down.
 MW_DIR=/var/www/html
 mv $MW_DIR/LocalSettings.php /backup/LocalSettings.php
 ln -s /backup/LocalSettings.php $MW_DIR/LocalSettings.php
+
+# Move the actual data_accounting_confing.json file to a backup folder that
+# persists after a docker-compose down.
+mv $MW_DIR/data_accounting_config.json /backup/data_accounting_config.json
+ln -s /backup/data_accounting_config.json $MW_DIR/data_accounting_config.json
