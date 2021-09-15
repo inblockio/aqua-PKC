@@ -15,7 +15,8 @@ Commands:
   setup     Setup the system for the first time and then run the system
   stop      Gracefully stop the system
   start     Resume running the system from a stopped state
-  backup    Run the backup command
+  backup    Run the system backup
+  restore   Run the system restore from backup
 EOF
 }
 
@@ -178,6 +179,11 @@ while [[ $# -gt 0 ]]; do
             ;;
         backup)
             sudo docker exec -it micro-pkc_mediawiki_1 /MediaWiki_Backup/backup.sh -d /backup -w /var/www/html -s -f
+            break
+            ;;
+        restore)
+            most_recent=$(ls -t mountPoint/backup/*.tar.gz | head -n 1 | xargs basename)
+            ./aqua/MediaWiki_Backup/restore_all.sh "$most_recent"
             break
             ;;
         *)    # unknown option
