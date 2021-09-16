@@ -1,8 +1,8 @@
 # micro-PKC (Personal Knowledge Container)
 Author: FantasticoFox / 23. August 2021
 
-Installation for Linux (Tested in Ubuntu 20.04) of your Personal Knowledge Container
-This should work for other environments like Windows and Mac if the dependancies are fullfilled.
+Installation for Linux (Tested in Ubuntu 20.04) of your Personal Knowledge Container\
+This should work for other environments like Windows and Mac if the dependancies are fullfilled.\
 
 ## Pre-Installation:
 
@@ -13,16 +13,11 @@ Resolving dependencies:
 
 ## Installation:
 1. `cd micro-PKC`
-2. Run `./pkc setup --wallet-address <your wallet address>` without sudo. But it will automatically ask for a sudo password later.
+2. Run `./pkc setup --wallet-address <your wallet address>`
 
-Test if deployment was successful:
-Go to localhost:9352 and see if you can open your 'Personal Knowledge Container'
-If the special pags work, congratulations! You successfully deployed PKC!
-
-Error Handling:
-==> ERROR 1: You see the website but it tells you to setup mediawiki, you failed on step 3. Do docker-compose down and start over.
-==> ERROR 2: You see the Personal-Knowledge-Container, you can login but the special pages on the left side (MediaWiki:Sidebar) do not load (invalid special page). If this error appears you failed to run the setup.sh before the docker-compose up. Do docker-compose down and start over. 
-
+**Test if deployment was successful:**\
+Go to localhost:9352 and see if you can open your 'Personal Knowledge Container'\
+If the special pages work, congratulations! You successfully deployed PKC!
 
 ## POST Installation (installation of remote verification tools):
 * You have the choice to use the commandline verification tool or the online-chrome extension (recommanded) to verify your page.
