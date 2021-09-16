@@ -143,8 +143,8 @@ run_setup() {
         # Restarting the Eauth server so that it can finally have access to the DB.
         sudo docker exec -it micro-pkc_eauth_1 pkill node
         sleep 2
-        sudo docker exec -it micro-pkc_eauth_1 sh -c 'npx sequelize-cli db:seed:all; exit $?'
-        if  [ $? -eq 0 ]; then
+        seed_status=$(sudo docker exec -it micro-pkc_eauth_1 sh -c 'npx sequelize-cli db:seed:all && echo "pass" || echo "fail"')
+        if  [[ "$seed_status" == *pass* ]]; then
             break
         fi
         echo "Retrying to seed Eauth DB again ..."
