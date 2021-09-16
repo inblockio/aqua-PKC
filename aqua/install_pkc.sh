@@ -58,6 +58,9 @@ cat <<EOF >> LocalSettings.php
 \$wgWitnessNetwork = 'goerli';
 EOF
 
+# Insert signature injection configuration to LocalSettings.php
+echo "\$wgDAInjectSignature = true;" >> LocalSettings.php
+
 # Set required permissions to store images
 chown -R www-data:www-data /var/www/html/images
 
