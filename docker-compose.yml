@@ -1,7 +1,4 @@
 # MediaWiki with MariaDB
-#
-# Access via "http://localhost:8080"
-#   (or "http://$(docker-machine ip):8080" if using docker-machine)
 version: '3'
 services:
   database:
@@ -25,6 +22,10 @@ services:
   mediawiki:
     image: fantasticofox/pkc:latest
     restart: always
+    # We need to specify the env_file so that MediaWiki knows the port number
+    # of Eauth server.
+    env_file:
+      - .env
     ports:
       - ${PORT_NUMBER}:80
     entrypoint: '/var/www/html/aqua/entrypoint_mediawiki.sh'
@@ -43,9 +44,9 @@ services:
     image: pelith/node-eauth-server:latest
     restart: always
     env_file:
-      - eauth-vars.env
+      - .env
     ports:
-      - 8080:8080
+      - ${PORT}:${PORT}
     links:
       - database
     volumes:

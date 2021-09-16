@@ -30,6 +30,9 @@ php maintenance/install.php --server="http://localhost:9352" \
 # Extend settings
 cat aqua/extraAquaSettings.php >> LocalSettings.php
 
+# Specify Eauth port
+sed -i "s/EAUTH_PORT_PLACEHOLDER/$PORT/" LocalSettings.php
+
 # Disable VisualEditor
 sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );/" LocalSettings.php
 
