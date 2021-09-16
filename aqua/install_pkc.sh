@@ -55,7 +55,7 @@ cat <<EOF >> LocalSettings.php
 # - mainnet
 # - goerli
 # - See more at https://besu.hyperledger.org/en/stable/Concepts/NetworkID-And-ChainID/
-\$wgWitnessNetwork = 'goerli';
+\$wgDAWitnessNetwork = 'goerli';
 EOF
 
 # Insert signature injection configuration to LocalSettings.php
