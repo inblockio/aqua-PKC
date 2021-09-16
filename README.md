@@ -2,7 +2,7 @@
 Author: FantasticoFox / 23. August 2021
 
 Installation for Linux (Tested in Ubuntu 20.04) of your Personal Knowledge Container\
-This should work for other environments like Windows and Mac if the dependancies are fullfilled.\
+This should work for other environments like Windows and Mac if the dependancies are fullfilled.
 
 ## Pre-Installation:
 
