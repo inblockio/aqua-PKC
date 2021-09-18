@@ -40,7 +40,9 @@ $wgOAuth2Client['client']['secret'] = 'pkc'; // The client secret assigned to yo
 
 $EAUTH_PORT = 'EAUTH_PORT_PLACEHOLDER';
 $pkcServer = 'PKC_SERVER';
-$wgOAuth2Client['configuration']['authorize_endpoint']     = "http://localhost:$EAUTH_PORT/oauth/authorize"; // Authorization URL
+$parsedPkcServer = parse_url($pkcServer);
+$pkcHost = $parsedPkcServer['scheme'] . '://' . $parsedPkcServer['host'];
+$wgOAuth2Client['configuration']['authorize_endpoint']     = "$pkcHost:$EAUTH_PORT/oauth/authorize"; // Authorization URL
 $wgOAuth2Client['configuration']['access_token_endpoint']  = "http://eauth:$EAUTH_PORT/oauth/token"; // Token URL
 $wgOAuth2Client['configuration']['api_endpoint']           = "http://eauth:$EAUTH_PORT/oauth/user"; // URL to fetch user JSON
 $wgOAuth2Client['configuration']['redirect_uri']           = "$pkcServer/index.php/Special:OAuth2Client/callback"; // URL for OAuth2 server to redirect to
