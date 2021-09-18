@@ -23,9 +23,13 @@ EOF
 usage_setup() {
     cat <<'EOF'
 Usage:
-  pkc setup --wallet-address <your crypto wallet address>
-  or
-  pkc setup -w <your crypto wallet address>
+  pkc setup [OPTIONS]
+
+Set up a PKC instance for the first time.
+
+Options:
+  -w, --wallet-address <your crypto wallet address>
+  -s, --server         <your server name; defaults to http://localhost:9352>
 EOF
 }
 
@@ -82,12 +86,22 @@ run_setup() {
                 shift
                 shift
                 ;;
+            -s|--server)
+                PKC_SERVER="$2"
+                shift
+                shift
+                ;;
             *)    # unknown option
                 usage_setup
                 exit 0
                 ;;
         esac
     done
+
+    if [ -z "$PKC_SERVER" ]; then
+      PKC_SERVER=http://localhost:9352
+    fi
+    echo "Server name: $PKC_SERVER"
 
     check_wallet_address
 
@@ -127,6 +141,10 @@ run_setup() {
         ln -sf "$SOURCE" "$DEST"
     fi
 
+    echo "Generating seed configuration for Eauth"
+    cp aqua/eauth_seed_template.js aqua/eauth_seed.js
+    sed -i "s|PKC_SERVER|$PKC_SERVER|" aqua/eauth_seed.js
+
     echo "Executing docker-compose up -d. Be prepared to type your password."
     sudo docker-compose up -d
     # Sleep; just to be sure that the container has initialized well.
@@ -135,7 +153,7 @@ run_setup() {
     sleep 15
 
     echo "Installing MediaWiki"
-    sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS" || true
+    sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS" "$PKC_SERVER" || true
 
     while true
     do

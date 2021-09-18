@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('oauth_clients', [{
         client_id: 'pkc',
         client_secret: 'pkc',
-        redirect_uri: 'http://localhost:9352/index.php/Special:OAuth2Client/callback',
+        redirect_uri: 'PKC_SERVER/index.php/Special:OAuth2Client/callback',
       }], {});
   },
 

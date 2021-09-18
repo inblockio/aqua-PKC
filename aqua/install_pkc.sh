@@ -3,6 +3,7 @@
 set -ex
 
 WALLET_ADDRESS="$1"
+PKC_SERVER="$2"
 
 BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,ConfirmEdit,EmbedVideo,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SpamBlacklist,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
 EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,MW-OAuth2Client"
@@ -15,7 +16,7 @@ echo "Your admin password is $admin_password"
 # --quiet
 # --wiki=domain_id
 # Use --dbpassfile and --passfile for higher security
-php maintenance/install.php --server="http://localhost:9352" \
+php maintenance/install.php --server="$PKC_SERVER" \
                 --dbuser=wikiuser \
                 --dbpass=example \
                 --dbname=my_wiki \
@@ -29,6 +30,9 @@ php maintenance/install.php --server="http://localhost:9352" \
 
 # Extend settings
 cat aqua/extraAquaSettings.php >> LocalSettings.php
+
+# Specify PKC_SERVER
+sed -i "s|PKC_SERVER|$PKC_SERVER|" LocalSettings.php
 
 # Specify Eauth port
 sed -i "s/EAUTH_PORT_PLACEHOLDER/$PORT/" LocalSettings.php

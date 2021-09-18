@@ -1,3 +1,4 @@
 mountPoint/mariadb
 mountPoint/extensions
 aqua/MediaWiki_Backup
+aqua/eauth_seed.js
