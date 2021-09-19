@@ -4,7 +4,8 @@ services:
   database:
     image: xlp0/mariadb
     restart: always
-    #entrypoint: mysqld_safe --skip-grant-tables --user=wikiuser
+    networks:
+      - common
     environment:
       # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
       # The following line is replaced by a script in
@@ -22,6 +23,8 @@ services:
   mediawiki:
     image: fantasticofox/pkc:latest
     restart: always
+    networks:
+      - common
     # We need to specify the env_file so that MediaWiki knows the port number
     # of Eauth server.
     env_file:
@@ -29,8 +32,6 @@ services:
     ports:
       - ${PORT_NUMBER}:80
     entrypoint: '/var/www/html/aqua/entrypoint_mediawiki.sh'
-    links:
-      - database
     volumes:
       - ./mountPoint/images:/var/www/html/images
       - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
@@ -43,15 +44,20 @@ services:
   eauth:
     image: pelith/node-eauth-server:latest
     restart: always
+    networks:
+      - common
     env_file:
       - .env
     ports:
       - ${PORT}:${PORT}
-    links:
-      - database
     volumes:
       - ./aqua/eauth_seed.js:/usr/src/app/components/seeders/20190725062038-oauth_clients.js
       # TODO this will become obsolete after pelith fixes their installation bug
       - ./aqua/eauth_config.json:/usr/src/app/config/config.json
     depends_on:
       - database
+networks:
+  # We specify the internal network as common, so that the services in this
+  # docker-compose.yml can be configured to interact with the services in the
+  # other, separate docker-compose.yml using external networks.
+  common:
