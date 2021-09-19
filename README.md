@@ -26,16 +26,11 @@ If the special pages work, congratulations! You successfully deployed PKC!
 
 Keep in mind that this software is in alpha-release stage. Please report bugs and issues back to us.
 
-## Repository Dependencies Github ##
+## Repository Dependencies Github
+*Those repositories are automatically installed by the `pkc` CLI during the setup. 
 - MediaWiki extension https://github.com/FantasticoFox/DataAccounting
   This contains all scripts and information for the 'Verified Page History' implementation.
   languages: PHP, JavaScript, Shell
-- CLI page verifier https://github.com/FantasticoFox/data-accounting-external-verifier
-  A CLI JavaScript client for verifying DataAccounting pages.
-  languages: JavaScript
-- Chrome extension https://github.com/FantasticoFox/VerifyPage
-  This is used to remotely interface and verify with servers which integrate the verification protocol.
-  languages: TypeScript, HTML
 - Dockerized PKC https://github.com/FantasticoFox/micro-PKC
   For running the PKC MediaWiki including the DataAccounting extension via docker-compose.
   languages: Shell, PHP, JavaScript (and Docker of course)
@@ -48,8 +43,17 @@ Keep in mind that this software is in alpha-release stage. Please report bugs an
   This repository includes all backup and restore logic for the dockerized-mediawiki
 - To install the OAuth2 Client in MW https://github.com/rht/MW-OAuth2Clien
   This is a modified fork which does no allow new user creation.
+ 
+##  Repository Dependencies Github: Verification
+*Those repositories need to be manually set up and installed. For more details visit each repositiory.
+- CLI page verifier https://github.com/FantasticoFox/data-accounting-external-verifier
+  A CLI JavaScript client for verifying DataAccounting pages.
+  languages: JavaScript
+- Chrome extension https://github.com/FantasticoFox/VerifyPage which wraps the CLI page verifier.
+  This is used to remotely interface and verify with servers which integrate the verification protocol.
+  languages: TypeScript, HTML
   
-## Image Dependencies DockerHub ##
+## Image Dependencies DockerHub
 - Authentification server for ethereum wallets via OAUTH2 pelith/node-eauth-server
 - Custom build mediawiki image based on the standard mediaw-wiki docker image fantasticofox/pkc
 - A mariadb database container as a database endpoint for the above services xlp0/mariadb
