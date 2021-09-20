@@ -40,7 +40,7 @@ sed -i "s/EAUTH_PORT_PLACEHOLDER/$PORT/" LocalSettings.php
 
 # Put in Eauth server if specified
 if [ -n "$EAUTH_SERVER" ]; then
-sed -i "s/eauthServer = .*/eauthServer = '$EAUTH_SERVER';/" LocalSettings.php
+sed -i "s|eauthServer = .*|eauthServer = '$EAUTH_SERVER';|" LocalSettings.php
 fi
 
 # Disable VisualEditor
