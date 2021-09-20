@@ -9,19 +9,6 @@
      external: true
    ```
    in the `networks` section.
-1. Edit the `docker-compose.yml` in the `eauth` section. Add
-   ```
-   environment:
-     - VIRTUAL_HOST=eauth.yourdomain.com
-     - LETSENCRYPT_HOST=eauth.yourdomain.com
-     - VIRTUAL_PORT=${PORT}
-   ```
-1. Edit the `.env` file (!! not `docker-compose.yml`) so that it contains
-   ```
-   VIRTUAL_HOST=pkc.yourdomain.com
-   LETSENCRYPT_HOST=pkc.yourdomain.com
-   LETSENCRYPT_EMAIL=your@email.com
-   ```
-   This is the host for the `mediawiki` service
+1. In the `.env` file, edit `MEDIAWIKI_HOST`, `EAUTH_HOST`, and `LETSENCRYPT_EMAIL` with your details
 1. Run `./pkc setup --wallet-address <your address> --server https://pkc.yourdomain.com`
 1. Inside the `mediawiki` container, edit `LocalSettings.php` so that `$wgOAuth2Client['configuration']['authorize_endpoint']` has the value of `https://eauth.yourdomain.com/oauth/authorize`
