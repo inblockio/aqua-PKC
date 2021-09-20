@@ -160,7 +160,7 @@ run_setup() {
         echo "Setting up Eauth Server (Ethereum single sign-on)"
         # Restarting the Eauth server so that it can finally have access to the DB.
         sudo docker exec -it micro-pkc_eauth_1 pkill node
-        sleep 2
+        sleep 4
         seed_status=$(sudo docker exec -it micro-pkc_eauth_1 sh -c 'npx sequelize-cli db:seed:all && echo "pass" || echo "fail"')
         if  [[ "$seed_status" == *pass* ]]; then
             break
