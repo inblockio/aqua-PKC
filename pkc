@@ -74,6 +74,54 @@ check_dependencies() {
     fi
 }
 
+ensure_submodules() {
+    # Ensure submodule dependencies are downloaded
+    mkdir -p mountPoint/extensions
+
+    # Ensure DataAccounting repo exists
+    if [ ! -d ../DataAccounting ]; then
+        echo "DataAccounting repo doesn't exist. Downloading..."
+        # We need to do this line in a subshell so that the current directory is
+        # not modified.
+        (cd .. && git clone https://github.com/FantasticoFox/DataAccounting.git)
+    else
+        echo "DataAccounting repo exists. But you may want to update it after this setup."
+    fi
+
+    # Ensure MediaWiki_Backup repo exists
+    if [ ! -d aqua/MediaWiki_Backup ]; then
+        echo "MediaWiki_Backup repo doesn't exist. Downloading ..."
+        (cd aqua && git clone https://github.com/rht/MediaWiki_Backup.git)
+    fi
+    ln -sf "$PWD/aqua/MediaWiki_Backup" mountPoint/MediaWiki_Backup
+
+    PARENTDIR="$(dirname "$PWD")"
+    DEST=mountPoint/extensions/DataAccounting
+    if [[ -L "$DEST" && -d "$DEST" ]]; then
+        true
+    else
+        echo "Making a symlink for the DataAccounting repo..."
+        SOURCE="$PARENTDIR/DataAccounting"
+        echo "Source: $SOURCE"
+        ln -sf "$SOURCE" "$DEST"
+    fi
+}
+
+seed_eauth() {
+    while true
+    do
+        echo "Setting up Eauth Server (Ethereum single sign-on)"
+        # Restarting the Eauth server so that it can finally have access to the DB.
+        sudo docker exec -it micro-pkc_eauth_1 pkill node
+        sleep 4
+        seed_status=$(sudo docker exec -it micro-pkc_eauth_1 sh -c 'npx sequelize-cli db:seed:all && echo "pass" || echo "fail"')
+        if  [[ "$seed_status" == *pass* ]]; then
+            break
+        fi
+        echo "Retrying to seed Eauth DB again ..."
+    done
+}
+
 run_setup() {
     while [ "$#" -gt 0 ]; do
         case "$1" in
@@ -111,35 +159,7 @@ run_setup() {
 
     check_dependencies
 
-    mkdir -p mountPoint/extensions
-
-    # Ensure DataAccounting repo exists
-    if [ ! -d ../DataAccounting ]; then
-        echo "DataAccounting repo doesn't exist. Downloading..."
-        # We need to do this line in a subshell so that the current directory is
-        # not modified.
-        (cd .. && git clone https://github.com/FantasticoFox/DataAccounting.git)
-    else
-        echo "DataAccounting repo exists. But you may want to update it after this setup."
-    fi
-
-    # Ensure MediaWiki_Backup repo exists
-    if [ ! -d aqua/MediaWiki_Backup ]; then
-        echo "MediaWiki_Backup repo doesn't exist. Downloading ..."
-        (cd aqua && git clone https://github.com/rht/MediaWiki_Backup.git)
-    fi
-    ln -sf "$PWD/aqua/MediaWiki_Backup" mountPoint/MediaWiki_Backup
-
-    PARENTDIR="$(dirname "$PWD")"
-    DEST=mountPoint/extensions/DataAccounting
-    if [[ -L "$DEST" && -d "$DEST" ]]; then
-        true
-    else
-        echo "Making a symlink for the DataAccounting repo..."
-        SOURCE="$PARENTDIR/DataAccounting"
-        echo "Source: $SOURCE"
-        ln -sf "$SOURCE" "$DEST"
-    fi
+    ensure_submodules
 
     echo "Generating seed configuration for Eauth"
     cp aqua/eauth_seed_template.js aqua/eauth_seed.js
@@ -155,18 +175,7 @@ run_setup() {
     echo "Installing MediaWiki"
     sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS" "$PKC_SERVER" || true
 
-    while true
-    do
-        echo "Setting up Eauth Server (Ethereum single sign-on)"
-        # Restarting the Eauth server so that it can finally have access to the DB.
-        sudo docker exec -it micro-pkc_eauth_1 pkill node
-        sleep 4
-        seed_status=$(sudo docker exec -it micro-pkc_eauth_1 sh -c 'npx sequelize-cli db:seed:all && echo "pass" || echo "fail"')
-        if  [[ "$seed_status" == *pass* ]]; then
-            break
-        fi
-        echo "Retrying to seed Eauth DB again ..."
-    done
+    seed_eauth
 
     echo "Done!"
 }
