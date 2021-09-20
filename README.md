@@ -15,6 +15,8 @@ Resolving dependencies:
 1. `cd micro-PKC`
 2. Run `./pkc setup --wallet-address <your wallet address>`
 
+If you want to install the PKC so that it is publicly accessible, follow the steps in the README.md of the `proxy_server` folder instead.
+
 **Test if deployment was successful:**\
 Go to localhost:9352 and see if you can open your 'Personal Knowledge Container'\
 If the special pages work, congratulations! You successfully deployed PKC!

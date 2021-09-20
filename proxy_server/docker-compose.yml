@@ -1,0 +1,38 @@
+version: '3' 
+services:
+  proxy:
+    image: nginxproxy/nginx-proxy:alpine
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
+    networks:
+      - net
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./proxy/conf.d:/etc/nginx/conf.d:rw
+      - ./proxy/vhost.d:/etc/nginx/vhost.d:rw
+      - ./proxy/html:/usr/share/nginx/html:rw
+      - ./proxy/certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      #- "./max_upload_size.conf:/etc/nginx/conf.d/max_upload_size.conf"
+    restart: unless-stopped
+
+  letsencrypt:
+    image: nginxproxy/acme-companion:latest
+    depends_on:
+      - proxy
+    networks:
+      - net
+    volumes:
+      - ./proxy/acme:/etc/acme.sh
+      - ./proxy/conf.d:/etc/nginx/conf.d:rw
+      - ./proxy/vhost.d:/etc/nginx/vhost.d:rw
+      - ./proxy/html:/usr/share/nginx/html:rw
+      - ./proxy/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
+networks:
+  net:
+    external: true
