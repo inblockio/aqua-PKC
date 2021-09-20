@@ -35,4 +35,3 @@ services:
 
 networks:
   net:
-    external: true
