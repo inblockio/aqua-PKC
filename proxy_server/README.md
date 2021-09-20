@@ -4,7 +4,7 @@
 1. `sudo docker network create net`. This creates a network that connect the Docker services (`nginx`, `letsencrypt`, `mediawiki` and `eauth`)
 1. In this directory (`./proxy_server/`), run `sudo docker-compose up -d`
 1. Go to the root of the micro-PKC repo by doing `cd ..`
-1. Edit the `docker-compose.yml` (in the root repo, not the one inside `./proxy_server/`) so that the `mediawiki` and `eauth` has `net` in the networks list. Additionally, at the end of the file, add
+1. Edit the `docker-compose.yml` (in the root repo, not the one inside `./proxy_server/`) so that the `mediawiki` and `eauth` has `net` in the networks list. Additionally, at the end of the file, add (!! indentation matters; make sure `net:` is at the same level as `common:`)
    ```
    net:
      external: true
@@ -17,7 +17,7 @@
      - LETSENCRYPT_HOST=eauth.yourdomain.com
      - VIRTUAL_PORT=${PORT}
    ```
-1. Edit the `.env` file so that it contains
+1. Edit the `.env` file (!! not `docker-compose.yml`) so that it contains
    ```
    VIRTUAL_HOST=pkc.yourdomain.com
    LETSENCRYPT_HOST=pkc.yourdomain.com
