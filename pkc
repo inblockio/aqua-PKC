@@ -130,16 +130,16 @@ validate_web_public_detail() {
         echo "Error: You specified '--web-public' but didn't specify the MediaWiki server via '--server'"
         exit 1
     fi
-    if [[ "$pkc_server" != *"https:"* ]]; then
-        echo "Error: Your MediaWiki server must be https"
+    if [[ "$pkc_server" == *"https:"* ]]; then
+        echo "Error: Your MediaWiki server must not contain the https scheme"
         exit 1
     fi
     if [ -z "$eauth_server" ]; then
         echo "Error: You specified '--web-public' but didn't specify the Eauth server via '--eauth-server'"
         exit 1
     fi
-    if [[ "$eauth_server" != *"https:"* ]]; then
-        echo "Error: Your Eauth server must be https"
+    if [[ "$eauth_server" == *"https:"* ]]; then
+        echo "Error: Your Eauth server must not contain the https scheme"
         exit 1
     fi
     if [ -z "$letsencrypt_email" ]; then
@@ -220,6 +220,9 @@ run_setup() {
         echo "Eauth server name: $EAUTH_SERVER"
         echo "Let's Encrypt email: $LETSENCRYPT_EMAIL"
         prepare_web_public "$PKC_SERVER" "$EAUTH_SERVER" "$LETSENCRYPT_EMAIL"
+        # Add https:// scheme
+        PKC_SERVER="https://$PKC_SERVER"
+        EAUTH_SERVER="https://$EAUTH_SERVER"
     else
         if [ -z "$PKC_SERVER" ]; then
             PKC_SERVER=http://localhost:9352
