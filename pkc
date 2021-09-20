@@ -162,8 +162,8 @@ prepare_web_public() {
     local letsencrypt_email=$3
     setup_proxy_server
     echo "Applying your domain details"
-    sed -i "s/MEDIAWIKI_HOST=.*/MEDIAWIKI_HOST=$pkc_server/" .env
-    sed -i "s/EAUTH_HOST=.*/EAUTH_HOST=$eauth_server/" .env
+    sed -i "s|MEDIAWIKI_HOST=.*|MEDIAWIKI_HOST=$pkc_server|" .env
+    sed -i "s|EAUTH_HOST=.*|EAUTH_HOST=$eauth_server|" .env
     sed -i "s/LETSENCRYPT_EMAIL=.*/LETSENCRYPT_EMAIL=$letsencrypt_email/" .env
     if ! grep -q "proxy_server_net" docker-compose.yml; then
         echo "  proxy_server_net:" >> docker-compose.yml
