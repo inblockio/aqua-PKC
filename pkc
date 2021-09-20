@@ -122,7 +122,58 @@ seed_eauth() {
     done
 }
 
+validate_web_public_detail() {
+    local pkc_server=$1
+    local eauth_server=$2
+    local letsencrypt_email=$3
+    if [ -z "$pkc_server" ]; then
+        echo "Error: You specified '--web-public' but didn't specify the MediaWiki server via '--server'"
+        exit 1
+    fi
+    if [[ "$pkc_server" != *"https:"* ]]; then
+        echo "Error: Your MediaWiki server must be https"
+        exit 1
+    fi
+    if [ -z "$eauth_server" ]; then
+        echo "Error: You specified '--web-public' but didn't specify the Eauth server via '--eauth-server'"
+        exit 1
+    fi
+    if [[ "$eauth_server" != *"https:"* ]]; then
+        echo "Error: Your Eauth server must be https"
+        exit 1
+    fi
+    if [ -z "$letsencrypt_email" ]; then
+        echo "Error: You specified '--web-public' but didn't specify the Let's Encrypt email via '--le-email'"
+        exit 1
+    fi
+}
+
+setup_proxy_server() {
+    echo "Setting up Nginx proxy server with Let's Encrypt"
+    (cd proxy_server && sudo docker-compose up -d)
+    echo "Sleeping for 3s 💤 💤"
+    sleep 3
+    echo "Proxy setup done!"
+}
+
+prepare_web_public() {
+    local pkc_server=$1
+    local eauth_server=$2
+    local letsencrypt_email=$3
+    setup_proxy_server
+    echo "Applying your domain details"
+    sed -i "s/MEDIAWIKI_HOST=.*/MEDIAWIKI_HOST=$pkc_server/" .env
+    sed -i "s/EAUTH_HOST=.*/EAUTH_HOST=$eauth_server/" .env
+    sed -i "s/LETSENCRYPT_EMAIL=.*/LETSENCRYPT_EMAIL=$letsencrypt_email/" .env
+    if ! grep -q "proxy_server_net" docker-compose.yml; then
+        echo "  proxy_server_net:" >> docker-compose.yml
+        echo "    external: true" >> docker-compose.yml
+        sed -i "s/#WEBPUBLICPLACEHOLDER/- proxy_server_net/" docker-compose.yml
+    fi
+}
+
 run_setup() {
+    local web_public=false
     while [ "$#" -gt 0 ]; do
         case "$1" in
             -h|--help)
@@ -139,6 +190,20 @@ run_setup() {
                 shift
                 shift
                 ;;
+            --eauth-server)
+                EAUTH_SERVER="$2"
+                shift
+                shift
+                ;;
+            --le-email)
+                LETSENCRYPT_EMAIL="$2"
+                shift
+                shift
+                ;;
+            --web-public)
+                web_public=true
+                shift
+                ;;
             *)    # unknown option
                 usage_setup
                 exit 0
@@ -146,18 +211,25 @@ run_setup() {
         esac
     done
 
-    if [ -z "$PKC_SERVER" ]; then
-      PKC_SERVER=http://localhost:9352
-    fi
-    echo "Server name: $PKC_SERVER"
-
+    check_dependencies
     check_wallet_address
+
+    if [ "$web_public" = true ]; then
+        validate_web_public_detail "$PKC_SERVER" "$EAUTH_SERVER" "$LETSENCRYPT_EMAIL"
+        echo "MediaWiki server name: $PKC_SERVER"
+        echo "Eauth server name: $EAUTH_SERVER"
+        echo "Let's Encrypt email: $LETSENCRYPT_EMAIL"
+        prepare_web_public "$PKC_SERVER" "$EAUTH_SERVER" "$LETSENCRYPT_EMAIL"
+    else
+        if [ -z "$PKC_SERVER" ]; then
+            PKC_SERVER=http://localhost:9352
+        fi
+        echo "Server name: $PKC_SERVER"
+    fi
 
     # Convert wallet address to lower case
     # This is because the address returned in Metamask API is in lower case
     WALLET_ADDRESS=$(echo "$WALLET_ADDRESS" | tr "\[A-Z\]" "\[a-z\]")
-
-    check_dependencies
 
     ensure_submodules
 
@@ -173,7 +245,7 @@ run_setup() {
     sleep 15
 
     echo "Installing MediaWiki"
-    sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS" "$PKC_SERVER" || true
+    sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS" "$PKC_SERVER" "$EAUTH_SERVER" || true
 
     seed_eauth
 

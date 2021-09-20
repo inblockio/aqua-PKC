@@ -25,6 +25,7 @@ services:
     restart: always
     networks:
       - common
+      #WEBPUBLICPLACEHOLDER
     # We need to specify the env_file so that MediaWiki knows the port number
     # of Eauth server.
     env_file:
@@ -50,6 +51,7 @@ services:
     restart: always
     networks:
       - common
+      #WEBPUBLICPLACEHOLDER
     env_file:
       - .env
     ports:

@@ -4,6 +4,7 @@ set -ex
 
 WALLET_ADDRESS="$1"
 PKC_SERVER="$2"
+EAUTH_SERVER="$3"
 
 BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,ConfirmEdit,EmbedVideo,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SpamBlacklist,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
 EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,MW-OAuth2Client"
@@ -36,6 +37,11 @@ sed -i "s|PKC_SERVER|$PKC_SERVER|" LocalSettings.php
 
 # Specify Eauth port
 sed -i "s/EAUTH_PORT_PLACEHOLDER/$PORT/" LocalSettings.php
+
+# Put in Eauth server if specified
+if [ -n "$EAUTH_SERVER" ]; then
+sed -i "s/eauthServer = .*/eauthServer = '$EAUTH_SERVER';/" LocalSettings.php
+fi
 
 # Disable VisualEditor
 sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );/" LocalSettings.php

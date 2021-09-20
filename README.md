@@ -15,7 +15,9 @@ Resolving dependencies:
 1. `cd micro-PKC`
 2. Run `./pkc setup --wallet-address <your wallet address>`
 
-If you want to install the PKC so that it is publicly accessible, follow the steps in the README.md of the `proxy_server` folder instead.
+If you want to install the PKC so that it is publicly accessible from the web:
+1. Register your subdomains, e.g. `pkc.yourdomain.com` and `eauth.yourdomain.com` to the public IP address of your server
+2. Run `./pkc setup --web-public --wallet-address <your wallet address> --server <https://mediawiki.domain> --eauth-server <https://eauth.domain> --le-email <your@email.com>`
 
 **Test if deployment was successful:**\
 Go to localhost:9352 and see if you can open your 'Personal Knowledge Container'\
