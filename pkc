@@ -9,6 +9,9 @@ fi
 
 usage() {
     cat <<'EOF'
+Usage:
+  pkc <command>
+
 Options:
   --help
 Commands:
