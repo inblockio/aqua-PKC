@@ -255,6 +255,12 @@ run_setup() {
     echo "Done!"
 }
 
+if [ $# -eq 0 ]; then
+    # If no argument is provided, provide info and exit early.
+    usage
+    exit 0
+fi
+
 # We don't use getopt because we want to support running micro-pkc on macOS.
 # macOS has getopt, but it doesn't have `long` option
 # See https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
