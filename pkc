@@ -241,7 +241,9 @@ run_setup() {
 
     echo "Generating seed configuration for Eauth"
     cp aqua/eauth_seed_template.js aqua/eauth_seed.js
-    sed -i "s|PKC_SERVER|$PKC_SERVER|" aqua/eauth_seed.js
+    # use perl to account for cross-OS limitations of sed
+    # https://stackoverflow.com/questions/4247068/sed-command-with-i-option-failing-on-mac-but-works-on-linux/14813278#14813278
+    perl -i -p -e "s|PKC_SERVER|$PKC_SERVER|" aqua/eauth_seed.js
 
     echo "Executing docker-compose up -d. Be prepared to type your password."
     sudo docker-compose up -d
