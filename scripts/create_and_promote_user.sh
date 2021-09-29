@@ -59,4 +59,8 @@ if [ -z "$PASSWORD" ]; then
   exit 1
 fi
 
+USERNAME=$(echo "$USERNAME" | tr "\[A-Z\]" "\[a-z\]")
+
+echo "INFO: The username is converted to lowercase to $USERNAME"
+
 sudo docker exec -it micro-pkc_mediawiki_1 php maintenance/createAndPromote.php $SYSOP "$USERNAME" "$PASSWORD"
