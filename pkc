@@ -208,6 +208,10 @@ run_setup() {
                 shift
                 shift
                 ;;
+            --empty-wiki)
+                empty_wiki=true
+                shift
+                ;;
             --web-public)
                 web_public=true
                 shift
@@ -258,7 +262,11 @@ run_setup() {
     sleep 15
 
     echo "Installing MediaWiki"
-    sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh "$WALLET_ADDRESS" "$PKC_SERVER" "$EAUTH_SERVER" || true
+    sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh \
+                        --wallet-address "$WALLET_ADDRESS" \
+                        --pkc-server "$PKC_SERVER" \
+                        --eauth-server "$EAUTH_SERVER" \
+                        ${empty_wiki:+--empty-wiki} || true
 
     seed_eauth
 

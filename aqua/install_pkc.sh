@@ -2,9 +2,35 @@
 
 set -ex
 
-WALLET_ADDRESS="$1"
-PKC_SERVER="$2"
-EAUTH_SERVER="$3"
+empty_wiki=false
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -w|--wallet-address)
+            WALLET_ADDRESS="$2"
+            shift
+            shift
+            ;;
+        -s|--pkc-server)
+            PKC_SERVER="$2"
+            shift
+            shift
+            ;;
+        --eauth-server)
+            EAUTH_SERVER="$2"
+            shift
+            shift
+            ;;
+        --empty-wiki)
+            empty_wiki=true
+            shift
+            ;;
+        *)    # unknown option
+            echo "Unknown flag option, exiting"
+            exit 0
+            ;;
+    esac
+done
+
 
 BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,ConfirmEdit,EmbedVideo,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SpamBlacklist,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
 EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,MW-OAuth2Client"
@@ -77,11 +103,19 @@ chown -R www-data:www-data /var/www/html/images
 # Update sidebar
 php maintenance/edit.php -s "Use PKC sidebar" -u Admin MediaWiki:Sidebar < aqua/sidebar.wiki
 
-# Populate a page
-php maintenance/edit.php -a -u Admin "Moores Law" < aqua/MooresLaw.wiki
+# Populate default pages from /PKC-Content
+extract_page_title() {
+    basename "$1" .wiki
+}
+MW_DIR=/var/www/html
+if [ "$empty_wiki" = false ]; then
+    for file in "$MW_DIR"/aqua/PKC-Content/*.wiki; do
+        echo "Populating $file into wiki"
+        php maintenance/edit.php -a -u Admin "$( extract_page_title "$file" )" < "$file"
+    done
+fi
 
 # Move the actual LocalSettings.php file to a backup folder that persists after a
 # docker-compose down.
-MW_DIR=/var/www/html
 mv $MW_DIR/LocalSettings.php /backup/LocalSettings.php
 ln -s /backup/LocalSettings.php $MW_DIR/LocalSettings.php
