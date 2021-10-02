@@ -108,6 +108,11 @@ ensure_submodules() {
         echo "Source: $SOURCE"
         ln -sf "$SOURCE" "$DEST"
     fi
+    # Ensure PKC-Content repo exists
+    if [ ! -d aqua/PKC-Content ]; then
+        echo "PKC-Content repo doesn't exist. Downloading..."
+        (cd aqua && git clone https://github.com/FantasticoFox/PKC-Content)
+    fi
 }
 
 seed_eauth() {
