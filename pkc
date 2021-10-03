@@ -257,9 +257,9 @@ run_setup() {
     echo "Executing docker-compose up -d. Be prepared to type your password."
     sudo docker-compose up -d
     # Sleep; just to be sure that the container has initialized well.
-    echo "Sleeping for 15 seconds to wait for the database to be ready."
+    echo "Sleeping for 10 seconds to wait for the database to be ready."
     echo "Here's an invitation to grab a ☕ or take a deep breath."
-    sleep 15
+    sleep 10
 
     echo "Installing MediaWiki"
     sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh \
