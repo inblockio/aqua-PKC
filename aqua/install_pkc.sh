@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ex
+set -x
 
 empty_wiki=false
 while [ "$#" -gt 0 ]; do
@@ -39,21 +39,44 @@ admin_password="$(openssl rand -base64 20)"
 
 echo "Your admin password is $admin_password"
 
-# TODO install intersection extension
-# --quiet
-# --wiki=domain_id
-# Use --dbpassfile and --passfile for higher security
-php maintenance/install.php --server="$PKC_SERVER" \
-                --dbuser=wikiuser \
-                --dbpass=example \
-                --dbname=my_wiki \
-                --dbserver="database" \
-                --pass="$admin_password" \
-                --skins=Medik \
-                --with-extensions="$EXTENSIONS" \
-                --scriptpath="" \
-                "Personal Knowledge Container" \
-                "$WALLET_ADDRESS"
+# If LocalSettings.php exists, exit early
+if [ -f LocalSettings.php ]; then
+    echo "A LocalSettings.php file has been detected."
+    echo "Exiting early"
+    exit 1
+fi
+
+install_media_wiki(){
+
+    echo "Installing MediaWiki"
+    # TODO install intersection extension
+    # --quiet
+    # --wiki=domain_id
+    # Use --dbpassfile and --passfile for higher security
+    php maintenance/install.php --server="$PKC_SERVER" \
+                    --dbuser=wikiuser \
+                    --dbpass=example \
+                    --dbname=my_wiki \
+                    --dbserver="database" \
+                    --pass="$admin_password" \
+                    --skins=Medik \
+                    --with-extensions="$EXTENSIONS" \
+                    --scriptpath="" \
+                    "Personal Knowledge Container" \
+                    "$WALLET_ADDRESS"
+    
+}
+
+retry_counter=0
+while ! install_media_wiki; do
+    if [ $retry_counter -gt 4 ]; then
+        echo "MediaWiki intallation retries exceeded"
+        break
+    fi
+    echo "Retrying MediaWiki installation"
+    ((retry_counter++))
+    sleep 5
+done
 
 # Extend settings
 cat aqua/extraAquaSettings.php >> LocalSettings.php
