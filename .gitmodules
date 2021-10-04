@@ -1,0 +1,3 @@
+[submodule "aqua/PKC-Content"]
+	path = aqua/PKC-Content
+	url = https://github.com/FantasticoFox/PKC-Content
