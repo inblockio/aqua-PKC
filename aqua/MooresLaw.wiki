@@ -1,3 +1,0 @@
-The following text is copied directly from Wikipedia for testing purpose only:
-
- '''[[wikipedia:Moore's law|Moore's law]]''' is the observation that [[Transistor count|the number]] of [[transistor]]s in a dense [[integrated circuit]] (IC) doubles about every two years. Moore's law is an [[observation]] and [[Forecasting|projection]] of a historical trend. Rather than a [[physical law|law of physics]], it is an [[empirical relationship]] linked to [[Wright's Law|gains from experience]] in production.
