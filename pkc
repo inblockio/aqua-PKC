@@ -310,6 +310,25 @@ while [[ $# -gt 0 ]]; do
             ./aqua/MediaWiki_Backup/restore_all.sh "$most_recent"
             break
             ;;
+        nuke)
+            # Check we are in the micro-PKC repository
+            current_repository=$(git config --get remote.origin.url)
+            if [[ "$current_repository" != *"micro-PKC"* ]]; then
+                echo "pkc nuke must be run from the micro-PKC directory. Aborting..."
+                exit 1
+            fi
+            read -r -p $'Destroying containers and deleting backup data. \n\tAre you sure? [y/N] ' response
+            case "$response" in
+                [yY][eE][sS]|[yY]) 
+                    sudo docker-compose down && sudo rm -r mountPoint
+                    ;;
+                *)
+                    echo "Aborting..."
+                    exit 0
+                    ;;
+            esac
+            break
+            ;;
         *)    # unknown option
             usage
             exit 0
