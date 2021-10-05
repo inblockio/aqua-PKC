@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -x
+set -e
 
 empty_wiki=false
 while [ "$#" -gt 0 ]; do
@@ -73,8 +73,8 @@ while ! install_media_wiki; do
         echo "MediaWiki intallation retries exceeded"
         break
     fi
+    retry_counter=$((retry_counter+1))
     echo "Retrying MediaWiki installation"
-    ((retry_counter++))
     sleep 5
 done
 
