@@ -26,10 +26,6 @@ services:
     networks:
       - common
       #WEBPUBLICPLACEHOLDER
-    # We need to specify the env_file so that MediaWiki knows the port number
-    # of Eauth server.
-    env_file:
-      - .env
     ports:
       - ${PORT_NUMBER}:80
     entrypoint: '/var/www/html/aqua/entrypoint_mediawiki.sh'
@@ -37,6 +33,9 @@ services:
       - VIRTUAL_HOST=${MEDIAWIKI_HOST}
       - LETSENCRYPT_HOST=${MEDIAWIKI_HOST}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      # Unfortunately, Eauth uses a generically named "PORT"
+      # for their PORT variable.
+      - PORT=${PORT}
     volumes:
       - ./mountPoint/images:/var/www/html/images
       - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
