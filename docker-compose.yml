@@ -25,6 +25,8 @@ services:
     restart: always
     networks:
       - common
+      # Do not delete the comment below! It is used for adding an external
+      # network for deploying an internet-accessible PKC .
       #WEBPUBLICPLACEHOLDER
     ports:
       - ${PORT_NUMBER}:80
@@ -50,6 +52,8 @@ services:
     restart: always
     networks:
       - common
+      # Do not delete the comment below! It is used for adding an external
+      # network for deploying an internet-accessible PKC .
       #WEBPUBLICPLACEHOLDER
     env_file:
       - .env
