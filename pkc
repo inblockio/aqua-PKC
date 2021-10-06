@@ -320,7 +320,9 @@ while [[ $# -gt 0 ]]; do
             read -r -p $'Destroying containers and deleting backup data. \n\tAre you sure? [y/N] ' response
             case "$response" in
                 [yY][eE][sS]|[yY]) 
-                    sudo docker-compose down && sudo rm -r mountPoint
+                    set -x
+                    sudo docker-compose down
+                    sudo rm -r mountPoint
                     ;;
                 *)
                     echo "Aborting..."
