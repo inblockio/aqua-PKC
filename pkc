@@ -302,7 +302,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         backup)
-            sudo docker exec -it micro-pkc_mediawiki_1 /MediaWiki_Backup/backup.sh -d /backup -w /var/www/html -s -f
+            sudo docker exec micro-pkc_mediawiki_1 /MediaWiki_Backup/backup.sh -d /backup -w /var/www/html -s -f
             break
             ;;
         restore)
