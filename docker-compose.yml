@@ -29,7 +29,7 @@ services:
       # network for deploying an internet-accessible PKC .
       #WEBPUBLICPLACEHOLDER
     ports:
-      - ${PORT_NUMBER}:80
+      - ${MEDIAWIKI_PORT}:80
     entrypoint: '/var/www/html/aqua/entrypoint_mediawiki.sh'
     environment:
       - VIRTUAL_HOST=${MEDIAWIKI_HOST}
