@@ -35,9 +35,7 @@ services:
       - VIRTUAL_HOST=${MEDIAWIKI_HOST}
       - LETSENCRYPT_HOST=${MEDIAWIKI_HOST}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
-      # Unfortunately, Eauth uses a generically named "PORT"
-      # for their PORT variable.
-      - PORT=${PORT}
+      - EAUTH_PORT=${EAUTH_PORT}
     volumes:
       - ./mountPoint/images:/var/www/html/images
       - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
@@ -58,12 +56,12 @@ services:
     env_file:
       - .env
     ports:
-      - ${PORT}:${PORT}
+      - ${EAUTH_PORT}:${EAUTH_PORT}
     environment:
       - VIRTUAL_HOST=${EAUTH_HOST}
       - LETSENCRYPT_HOST=${EAUTH_HOST}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
-      - VIRTUAL_PORT=${PORT}
+      - VIRTUAL_PORT=${EAUTH_PORT}
     volumes:
       - ./aqua/eauth_seed.js:/usr/src/app/components/seeders/20190725062038-oauth_clients.js
       # TODO this will become obsolete after pelith fixes their installation bug

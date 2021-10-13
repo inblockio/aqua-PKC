@@ -93,7 +93,7 @@ fi
 sed -i "s|PKC_SERVER|$PKC_SERVER|" LocalSettings.php
 
 # Specify Eauth port
-sed -i "s/EAUTH_PORT_PLACEHOLDER/$PORT/" LocalSettings.php
+sed -i "s/EAUTH_PORT_PLACEHOLDER/$EAUTH_PORT/" LocalSettings.php
 
 # Put in Eauth server if specified
 if [ -n "$EAUTH_SERVER" ]; then
