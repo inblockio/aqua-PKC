@@ -15,5 +15,5 @@ fi
 ssh ubuntu@"$server" 'bash -c "cd /home/ubuntu/micro-PKC && ./pkc backup"'
 
 # pull backups from remote server
-rsync -a --progress --stats ubuntu@"$server":/home/ubuntu/micro-PKC/mountPoint/backup/2021* ./"$server"/
+rsync -a --progress --stats --append-verify ubuntu@"$server":/home/ubuntu/micro-PKC/mountPoint/backup/2021* ./"$server"/
 
