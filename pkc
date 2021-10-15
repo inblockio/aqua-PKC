@@ -118,9 +118,9 @@ seed_eauth() {
     do
         echo "Setting up Eauth Server (Ethereum single sign-on)"
         # Restarting the Eauth server so that it can finally have access to the DB.
-        sudo docker exec -it micro-pkc_eauth_1 pkill node
+        sudo docker exec micro-pkc_eauth_1 pkill node
         sleep 4
-        seed_status=$(sudo docker exec -it micro-pkc_eauth_1 sh -c 'npx sequelize-cli db:seed:all && echo "passYAY" || echo "fail"')
+        seed_status=$(sudo docker exec micro-pkc_eauth_1 sh -c 'npx sequelize-cli db:seed:all && echo "passYAY" || echo "fail"')
         if  [[ "$seed_status" == *passYAY* ]]; then
             break
         fi
@@ -260,7 +260,7 @@ run_setup() {
     sleep 10
 
     echo "Installing MediaWiki"
-    sudo docker exec -it micro-pkc_mediawiki_1 ./aqua/install_pkc.sh \
+    sudo docker exec micro-pkc_mediawiki_1 ./aqua/install_pkc.sh \
                         --wallet-address "$WALLET_ADDRESS" \
                         --pkc-server "$PKC_SERVER" \
                         --eauth-server "$EAUTH_SERVER" \
