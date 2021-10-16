@@ -124,10 +124,10 @@ echo "\$wgDAInjectSignature = true;" >> LocalSettings.php
 chown -R www-data:www-data /var/www/html/images
 
 # Update sidebar
-php maintenance/edit.php -s "Use PKC sidebar" -u Admin MediaWiki:Sidebar < aqua/sidebar.wiki
+php maintenance/edit.php -s "Use PKC sidebar" -u "$WALLET_ADDRESS" MediaWiki:Sidebar < aqua/sidebar.wiki
 
 # Update login required text
-echo "Please [[Special:OAuth2Client/redirect|log in with Ethereum]] to view other pages." | php maintenance/edit.php -s "Use PKC login required text" -u Admin MediaWiki:Loginreqpagetext
+echo "Please [[Special:OAuth2Client/redirect|log in with Ethereum]] to view other pages." | php maintenance/edit.php -s "Use PKC login required text" -u "$WALLET_ADDRESS" MediaWiki:Loginreqpagetext
 
 # Populate default pages from /PKC-Content
 extract_page_title() {
@@ -137,7 +137,7 @@ MW_DIR=/var/www/html
 if [ "$empty_wiki" = false ]; then
     for file in "$MW_DIR"/aqua/PKC-Content/*.wiki; do
         echo "Populating $file into wiki"
-        php maintenance/edit.php -a -u Admin "$( extract_page_title "$file" )" < "$file"
+        php maintenance/edit.php -a -u "$WALLET_ADDRESS" "$( extract_page_title "$file" )" < "$file"
     done
 fi
 
