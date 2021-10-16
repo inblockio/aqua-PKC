@@ -93,8 +93,11 @@ ensure_submodules() {
 
     # Ensure MediaWiki_Backup repo exists
     if [ ! -d aqua/MediaWiki_Backup ]; then
-        echo "MediaWiki_Backup repo doesn't exist. Downloading ..."
+        echo "MediaWiki_Backup repo doesn't exist. Downloading..."
         (cd aqua && git clone https://github.com/rht/MediaWiki_Backup.git)
+    else
+        echo "Updating MediaWiki_Backup repo..."
+        (cd aqua/MediaWiki_Backup && git pull)
     fi
     ln -sf "$PWD/aqua/MediaWiki_Backup" mountPoint/MediaWiki_Backup
 
