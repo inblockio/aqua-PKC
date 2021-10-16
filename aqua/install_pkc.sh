@@ -126,6 +126,9 @@ chown -R www-data:www-data /var/www/html/images
 # Update sidebar
 php maintenance/edit.php -s "Use PKC sidebar" -u Admin MediaWiki:Sidebar < aqua/sidebar.wiki
 
+# Update login required text
+echo "Please [[Special:OAuth2Client/redirect|log in with Ethereum]] to view other pages." | php maintenance/edit.php -s "Use PKC login required text" -u Admin MediaWiki:Loginreqpagetext
+
 # Populate default pages from /PKC-Content
 extract_page_title() {
     basename "$1" .wiki
