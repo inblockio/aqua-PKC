@@ -24,7 +24,7 @@ function ModifyDefaultLogin(&$personal_urls, &$wgTitle) {
 				// Add URL params only when they exist.
 				$params = "&" . $old_url_arr[1];
 			}
-			$personal_urls[$key]["href"] = $wgServer . "/index.php?title=Special:OAuth2Client/redirect" . $params;
+			$personal_urls[$key]["href"] = "/index.php?title=Special:OAuth2Client/redirect" . $params;
 		}
 	}
 
