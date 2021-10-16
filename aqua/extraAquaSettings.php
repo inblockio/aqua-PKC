@@ -13,15 +13,25 @@ $wgGroupPermissions['*']['embed_pdf'] = true;
 
 $wgShowExceptionDetails = true;
 
-# remove login and logout buttons for all users
-function StripLogin(&$personal_urls, &$wgTitle) {
-    unset( $personal_urls["login"] );
-    # unset( $personal_urls["logout"] );
-    unset( $personal_urls['anonlogin'] );
-    return true;
+# Modify the default Login button to become OAuth2 login.
+function ModifyDefaultLogin(&$personal_urls, &$wgTitle) {
+	$keys = ["login", "anonlogin", "login-private"];
+	foreach ($keys as $key) {
+		if (array_key_exists($key, $personal_urls)) {
+			$old_url_arr = explode("&", $personal_urls[$key]["href"]);
+			$params = "";
+			if (count($old_url_arr) > 1) {
+				// Add URL params only when they exist.
+				$params = "&" . $old_url_arr[1];
+			}
+			$personal_urls[$key]["href"] = $wgServer . "/index.php?title=Special:OAuth2Client/redirect" . $params;
+		}
+	}
+
+	return true;
 }
 
-$wgHooks['PersonalUrls'][] = 'StripLogin';
+$wgHooks['PersonalUrls'][] = 'ModifyDefaultLogin';
 
 # Disable reading by anonymous users
 # WARNING: If you uncomment this line, remote verification via API will be
