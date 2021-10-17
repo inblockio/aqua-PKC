@@ -55,8 +55,8 @@ if [ -z "$USERNAME" ]; then
 fi
 
 if [ -z "$PASSWORD" ]; then
-  echo "Error: '-p <password>' is a required argument."
-  exit 1
+  PASSWORD="$(openssl rand -base64 20)"
+  echo "No password specified. So we auto-generated one for you: $PASSWORD"
 fi
 
 USERNAME=$(echo "$USERNAME" | tr "\[A-Z\]" "\[a-z\]")
