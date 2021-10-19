@@ -20,6 +20,7 @@ Commands:
   start     Resume running the system from a stopped state
   backup    Run the system backup
   restore   Run the system restore from backup
+  nuke      Destroy containers and delete backup data
 EOF
 }
 
