@@ -23,6 +23,10 @@ while [ "$#" -gt 0 ]; do
             empty_wiki=true
             shift
             ;;
+        --private)
+            private=true
+            shift
+            ;;
         *)    # unknown option
             echo "Unknown flag option, exiting"
             exit 0
@@ -79,6 +83,11 @@ done
 
 # Extend settings
 cat aqua/extraAquaSettings.php >> LocalSettings.php
+
+# Disable anonymous read for private wiki
+if [ "$private" = true ]; then
+    sed -i "s|wgGroupPermissions\['\*'\]\['read'\] = true;|wgGroupPermissions['*']['read'] = false;|"  LocalSettings.php
+fi
 
 # Specify PKC_SERVER
 sed -i "s|PKC_SERVER|$PKC_SERVER|" LocalSettings.php

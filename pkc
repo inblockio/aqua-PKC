@@ -214,6 +214,10 @@ run_setup() {
                 empty_wiki=true
                 shift
                 ;;
+            --private)
+                private=true
+                shift
+                ;;
             --web-public)
                 web_public=true
                 shift
@@ -269,7 +273,8 @@ run_setup() {
                         --wallet-address "$WALLET_ADDRESS" \
                         --pkc-server "$PKC_SERVER" \
                         --eauth-server "$EAUTH_SERVER" \
-                        ${empty_wiki:+--empty-wiki} || true
+                        ${empty_wiki:+--empty-wiki} \
+                        ${private:+--private} || true
 
     seed_eauth
 

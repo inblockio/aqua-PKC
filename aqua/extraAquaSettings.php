@@ -33,10 +33,9 @@ function ModifyDefaultLogin(&$personal_urls, &$wgTitle) {
 
 $wgHooks['PersonalUrls'][] = 'ModifyDefaultLogin';
 
-# Disable reading by anonymous users
-# WARNING: If you uncomment this line, remote verification via API will be
-# denied access.
-# $wgGroupPermissions['*']['read'] = false;
+# Disable reading by anonymous users using `./pkc setup --private -w WALLET_ADDRESS`
+# WARNING: If false, remote verification via API will be denied access.
+$wgGroupPermissions['*']['read'] = true;
 
 # Disable anonymous editing
 $wgGroupPermissions['*']['edit'] = false;
@@ -63,4 +62,4 @@ $wgOAuth2Client['configuration']['email'] = 'email'; // JSON path to email
 
 $wgOAuth2Client['configuration']['scopes'] = 'openid email profile'; //Permissions
 $wgOAuth2Client['configuration']['service_login_link_text'] = 'Login with Ethereum wallet'; // the text of the login link
-$wgWhitelistRead = ['Special:OAuth2Client', 'Special:OAuth2Client/redirect'];
+$wgWhitelistRead = ['Main Page', 'Special:OAuth2Client', 'Special:OAuth2Client/redirect'];
