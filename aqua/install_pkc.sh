@@ -2,7 +2,6 @@
 
 set -e
 
-empty_wiki=false
 while [ "$#" -gt 0 ]; do
     case "$1" in
         -w|--wallet-address)
@@ -134,7 +133,7 @@ extract_page_title() {
     basename "$1" .wiki
 }
 MW_DIR=/var/www/html
-if [ "$empty_wiki" = false ]; then
+if [[ ! $empty_wiki ]]; then
     for file in "$MW_DIR"/aqua/PKC-Content/*.wiki; do
         echo "Populating $file into wiki"
         php maintenance/edit.php -a -u "$WALLET_ADDRESS" "$( extract_page_title "$file" )" < "$file"

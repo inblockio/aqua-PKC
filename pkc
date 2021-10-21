@@ -264,6 +264,7 @@ run_setup() {
     sleep 10
 
     echo "Installing MediaWiki"
+    # TODO split failure cases and remove || true
     sudo docker exec micro-pkc_mediawiki_1 ./aqua/install_pkc.sh \
                         --wallet-address "$WALLET_ADDRESS" \
                         --pkc-server "$PKC_SERVER" \
