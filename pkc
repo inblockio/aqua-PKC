@@ -260,6 +260,9 @@ run_setup() {
                         ${empty_wiki:+--empty-wiki} \
                         ${private:+--private} || true
 
+    # TODO REMOVE THIS ONCE PELITH HAS FIXED THEIR RETRY BUG
+    sudo docker exec micro-pkc_eauth_1 pkill node
+
     echo "Done!"
 }
 
