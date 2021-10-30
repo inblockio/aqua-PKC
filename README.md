@@ -19,6 +19,11 @@ If you want to install the PKC so that it is publicly accessible from the web:
 1. Register your subdomains, e.g. `pkc.yourdomain.com` and `eauth.yourdomain.com` to the public IP address of your server
 2. Run `./pkc setup --web-public --wallet-address <your wallet address> --server <mediawiki.domain> --eauth-server <eauth.domain> --le-email <your@email.com>`
 
+Other flags:
+` ./pkc setup --private` is setting the wiki into private mode by default. Except the main page all pages will not be visible to not registered users.
+` ./pkc setup --empty-wiki` will not pre-populate the wiki from https://github.com/FantasticoFox/PKC-Content which includes default pages for how to use the PKC and other helpful ressources
+` ./pkc --nuke` is a command which deletes the mountpoint (the persistant data) and deletes the current instances of the docker containers
+
 **Test if deployment was successful:**\
 Go to localhost:9352 and see if you can open your 'Personal Knowledge Container'\
 If the special pages work, congratulations! You successfully deployed PKC!
