@@ -64,5 +64,5 @@ Keep in mind that this software is in alpha-release stage. Please report bugs an
   
 ## Image Dependencies DockerHub
 - Authentification server for ethereum wallets via OAUTH2 pelith/node-eauth-server
-- Custom build mediawiki image based on the standard mediaw-wiki docker image fantasticofox/docker-aqua-mediawiki 
+- Custom build mediawiki image based on the standard MediaWiki docker image fantasticofox/docker-aqua-mediawiki 
 - A mariadb database container as a database endpoint for the above services xlp0/mariadb
