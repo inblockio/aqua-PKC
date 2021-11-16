@@ -53,28 +53,46 @@ check_wallet_address() {
 }
 
 check_dependencies() {
+    local initsys
+
     # Check Docker installation
-    if [[ -x "$(command -v docker)" ]]; then
-        true
-    else
-        echo "Docker is not yet installed. Aborting PKC installation."
+    if [[ ! -x "$(command -v docker)" ]]; then
+        echo "Error: Docker is not yet installed. Aborting PKC installation." >&2
         exit 1
     fi
 
     # Check docker-compose installation
-    if [[ -x "$(command -v docker-compose)" ]]; then
-        true
-    else
-        echo "docker-compose is not yet installed. Aborting PKC installation."
+    if [[ ! -x "$(command -v docker-compose)" ]]; then
+        echo "Error: docker-compose is not yet installed. Aborting PKC installation." >&2
         exit 1
     fi
 
     # Check git installation
-    if [[ -x "$(command -v git)" ]]; then
-        true
-    else
-        echo "Git is not yet installed. Aborting PKC installation."
+    if [[ ! -x "$(command -v git)" ]]; then
+        echo "Error: Git is not yet installed. Aborting PKC installation." >&2
         exit 1
+    fi
+
+    # Check Docker daemon running
+    initsys=$(ps 1 | head -n 2 | tail -n 1 | awk '{print $5}')
+    if [[ $initsys == *"systemd"* ]]; then
+        echo "systemd init system detected. Ensuring Docker is running..."
+        sudo systemctl start docker.service
+    elif [[ $initsys == *"launchd"* ]]; then
+        echo "launchd init system detected. Ensuring Docker is running..."
+        if [[ ! "$(docker version)" == *"Engine"* ]]; then
+            open /Applications/Docker.app
+            echo "Waiting for Docker Desktop to start..."
+        fi
+        local i=1
+        local sp="/-\|"
+        echo -n ' '
+        until [[ "$(docker version 2>/dev/null)" == *"Engine"* ]]; do
+            # shellcheck disable=SC2059
+            printf "\b${sp:i++%${#sp}:1}"
+            sleep 1
+        done
+        echo ""
     fi
 }
 
