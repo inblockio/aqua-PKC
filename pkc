@@ -330,12 +330,15 @@ while [[ $# -gt 0 ]]; do
                 echo "pkc nuke must be run from the micro-PKC directory. Aborting..."
                 exit 1
             fi
-            read -r -p $'Destroying containers and deleting backup data. \n\tAre you sure? [y/N] ' response
+            read -r -p $'Destroying containers and deleting backup data. \n\tAre you sure? 😱 [y/N] ' response
             case "$response" in
-                [yY][eE][sS]|[yY]) 
+                [yY][eE][sS]|[yY])
+                    echo "💥💥💥💥 Kaaboooom!!!💥💥💥💥"
                     set -x
                     sudo docker-compose down
                     sudo rm -r mountPoint
+                    set +x
+                    echo "🏜️ It's all gone 🏜️"
                     ;;
                 *)
                     echo "Aborting..."
