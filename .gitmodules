@@ -1,4 +1,5 @@
 [submodule "aqua/PKC-Content"]
 	path = aqua/PKC-Content
-	url = https://github.com/FantasticoFox/PKC-Content
+	url = https://github.com/inblockio/PKC-Content
 	branch = main
+	ignore = dirty
