@@ -1,6 +1,12 @@
 # Taken from https://www.schemecolor.com/spurious.php
 # Celadon Blue
-$wgMedikColor = "#0582AD";
+# We use Tweeki but keep this for future design.
+# $wgMedikColor = "#0582AD";
+
+# Tweeki Settings
+$wgTweekiSkinUseBootstrap4 = false;
+# This adds the drop down option for the MW-actions to the Edit-Button.
+$wgTweekiSkinHideNonAdvanced = [ 'EDIT-EXT-special' => false ];
 
 # Default width for the PDF object container.
 $wgPdfEmbed['width'] = 800;

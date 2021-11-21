@@ -62,12 +62,11 @@ install_media_wiki(){
                     --dbname=my_wiki \
                     --dbserver="database" \
                     --pass="$admin_password" \
-                    --skins=Medik \
+                    --skins=Tweeki \
                     --with-extensions="$EXTENSIONS" \
                     --scriptpath="" \
                     "Personal Knowledge Container" \
                     "$WALLET_ADDRESS"
-    
 }
 
 retry_counter=0
