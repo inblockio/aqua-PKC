@@ -149,6 +149,6 @@ if [[ ! $empty_wiki ]]; then
 fi
 
 # Move the actual LocalSettings.php file to a backup folder that persists after a
-# docker-compose down.
+# docker compose down.
 mv $MW_DIR/LocalSettings.php /backup/LocalSettings.php
 ln -s /backup/LocalSettings.php $MW_DIR/LocalSettings.php
