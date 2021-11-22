@@ -61,9 +61,9 @@ check_dependencies() {
         exit 1
     fi
 
-    # Check docker-compose installation
-    if [[ ! -x "$(command -v docker-compose)" ]]; then
-        echo "Error: docker-compose is not yet installed. Aborting PKC installation." >&2
+    # Check Docker Compose installation
+    if [[ ! -x "$(command -v docker compose)" ]]; then
+        echo "Error: docker compose is not yet installed. Aborting PKC installation." >&2
         exit 1
     fi
 
@@ -163,7 +163,7 @@ validate_web_public_detail() {
 
 setup_proxy_server() {
     echo "Setting up Nginx proxy server with Let's Encrypt"
-    (cd proxy_server && sudo docker-compose up -d)
+    (cd proxy_server && sudo docker compose up -d)
     echo "Sleeping for 3s 💤 💤"
     sleep 3
     echo "Proxy setup done!"
@@ -262,8 +262,8 @@ run_setup() {
     # https://stackoverflow.com/questions/4247068/sed-command-with-i-option-failing-on-mac-but-works-on-linux/14813278#14813278
     perl -i -p -e "s|PKC_SERVER|$PKC_SERVER|" .env
 
-    echo "Executing docker-compose up -d. Be prepared to type your password."
-    sudo docker-compose up -d
+    echo "Executing docker compose up -d. Be prepared to type your password."
+    sudo docker compose up -d
     # Sleep; just to be sure that the container has initialized well.
     echo "Sleeping for 10 seconds to wait for the database to be ready."
     echo "Here's an invitation to grab a ☕ or take a deep breath."
@@ -307,11 +307,11 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         stop)
-            sudo docker-compose stop
+            sudo docker compose stop
             break
             ;;
         start)
-            sudo docker-compose up -d
+            sudo docker compose up -d
             break
             ;;
         backup)
@@ -334,7 +334,7 @@ while [[ $# -gt 0 ]]; do
             case "$response" in
                 [yY][eE][sS]|[yY]) 
                     set -x
-                    sudo docker-compose down
+                    sudo docker compose down
                     sudo rm -r mountPoint
                     ;;
                 *)
