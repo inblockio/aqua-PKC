@@ -52,7 +52,7 @@ Those repositories are automatically installed by the `pkc` CLI during the setup
   and 'proof of existence' of a set of verified page fields.  
 - Backup-Script for PKC https://github.com/rht/MediaWiki_Backup.git 
   This repository includes all backup and restore logic for the dockerized-mediawiki
-- To install the OAuth2 Client in MW https://github.com/rht/MW-OAuth2Clien
+- To install the OAuth2 Client in MW https://github.com/rht/MW-OAuth2Client
   This is a modified fork which does no allow new user creation.
 
 ##  Repository Dependencies Github: Verification
