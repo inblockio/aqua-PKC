@@ -2,6 +2,7 @@
 version: '3'
 services:
   database:
+    container_name: micro-pkc-database
     image: xlp0/mariadb
     restart: always
     networks:
@@ -20,7 +21,9 @@ services:
       - ./provision/mariadb:/docker-entrypoint-initdb.d
       - ./mountPoint/backup:/backup
       - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
+
   mediawiki:
+    container_name: micro-pkc-mediawiki
     image: fantasticofox/pkc:latest
     restart: always
     networks:
@@ -45,7 +48,9 @@ services:
     depends_on:
       - database
       - eauth
+
   eauth:
+    container_name: micro-pkc-eauth
     image: pelith/node-eauth-server:latest
     restart: always
     networks:
