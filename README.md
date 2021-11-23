@@ -31,7 +31,7 @@ If the special pages work, congratulations! You successfully deployed PKC!
 ## POST Installation (installation of remote verification tools)
 
 * You have the choice to use the command line verification tool or the online-chrome extension (recommended) to verify your page.
-* Visit https://github.com/inblockio/data-accounting-external-verifier for hte command line tool.
+* Visit https://github.com/inblockio/data-accounting-external-verifier for the command line tool.
 * Visit https://github.com/inblockio/VerifyPage for the chrome extension.
 
 Keep in mind that this software is in alpha-release stage. Please report bugs and issues back to us.
