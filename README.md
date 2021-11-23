@@ -10,8 +10,9 @@ This should work for other environments like Windows and Mac if the requirements
 3. `git clone https://github.com/inblockio/micro-PKC`
 ## Installation
 
-1. `cd micro-PKC`
-2. Run `./pkc setup --wallet-address <your wallet address>`
+1. Clone git repository.
+2. Run `cp .env.example .env` to create example environment.
+3. Run `./pkc setup --wallet-address <your wallet address>` to complete setup using your MetaMask wallet address.
 
 If you want to install the PKC so that it is publicly accessible from the web:
 1. Register your subdomains, e.g. `pkc.yourdomain.com` and `eauth.yourdomain.com` to the public IP address of your server

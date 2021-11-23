@@ -1,2 +1,4 @@
 mountPoint
 aqua/MediaWiki_Backup
+.env*
+!.env.example
