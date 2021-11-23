@@ -271,7 +271,7 @@ run_setup() {
 
     echo "Installing MediaWiki"
     # TODO split failure cases and remove || true
-    sudo docker exec micro-pkc_mediawiki_1 ./aqua/install_pkc.sh \
+    sudo docker exec micro-pkc-mediawiki ./aqua/install_pkc.sh \
                         --wallet-address "$WALLET_ADDRESS" \
                         --pkc-server "$PKC_SERVER" \
                         --eauth-server "$EAUTH_SERVER" \
@@ -279,7 +279,7 @@ run_setup() {
                         ${private:+--private} || true
 
     # TODO REMOVE THIS ONCE PELITH HAS FIXED THEIR RETRY BUG
-    sudo docker exec micro-pkc_eauth_1 pkill node
+    sudo docker exec micro-pkc-eauth pkill node
 
     echo "Done!"
 }
@@ -315,7 +315,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         backup)
-            sudo docker exec micro-pkc_mediawiki_1 /MediaWiki_Backup/backup.sh -d /backup -w /var/www/html -s -f
+            sudo docker exec micro-pkc-mediawiki /MediaWiki_Backup/backup.sh -d /backup -w /var/www/html -s -f
             break
             ;;
         restore)
