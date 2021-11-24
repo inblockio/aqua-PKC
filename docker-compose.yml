@@ -1,5 +1,11 @@
-# MediaWiki with MariaDB
+# This Docker Compose file is used to run the project's published image
+#
+# Usage: docker compose up [-d] [--env-file=path/to/file]
+#
+# See comment in docker-compose.dev.yml if you want to run for development.
+
 version: '3'
+
 services:
   database:
     container_name: micro-pkc-database
@@ -8,7 +14,6 @@ services:
     networks:
       - common
     environment:
-      # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
       # The following line is replaced by a script in
       # provision/mariadb/01-databases.sql because we need to initialize 2
       # databases: my_wiki and eauth.
@@ -75,3 +80,4 @@ networks:
   # docker-compose.yml can be configured to interact with the services in the
   # other, separate docker-compose.yml using external networks.
   common:
+
