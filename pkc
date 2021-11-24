@@ -269,7 +269,8 @@ run_setup() {
     perl -i -p -e "s|PKC_SERVER|$PKC_SERVER|" .env
 
     echo "Executing docker compose up -d. Be prepared to type your password."
-    sudo docker compose up -d
+    # Support version 1 / 2 of docker-compose
+    sudo docker compose up -d 2>/dev/null || docker-compose up -d
     # Sleep; just to be sure that the container has initialized well.
     echo "Sleeping for 10 seconds to wait for the database to be ready."
     echo "Here's an invitation to grab a ☕ or take a deep breath."

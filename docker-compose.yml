@@ -3,7 +3,7 @@ version: '3'
 services:
   database:
     container_name: micro-pkc-database
-    image: xlp0/mariadb
+    image: 0xc000007b/micro-pkc-mariadb
     restart: always
     networks:
       - common
@@ -24,7 +24,7 @@ services:
 
   mediawiki:
     container_name: micro-pkc-mediawiki
-    image: fantasticofox/pkc:latest
+    image: 0xc000007b/micro-pkc-mediawiki:37-1
     restart: always
     networks:
       - common
@@ -51,7 +51,7 @@ services:
 
   eauth:
     container_name: micro-pkc-eauth
-    image: pelith/node-eauth-server:latest
+    image: 0xc000007b/micro-pkc-eauth
     restart: always
     networks:
       - common
@@ -69,6 +69,7 @@ services:
       - VIRTUAL_PORT=${EAUTH_PORT}
     depends_on:
       - database
+
 networks:
   # We specify the internal network as common, so that the services in this
   # docker-compose.yml can be configured to interact with the services in the
