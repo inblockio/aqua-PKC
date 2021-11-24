@@ -342,7 +342,7 @@ while [[ $# -gt 0 ]]; do
                 [yY][eE][sS]|[yY])
                     echo "💥💥💥💥 Kaaboooom!!!💥💥💥💥"
                     set -x
-                    sudo docker compose down
+                    sudo docker compose down 2>/dev/null || docker-compose down
                     sudo rm -r mountPoint
                     set +x
                     echo "🏜️ It's all gone 🏜️"
