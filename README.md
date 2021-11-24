@@ -6,9 +6,12 @@ This should work for other environments like Windows and Mac if the requirements
 
 ## Requirements
 
-1. install git: sudo apt-get install git
-2. install docker. Follow: https://docs.docker.com/engine/install/ubuntu/
-3. `git clone https://github.com/inblockio/micro-PKC`
+1. Install git, for Ubuntu: `sudo apt-get install git`
+2. Install docker.
+    * for [MacOS](https://docs.docker.com/desktop/mac/install/)
+    * for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+    * for [Windows](https://docs.docker.com/desktop/windows/install/), note: be sure you have [WSL 2 installed](https://docs.microsoft.com/en-us/windows/wsl/install) first.
+3. Clone this repo: `git clone https://github.com/inblockio/micro-PKC`
 
 ## Installation
 
