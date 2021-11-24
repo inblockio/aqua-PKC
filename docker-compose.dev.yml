@@ -1,0 +1,26 @@
+# This Docker Compose file is used to run the project in Docker for development.
+# Opens database for local connections on port 3306 with root access.
+#
+# Usage:
+#   ln -s docker-compose.dev.yml docker-compose.override.yml
+#   docker compose up [-d]
+#
+# To go back to running the published image:
+#   rm docker-compose.override.yml
+#
+# DefaultSettings for MediaWiki
+# @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
+
+version: '3'
+services:
+  database:
+    image: mariadb:${MARIADB_VERSION:-latest}
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    environment:
+      # Multiple dbs provisioned in provision/mariadb/01-databases.sql
+      # MYSQL_DATABASE: my_wiki 
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_USER: wikiuser
+      MYSQL_PASSWORD: example

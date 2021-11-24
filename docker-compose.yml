@@ -1,5 +1,11 @@
-# MediaWiki with MariaDB
+# This Docker Compose file is used to run the project's published image
+#
+# Usage: docker compose up [-d] [--env-file=path/to/file]
+#
+# See comment in docker-compose.dev.yml if you want to run for development.
+
 version: '3'
+
 services:
   database:
     container_name: micro-pkc-database
@@ -8,14 +14,14 @@ services:
     networks:
       - common
     environment:
-      # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
-      # The following line is replaced by a script in
-      # provision/mariadb/01-databases.sql because we need to initialize 2
-      # databases: my_wiki and eauth.
-      # MYSQL_DATABASE: my_wiki
-      MYSQL_USER: wikiuser
-      MYSQL_PASSWORD: example
+      # Multiple dbs provisioned in provision/mariadb/01-databases.sql
+      # MYSQL_DATABASE: my_wiki 
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_USER_FILE: /run/secrets/db_admin_user
+      MYSQL_PASSWORD_FILE: /run/secrets/db_admin_pass
+    secrets:
+      - db_admin_user
+      - db_admin_pass
     volumes:
       - ./mountPoint/mariadb:/var/lib/mysql
       - ./provision/mariadb:/docker-entrypoint-initdb.d
@@ -69,8 +75,15 @@ services:
       - VIRTUAL_PORT=${EAUTH_PORT}
     depends_on:
       - database
+
 networks:
   # We specify the internal network as common, so that the services in this
   # docker-compose.yml can be configured to interact with the services in the
   # other, separate docker-compose.yml using external networks.
   common:
+
+secrets:
+  db_admin_user:
+    file: ./db_admin_user.asc
+  db_admin_pass:
+    file: ./db_admin_pass.asc
