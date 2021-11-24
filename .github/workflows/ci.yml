@@ -7,6 +7,18 @@ on:
   pull_request:
 
 jobs:
+  gitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v2
+      - name: Install gitlint
+        run: pip install gitlint
+      - name: Run gitlint
+        run: gitlint --contrib contrib-title-conventional-commits
   codespell:
     runs-on: ubuntu-latest
     steps:
