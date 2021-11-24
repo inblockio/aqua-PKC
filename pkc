@@ -62,7 +62,7 @@ check_dependencies() {
     fi
 
     # Check Docker Compose installation
-    if [[ ! -x "$(command -v docker compose)" ]]; then
+    if [[ ! -x "$(command -v docker-compose)" ]]; then
         echo "Error: docker compose is not yet installed. Aborting PKC installation." >&2
         exit 1
     fi
