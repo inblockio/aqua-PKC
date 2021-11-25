@@ -288,6 +288,9 @@ run_setup() {
     # TODO REMOVE THIS ONCE PELITH HAS FIXED THEIR RETRY BUG
     sudo docker exec micro-pkc-eauth pkill node
 
+    # TODO Remove this once https://github.com/inblockio/DataAccounting/issues/160 is closed.
+    sudo docker exec micro-pkc-mediawiki sed -i 's|\$this->history \&|boolval(\$this->history) \&|' /var/www/html/includes/export/WikiExporter.php
+
     echo "Done!"
 }
 
