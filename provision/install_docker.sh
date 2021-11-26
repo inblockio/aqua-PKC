@@ -23,9 +23,10 @@ sudo add-apt-repository \
 sudo apt-get update
 sudo apt-get install -y docker-ce
 sudo groupadd docker
-sudo usermod -aG docker $USER
+sudo usermod -aG docker "$USER"
 
 # Install Docker Compose
+sudo apt-get install -y docker-compose
 # @see {https://docs.docker.com/compose/cli-command/#install-on-linux}
-mkdir -p $USER/.docker/cli-plugins/
-curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o $USER/.docker/cli-plugins/docker-compose
+#mkdir -p $USER/.docker/cli-plugins/
+#curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o $USER/.docker/cli-plugins/docker-compose
