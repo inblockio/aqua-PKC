@@ -29,7 +29,7 @@ services:
 
   mediawiki:
     container_name: micro-pkc-mediawiki
-    image: 0xc000007b/micro-pkc-mediawiki:37-1
+    image: 0xc000007b/micro-pkc-mediawiki:37-1php74
     restart: always
     networks:
       - common
