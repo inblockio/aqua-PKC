@@ -340,6 +340,9 @@ while [[ $# -gt 0 ]]; do
         restore)
             most_recent=$(ls -t mountPoint/backup/*.tar.gz | head -n 1 | xargs basename)
             restore_all "$most_recent"
+            # A reset is required to flush outdated cache from the system.
+            sudo docker-compose stop
+            sudo docker-compose up -d
             break
             ;;
         nuke)
