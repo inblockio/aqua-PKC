@@ -339,7 +339,8 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         backup)
-            sudo docker exec micro-pkc-mediawiki /MediaWiki_Backup/backup.sh -d /backup -w /var/www/html -s -f
+            sudo docker exec micro-pkc-mediawiki /MediaWiki_Backup/backup.sh \
+                    -p "$(date -u +"%Y-%m-%dT%H-%M-%S_UTC")" -d /backup -w /var/www/html -s -f
             break
             ;;
         restore)
