@@ -5,7 +5,9 @@
 # See comment in docker-compose.dev.yml if you want to run for development.
 
 version: '3'
-
+volumes:
+  mysql-data: {}
+  mysql-backups-data: {}
 services:
   database:
     container_name: micro-pkc-database
@@ -22,11 +24,29 @@ services:
       MYSQL_PASSWORD: example
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
     volumes:
-      - ./mountPoint/mariadb:/var/lib/mysql
-      - ./provision/mariadb:/docker-entrypoint-initdb.d
-      - ./mountPoint/backup:/backup
+      - "./provision/mariadb:/docker-entrypoint-initdb.d"
+      - "mysql-data:/var/lib/mysql"
+      - "mysql-backups-data:/backup"
       - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
-
+  databasebackup:
+    container_name: micro-pkc-databasebackup
+    image: selim13/automysqlbackup:2.6-9
+    restart: unless-stopped # healthcheck on port 18080
+    networks:
+      - common
+    volumes:
+      - "mysql-backups-data:/backup"
+    environment:
+      USERNAME: wikiuser
+      PASSWORD: "example"
+      DBHOST: database
+      DBEXCLUDE: "performance_schema information_schema"
+      CRON_SCHEDULE: "0 22 * * 1-7"
+      LATEST: "yes"
+      SEPDIR: "no"
+      EXTRA_OPTS: "--single-transaction --log-error=/var/log/mysqld.log"
+    depends_on:
+      - database
   mediawiki:
     container_name: micro-pkc-mediawiki
     image: 0xc000007b/micro-pkc-mediawiki:37-1php74
@@ -53,7 +73,6 @@ services:
     depends_on:
       - database
       - eauth
-
   eauth:
     container_name: micro-pkc-eauth
     image: 0xc000007b/micro-pkc-eauth
@@ -79,5 +98,5 @@ networks:
   # We specify the internal network as common, so that the services in this
   # docker-compose.yml can be configured to interact with the services in the
   # other, separate docker-compose.yml using external networks.
-  common:
+  common: {}
 
