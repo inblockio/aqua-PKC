@@ -9,7 +9,7 @@ version: '3'
 services:
   database:
     container_name: micro-pkc-database
-    image: 0xc000007b/micro-pkc-mariadb
+    image: mariadb:10.6.4
     restart: always
     networks:
       - common
