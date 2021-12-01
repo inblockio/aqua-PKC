@@ -34,5 +34,5 @@ services:
     environment:
       USERNAME: wikiuser
       PASSWORD: "example"
-      CRON_SCHEDULE: "0 */2 * * *"
+      CRON_SCHEDULE: "0 */2 * * *" # At minute 0 past every 2nd hour.
       EXTRA_OPTS: "--single-transaction --skip-dump-date --flush-logs --verbose"
