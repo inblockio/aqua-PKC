@@ -18,7 +18,7 @@
 # https://github.com/docker/for-mac/issues/4822 https://github.com/docker/for-win/issues/12323
 #
 # Workaround VM limitation with a Busybox container to access the data inside the volume:
-#   docker run --rm --volumes-from micro-pkc-databasebackup-dev -v $(pwd):/backup busybox ls
+#   docker run --rm --volumes-from micro-pkc-mediawikibackup-dev busybox ls
 #
 version: '3'
 services:
@@ -29,10 +29,10 @@ services:
       - "3306:3306"
     restart: unless-stopped
   
-  databasebackup:
-    container_name: micro-pkc-databasebackup-dev
+  mediawikibackup:
+    container_name: micro-pkc-mediawikibackup-dev
     environment:
       USERNAME: wikiuser
       PASSWORD: "example"
       CRON_SCHEDULE: "0 */2 * * *" # At minute 0 past every 2nd hour.
-      EXTRA_OPTS: "--single-transaction --skip-dump-date --flush-logs --verbose"
+      EXTRA_OPTS: "--single-transaction --skip-dump-date --verbose"

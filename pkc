@@ -296,16 +296,43 @@ run_setup() {
     echo "Done!"
 }
 
-restore_all() {
-    archive_file=$1
-    # Extract tarball and restore images
-    docker exec -it micro-pkc-mediawiki /MediaWiki_Backup/extract_and_restore_images.sh -a "/backup/$archive_file" -w /var/www/html
-    # Restore database
-    docker exec -it micro-pkc-database /MediaWiki_Backup/restore_database.sh /backup/database.sql.gz
-    # Clean up database sql file
-    docker exec -it micro-pkc-database rm /backup/database.sql.gz
-    # Toggle read-only off
-    docker exec -it micro-pkc-mediawiki /MediaWiki_Backup/toggle_read_only_off.sh /var/www/html
+create_new_backup() {
+    sqlfile=$(docker run --rm --volumes-from micro-pkc-mediawikibackup busybox \
+        find /backup/latest -name '*.sql.gz' | head -1)
+    imgfile=$(docker run --rm --volumes-from micro-pkc-mediawikibackup busybox \
+        find /backup/latest -name '*.img.tar*' | head -1)
+
+    if [[ -n "$sqlfile" && -n "$imgfile" ]]; then
+        echo "Saving a copy of the most recent backup..."
+        tmpdir=$(mktemp -d || exit 1)
+        docker cp micro-pkc-mediawikibackup:"$sqlfile" \
+            "$tmpdir/$(basename "$sqlfile")"
+        docker cp micro-pkc-mediawikibackup:"$imgfile" \
+            "$tmpdir/$(basename "$imgfile")"
+        tar -cf "backup-$(date +"%Y-%m-%d_%Hh%Mm.%A")".tar -C "$tmpdir" .
+    else
+        echo "Unable to locate most recent backup. Have you created one yet?"
+    fi
+
+    echo "Scheduling a new backup. Process will continue in the background."
+    echo "During backup process your PKC will not be editable."
+    docker exec --detach \
+        -e DBHOST=database \
+        -e DBEXCLUDE='performance_schema information_schema eauth' \
+        -e USERNAME=wikiuser \
+        -e SEPDIR=no \
+        -e PASSWORD=example \
+        -e PREBACKUP=mediawiki_backup_pre.sh \
+        -w /usr/local/bin \
+        micro-pkc-mediawikibackup automysqlbackup
+}
+
+restore_from_latest_autobackup() {
+    echo "Restoring most recent backup scheduled backup..."
+    docker exec micro-pkc-database /MediaWiki_Backup/restore_database.sh \
+        "$(docker run --rm --volumes-from micro-pkc-mediawikibackup \
+            busybox find /backup/latest/ -name '*.sql.gz' | head -1)"
+    docker exec micro-pkc-wikimedia /usr/local/bin/restore_latest_images.sh
 }
 
 if [ $# -eq 0 ]; then
@@ -339,16 +366,11 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         backup)
-            sudo docker exec micro-pkc-mediawiki /MediaWiki_Backup/backup.sh \
-                    -p "$(date -u +"%Y-%m-%dT%H-%M-%S_UTC")" -d /backup -w /var/www/html -s -f
+            create_new_backup
             break
             ;;
         restore)
-            most_recent=$(ls -t mountPoint/backup/*.tar.gz | head -n 1 | xargs basename)
-            restore_all "$most_recent"
-            # A reset is required to flush outdated cache from the system.
-            sudo docker-compose stop
-            sudo docker-compose up -d
+            restore_from_latest_autobackup
             break
             ;;
         nuke)

@@ -6,6 +6,7 @@
 
 version: '3'
 volumes:
+  mediawiki-image-data: {}
   mysql-data: {}
   mysql-backups-data: {}
 services:
@@ -24,18 +25,18 @@ services:
       MYSQL_PASSWORD: example
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
     volumes:
-      - "./provision/mariadb:/docker-entrypoint-initdb.d"
-      - "mysql-data:/var/lib/mysql"
-      - "mysql-backups-data:/backup"
+      - ./provision/mariadb:/docker-entrypoint-initdb.d
+      - mysql-backups-data:/backup
       - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
-  databasebackup:
-    container_name: micro-pkc-databasebackup
-    image: selim13/automysqlbackup:2.6-9
+  mediawikibackup:
+    container_name: micro-pkc-mediawikibackup
+    image: 0xc000007b/micro-pkc-mediawikibackup:latest
     restart: unless-stopped # healthcheck on port 18080
     networks:
       - common
     volumes:
-      - "mysql-backups-data:/backup"
+      - mysql-backups-data:/backup
+      - mediawiki-image-data:/var/www/html/images
     environment:
       USERNAME: wikiuser
       PASSWORD: "example"
@@ -65,7 +66,7 @@ services:
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
       - EAUTH_PORT=${EAUTH_PORT}
     volumes:
-      - ./mountPoint/images:/var/www/html/images
+      - mediawiki-image-data:/var/www/html/images
       - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
       - ./mountPoint/backup:/backup
       - ./aqua:/var/www/html/aqua
