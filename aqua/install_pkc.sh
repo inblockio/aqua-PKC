@@ -110,10 +110,10 @@ sed -i "s/wgEnableUploads = false;/wgEnableUploads = true;/" LocalSettings.php
 # is for doing a sha3sum. The xxd command converts the sha sum in binary to hex
 # format. And finally the head commands returns only the first 10 characters.
 DOMAIN_ID=$(openssl rand -hex 64 | openssl dgst -sha3-512 -binary | xxd -p -c 256 | head -c 10)
-echo "\$wgDADomainID = '$DOMAIN_ID';" >> LocalSettings.php
+echo "\$daDADomainID = '$DOMAIN_ID';" >> LocalSettings.php
 
 # Insert smart contract address to LocalSettings.php.
-echo "\$wgDASmartContractAddress = '0x45f59310ADD88E6d23ca58A0Fa7A55BEE6d2a611';" >> LocalSettings.php
+echo "\$daDASmartContractAddress = '0x45f59310ADD88E6d23ca58A0Fa7A55BEE6d2a611';" >> LocalSettings.php
 
 # Insert witness network to LocalSettings.php
 cat <<EOF >> LocalSettings.php
@@ -121,11 +121,11 @@ cat <<EOF >> LocalSettings.php
 # - mainnet
 # - goerli
 # - See more at https://besu.hyperledger.org/en/stable/Concepts/NetworkID-And-ChainID/
-\$wgDAWitnessNetwork = 'goerli';
+\$daDAWitnessNetwork = 'goerli';
 EOF
 
 # Insert signature injection configuration to LocalSettings.php
-echo "\$wgDAInjectSignature = true;" >> LocalSettings.php
+echo "\$daDAInjectSignature = true;" >> LocalSettings.php
 
 # Set required permissions to store images
 chown -R www-data:www-data /var/www/html/images
