@@ -353,6 +353,7 @@ create_new_backup() {
             "$tmpdir/$(basename "$sqlfile")"
         docker cp micro-pkc-mediawikibackup:"$imgfile" \
             "$tmpdir/$(basename "$imgfile")"
+        # Combine db archive with image tarball into single tarball
         tar -cf "backup-$(date +"%Y-%m-%d_%Hh%Mm.%A")".tar -C "$tmpdir" .
     else
         echo "No recent backups found."
