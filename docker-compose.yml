@@ -42,7 +42,7 @@ services:
       PASSWORD: "example"
       DBHOST: database
       DBEXCLUDE: "performance_schema information_schema"
-      CRON_SCHEDULE: "0 22 * * 1-7" # At 22:00 on every day-of-week from Monday through Sunday.
+      CRON_SCHEDULE: "*/30 * * * *" # At every 30th minute.
       LATEST: "yes"
       SEPDIR: "no"
       EXTRA_OPTS: "--single-transaction --log-error=/var/log/mysqld.log"
