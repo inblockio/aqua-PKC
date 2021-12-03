@@ -386,6 +386,7 @@ while [[ $# -gt 0 ]]; do
         case "$response" in
         [yY][eE][sS] | [yY])
             echo "💥💥💥💥 Kaaboooom!!!💥💥💥💥"
+            # The -v flag is needed so that volumes are removed.
             set -x
             sudo docker-compose down -v
             sudo rm -r mountPoint
