@@ -361,7 +361,7 @@ create_new_backup() {
 
     echo "Scheduling a new backup. Process will continue in the background."
     echo "During backup process your PKC will not be editable."
-    docker exec --detach \
+    docker exec \
         -e DBHOST=database \
         -e DBEXCLUDE='performance_schema information_schema eauth' \
         -e USERNAME=wikiuser \
@@ -372,6 +372,7 @@ create_new_backup() {
         micro-pkc-mediawikibackup automysqlbackup
 
     unlock_mediawiki
+    echo "Backup process finished!"
 }
 
 restore_from_latest_autobackup() {
