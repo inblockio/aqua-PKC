@@ -320,7 +320,7 @@ lock_mediawiki() {
     if grep -q "$message" "$file"; then
         echo "Warn: MediaWiki already Locked"
     else
-        echo "$message" | sudo tee -a "$file"
+        echo "$message" | sudo tee -a "$file" >/dev/null
     fi
 }
 
