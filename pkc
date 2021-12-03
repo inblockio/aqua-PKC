@@ -329,7 +329,8 @@ unlock_mediawiki() {
     local message='$wgReadOnly = "Backup in progress.";'
     local file=./mountPoint/backup/LocalSettings.php
     if grep -q "$message" "$file"; then
-        sudo sed -i "/$message/d" "$file"
+        sed "/$message/d" "$file" >modified_local_settings
+        sudo mv modified_local_settings "$file"
     else
         echo "Warn: MediaWiki already unlocked"
     fi
@@ -341,9 +342,9 @@ create_new_backup() {
     # Sort reverse chronologically and pick the most recent item. Default
     # behavior is that there is only one zip file this handles race conditions.
     sqlfile=$(docker run --rm --volumes-from micro-pkc-mediawikibackup busybox \
-        sh -c 'ls -t /backup/latest/*.sql.gz | head -1')
+        sh -c 'ls -t /backup/latest/*.sql.gz | head -1' 2>/dev/null)
     imgfile=$(docker run --rm --volumes-from micro-pkc-mediawikibackup busybox \
-        sh -c 'ls -t /backup/latest/*.img.tar* | head -1')
+        sh -c 'ls -t /backup/latest/*.img.tar | head -1' 2>/dev/null)
 
     if [[ -n "$sqlfile" && -n "$imgfile" ]]; then
         echo "Saving a copy of the most recent backup..."
@@ -354,7 +355,7 @@ create_new_backup() {
             "$tmpdir/$(basename "$imgfile")"
         tar -cf "backup-$(date +"%Y-%m-%d_%Hh%Mm.%A")".tar -C "$tmpdir" .
     else
-        echo "Unable to locate most recent backup. Have you created one yet?"
+        echo "No recent backups found."
     fi
 
     echo "Scheduling a new backup. Process will continue in the background."

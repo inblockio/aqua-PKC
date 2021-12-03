@@ -48,6 +48,7 @@ services:
       EXTRA_OPTS: "--single-transaction --log-error=/var/log/mysqld.log"
     depends_on:
       - database
+      - mediawiki
     profiles:
       - backup
   mediawiki:
