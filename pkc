@@ -297,7 +297,7 @@ run_setup() {
 }
 
 create_new_backup() {
-    # Sort reverse cronologically and pick the most recent item. Default
+    # Sort reverse chronologically and pick the most recent item. Default
     # behavior is that there is only one zip file this handles race conditions.
     sqlfile=$(docker run --rm --volumes-from micro-pkc-mediawikibackup busybox \
         find /backup/latest -name '*.sql.gz' | sort -r | head -1)
