@@ -373,10 +373,11 @@ create_new_backup() {
 }
 
 restore_from_latest_autobackup() {
+
     echo "Restoring most recent backup scheduled backup..."
-    docker exec micro-pkc-database /MediaWiki_Backup/restore_database.sh \
-        "$(docker run --rm --volumes-from micro-pkc-mediawikibackup \
-            busybox find /backup/latest/ -name '*.sql.gz' | head -1)"
+    local latest="$(docker run --rm --volumes-from micro-pkc-mediawikibackup \
+        busybox sh -c 'ls -t /backup/latest/*.sql.gz | head -1')"
+    docker exec micro-pkc-database /MediaWiki_Backup/restore_database.sh "$latest"
     docker exec micro-pkc-mediawikibackup /usr/local/bin/restore_images.sh
 }
 
