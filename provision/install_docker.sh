@@ -26,7 +26,10 @@ sudo groupadd docker
 sudo usermod -aG docker "$USER"
 
 # Install Docker Compose
-sudo apt-get install -y docker-compose
+sudo apt-get remove -y docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 # @see {https://docs.docker.com/compose/cli-command/#install-on-linux}
 #mkdir -p $USER/.docker/cli-plugins/
 #curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o $USER/.docker/cli-plugins/docker-compose
