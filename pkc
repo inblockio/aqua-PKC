@@ -298,9 +298,9 @@ run_setup() {
 
 create_new_backup() {
     sqlfile=$(docker run --rm --volumes-from micro-pkc-mediawikibackup busybox \
-        find /backup/latest -name '*.sql.gz' | head -1)
+        find /backup/latest -name '*.sql.gz' | sort -r | head -1)
     imgfile=$(docker run --rm --volumes-from micro-pkc-mediawikibackup busybox \
-        find /backup/latest -name '*.img.tar*' | head -1)
+        find /backup/latest -name '*.img.tar*' | sort -r | head -1)
 
     if [[ -n "$sqlfile" && -n "$imgfile" ]]; then
         echo "Saving a copy of the most recent backup..."
