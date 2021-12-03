@@ -378,10 +378,14 @@ create_new_backup() {
 }
 
 restore_from_latest_autobackup() {
-
     echo "Restoring most recent backup scheduled backup..."
-    local latest="$(docker run --rm --volumes-from micro-pkc-mediawikibackup \
-        busybox sh -c 'ls -t /backup/latest/*.sql.gz | head -1')"
+    local latest
+    latest="$(docker run --rm --volumes-from micro-pkc-mediawikibackup \
+        busybox sh -c 'ls -t /backup/latest/*.sql.gz | head -1' 2>/dev/null)"
+    if [ -z "$latest" ]; then
+        echo "Error: No backup file found."
+        return
+    fi
     # TODO: Lock and unlock database when refactoring away from CC-BY upstream
     docker exec micro-pkc-database /MediaWiki_Backup/restore_database.sh "$latest"
     docker exec micro-pkc-mediawikibackup /usr/local/bin/restore_images.sh
