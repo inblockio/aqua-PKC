@@ -48,6 +48,8 @@ services:
       EXTRA_OPTS: "--single-transaction --log-error=/var/log/mysqld.log"
     depends_on:
       - database
+    profiles:
+      - backup
   mediawiki:
     container_name: micro-pkc-mediawiki
     image: 0xc000007b/micro-pkc-mediawiki:37-1php74

@@ -37,6 +37,7 @@ Options:
   --private             disable anonymous page read
   --web-public          expect --server <mediawiki.domain> --eauth-server <eauth.domain> --le-email <your@email.com>
   --empty-wiki          setup without default wiki content
+  --disable-autobackup  disable MediaWiki backup service
 EOF
     #  --auto-backup         expects two values <time in minutes>:<number of backups to keep>
 
@@ -195,8 +196,20 @@ prepare_dotenv() {
     cat .env.template >>.env
 }
 
+do_docker_compose_up_maybe_backup() {
+    local enable_autobackup="$1"
+    if "$enable_autobackup"; then
+        echo "Auto-backup service is enabled."
+        sudo docker-compose --profile backup up -d
+    else
+        echo "Auto-backup service is not enabled."
+        sudo docker-compose up -d
+    fi
+}
+
 run_setup() {
     local web_public=false
+    local enable_autobackup=true
     while [ "$#" -gt 0 ]; do
         case "$1" in
         -h | --help)
@@ -233,6 +246,10 @@ run_setup() {
             ;;
         --web-public)
             web_public=true
+            shift
+            ;;
+        --disable-autobackup)
+            enable_autobackup=false
             shift
             ;;
         *) # unknown option
@@ -275,7 +292,7 @@ run_setup() {
 
     echo "Executing docker-compose up -d. Be prepared to type your password."
     # Support version 1 / 2 of docker-compose
-    sudo docker-compose up -d
+    do_docker_compose_up_maybe_backup $enable_autobackup
     # Sleep; just to be sure that the container has initialized well.
     echo "Sleeping for 10 seconds to wait for the database to be ready."
     echo "Here's an invitation to grab a ☕ or take a deep breath."
@@ -364,7 +381,8 @@ while [[ $# -gt 0 ]]; do
         break
         ;;
     start)
-        sudo docker-compose up -d
+        # TODO don't hardcode starting backup service to always be true.
+        do_docker_compose_up_maybe_backup true
         break
         ;;
     backup)
