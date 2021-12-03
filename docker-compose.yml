@@ -26,7 +26,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
     volumes:
       - ./provision/mariadb:/docker-entrypoint-initdb.d
-      - mysql-backups-data:/backup
+      - mysql-backups-data:/backup:ro
       - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
   mediawikibackup:
     container_name: micro-pkc-mediawikibackup
