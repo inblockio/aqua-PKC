@@ -332,7 +332,7 @@ restore_from_latest_autobackup() {
     docker exec micro-pkc-database /MediaWiki_Backup/restore_database.sh \
         "$(docker run --rm --volumes-from micro-pkc-mediawikibackup \
             busybox find /backup/latest/ -name '*.sql.gz' | head -1)"
-    docker exec micro-pkc-mediawiki /usr/local/bin/restore_latest_images.sh
+    docker exec micro-pkc-mediawikibackup /usr/local/bin/restore_images.sh
 }
 
 if [ $# -eq 0 ]; then
