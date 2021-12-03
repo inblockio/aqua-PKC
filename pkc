@@ -313,7 +313,31 @@ run_setup() {
     echo "Done!"
 }
 
+lock_mediawiki() {
+    # shellcheck disable=SC2016
+    local message='$wgReadOnly = "Backup in progress.";'
+    local file=./mountPoint/backup/LocalSettings.php
+    if grep -q "$message" "$file"; then
+        echo "Warn: MediaWiki already Locked"
+    else
+        echo "$message" | sudo tee -a "$file"
+    fi
+}
+
+unlock_mediawiki() {
+    # shellcheck disable=SC2016
+    local message='$wgReadOnly = "Backup in progress.";'
+    local file=./mountPoint/backup/LocalSettings.php
+    if grep -q "$message" "$file"; then
+        sudo sed -i "/$message/d" "$file"
+    else
+        echo "Warn: MediaWiki already unlocked"
+    fi
+}
+
 create_new_backup() {
+    lock_mediawiki
+
     # Sort reverse chronologically and pick the most recent item. Default
     # behavior is that there is only one zip file this handles race conditions.
     sqlfile=$(docker run --rm --volumes-from micro-pkc-mediawikibackup busybox \
@@ -344,6 +368,8 @@ create_new_backup() {
         -e PREBACKUP=mediawiki_backup_pre.sh \
         -w /usr/local/bin \
         micro-pkc-mediawikibackup automysqlbackup
+
+    unlock_mediawiki
 }
 
 restore_from_latest_autobackup() {
