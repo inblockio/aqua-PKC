@@ -118,8 +118,9 @@ sed -i "s/wgEnableUploads = false;/wgEnableUploads = true;/" LocalSettings.php
 # The first openssl command is for entropy source. The second openssl command
 # is for doing a sha3sum. The xxd command converts the sha sum in binary to hex
 # format. And finally the head commands returns only the first 10 characters.
-DOMAIN_ID=$(openssl rand -hex 64 | openssl dgst -sha3-512 -binary | xxd -p -c 256 | head -c 10)
-echo "\$daDomainID = '$DOMAIN_ID';" >> LocalSettings.php
+# Commented out because now we generate the domain ID from inside the DataAccounting extension.
+# DOMAIN_ID=$(openssl rand -hex 64 | openssl dgst -sha3-512 -binary | xxd -p -c 256 | head -c 10)
+# echo "\$daDomainID = '$DOMAIN_ID';" >> LocalSettings.php
 
 # Insert smart contract address to LocalSettings.php.
 echo "\$daSmartContractAddress = '0x45f59310ADD88E6d23ca58A0Fa7A55BEE6d2a611';" >> LocalSettings.php
