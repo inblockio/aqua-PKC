@@ -52,9 +52,9 @@ Those repositories are automatically installed by the `pkc` CLI during the setup
   This contains all the content which is pulled into the PKC through the create of an initial set of pages.
 - Smart Contract for Witnessing / Timestamping https://github.com/inblockio/DataSymmetry
   This Smart Contract is part of the infrastructure required to interact with the Ethereum network for time-stamping 
-  and 'proof of existence' of a set of verified page fields.  
-- Backup-Script for PKC https://github.com/rht/MediaWiki_Backup.git 
-  This repository includes all backup and restore logic for the dockerized-mediawiki
+  and 'proof of existence' of a set of verified page fields.
+- Backup functionality via `docker-mediawikibackup` image. To use image configure
+  your installation like `docker-compose --profile backup pull`.
 - To install the OAuth2 Client in MW https://github.com/rht/MW-OAuth2Client
   This is a modified fork which does no allow new user creation.
 

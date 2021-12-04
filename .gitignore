@@ -1,4 +1,6 @@
 *.asc
+*.gz
+*.tar
 docker-compose.override.yml
 mountPoint
 aqua/MediaWiki_Backup

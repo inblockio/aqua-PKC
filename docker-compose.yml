@@ -5,7 +5,10 @@
 # See comment in docker-compose.dev.yml if you want to run for development.
 
 version: '3'
-
+volumes:
+  mediawiki-image-data: {}
+  mysql-data: {}
+  mysql-backups-data: {}
 services:
   database:
     container_name: micro-pkc-database
@@ -22,11 +25,36 @@ services:
       MYSQL_PASSWORD: example
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
     volumes:
-      - ./mountPoint/mariadb:/var/lib/mysql
       - ./provision/mariadb:/docker-entrypoint-initdb.d
-      - ./mountPoint/backup:/backup
+      - mysql-backups-data:/backup:ro
       - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
-
+  mediawikibackup:
+    container_name: micro-pkc-mediawikibackup
+    image: 0xc000007b/micro-pkc-mediawikibackup:latest
+    restart: unless-stopped # healthcheck on port 18080
+    networks:
+      - common
+    volumes:
+      - mysql-backups-data:/backup
+      - ./mountPoint/backup:/backup_localsettings
+      - mediawiki-image-data:/var/www/html/images
+    environment:
+      MEDIAWIKI_LOCALSETTINGS_PATH: /backup_localsettings/LocalSettings.php
+      PREBACKUP: /usr/local/bin/mediawiki_backup_pre.sh
+      POSTBACKUP: /usr/local/bin/mediawiki_backup_post.sh
+      USERNAME: wikiuser
+      PASSWORD: "example"
+      DBHOST: database
+      DBEXCLUDE: "performance_schema information_schema"
+      CRON_SCHEDULE: "*/30 * * * *" # At every 30th minute.
+      LATEST: "yes"
+      SEPDIR: "no"
+      EXTRA_OPTS: "--single-transaction --log-error=/var/log/mysqld.log"
+    depends_on:
+      - database
+      - mediawiki
+    profiles:
+      - backup
   mediawiki:
     container_name: micro-pkc-mediawiki
     image: 0xc000007b/micro-pkc-mediawiki:37-1php74
@@ -45,7 +73,7 @@ services:
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
       - EAUTH_PORT=${EAUTH_PORT}
     volumes:
-      - ./mountPoint/images:/var/www/html/images
+      - mediawiki-image-data:/var/www/html/images
       - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
       - ./mountPoint/backup:/backup
       - ./aqua:/var/www/html/aqua
@@ -53,7 +81,6 @@ services:
     depends_on:
       - database
       - eauth
-
   eauth:
     container_name: micro-pkc-eauth
     image: 0xc000007b/micro-pkc-eauth
@@ -79,5 +106,5 @@ networks:
   # We specify the internal network as common, so that the services in this
   # docker-compose.yml can be configured to interact with the services in the
   # other, separate docker-compose.yml using external networks.
-  common:
+  common: {}
 

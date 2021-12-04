@@ -10,7 +10,16 @@
 #
 # DefaultSettings for MediaWiki
 # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
-
+#
+# Settings and defaults for mysqldump
+# @see https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html
+#
+# Note issue with Volumes affecting Docker Desktop (for Mac) and also affecting Windows (WSL2):
+# https://github.com/docker/for-mac/issues/4822 https://github.com/docker/for-win/issues/12323
+#
+# Workaround VM limitation with a Busybox container to access the data inside the volume:
+#   docker run --rm --volumes-from micro-pkc-mediawikibackup-dev busybox ls
+#
 version: '3'
 services:
   database:
@@ -19,3 +28,11 @@ services:
     ports:
       - "3306:3306"
     restart: unless-stopped
+  
+  mediawikibackup:
+    container_name: micro-pkc-mediawikibackup-dev
+    environment:
+      USERNAME: wikiuser
+      PASSWORD: "example"
+      CRON_SCHEDULE: "0 */2 * * *" # At minute 0 past every 2nd hour.
+      EXTRA_OPTS: "--single-transaction --skip-dump-date --verbose"
