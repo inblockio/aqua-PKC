@@ -354,6 +354,10 @@ create_new_backup() {
 
 restore_from_latest_autobackup() {
     echo "Restoring most recent backup scheduled backup..."
+    if ! docker exec micro-pkc-mediawiki test -f /backup/LocalSettings.php 2>/dev/null; then
+        echo "Error: MediaWiki appears to not have been installed. Please run ./pkc setup first." >&2
+        return
+    fi
     local latest
     latest="$(docker run --rm --volumes-from micro-pkc-mediawikibackup \
         busybox sh -c 'ls -t /backup/latest/*.sql.gz | head -1' 2>/dev/null)"
