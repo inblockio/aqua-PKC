@@ -34,8 +34,11 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-
-BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,ConfirmEdit,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SpamBlacklist,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
+# Extensions removed:
+# - ConfirmEdit, because unecessary spam protection
+# - EmbedVideo, because not working in MW 37
+# - SpamBlacklist because unecessary spam protection
+BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
 EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,MW-OAuth2Client"
 
 admin_password="$(openssl rand -base64 20)"
@@ -99,8 +102,14 @@ if [ -n "$EAUTH_SERVER" ]; then
 sed -i "s|eauthServer = .*|eauthServer = '$EAUTH_SERVER';|" LocalSettings.php
 fi
 
-# Disable VisualEditor
-sed -i "s/wfLoadExtension( 'VisualEditor' );/#wfLoadExtension( 'VisualEditor' );/" LocalSettings.php
+disable_extension() {
+    local name="$1"
+    sed -i "s/wfLoadExtension( '$name' );/#wfLoadExtension( '$name' );/" LocalSettings.php
+}
+
+disable_extension VisualEditor
+disable_extension ConfirmEdit
+disable_extension SpamBlacklist
 
 # Enable file upload
 sed -i "s/wgEnableUploads = false;/wgEnableUploads = true;/" LocalSettings.php
