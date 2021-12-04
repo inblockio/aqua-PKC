@@ -313,31 +313,7 @@ run_setup() {
     echo "Done!"
 }
 
-lock_mediawiki() {
-    # shellcheck disable=SC2016
-    local message='$wgReadOnly = "Backup in progress.";'
-    local file=./mountPoint/backup/LocalSettings.php
-    if grep -q "$message" "$file"; then
-        echo "Warn: MediaWiki already Locked"
-    else
-        echo "$message" | sudo tee -a "$file" >/dev/null
-    fi
-}
-
-unlock_mediawiki() {
-    # shellcheck disable=SC2016
-    local message='$wgReadOnly = "Backup in progress.";'
-    local file=./mountPoint/backup/LocalSettings.php
-    if grep -q "$message" "$file"; then
-        sed "/$message/d" "$file" >modified_local_settings
-        sudo mv modified_local_settings "$file"
-    else
-        echo "Warn: MediaWiki already unlocked"
-    fi
-}
-
 create_new_backup() {
-    lock_mediawiki
 
     # Sort reverse chronologically and pick the most recent item. Default
     # behavior is that there is only one zip file this handles race conditions.
@@ -361,8 +337,8 @@ create_new_backup() {
         echo "No recent backups found."
     fi
 
-    echo "Scheduling a new backup. Process will continue in the background."
-    echo "During backup process your PKC will not be editable."
+    echo "Starting a new MediaWiki backup!"
+    echo "During backup process PKC will not be editable and login disabled."
     docker exec \
         -e DBHOST=database \
         -e DBEXCLUDE='performance_schema information_schema eauth' \
@@ -373,8 +349,7 @@ create_new_backup() {
         -w /usr/local/bin \
         micro-pkc-mediawikibackup automysqlbackup
 
-    unlock_mediawiki
-    echo "Backup process finished!"
+    echo "Backup complete! You may continue using your Wiki."
 }
 
 restore_from_latest_autobackup() {

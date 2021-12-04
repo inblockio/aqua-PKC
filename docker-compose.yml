@@ -36,8 +36,12 @@ services:
       - common
     volumes:
       - mysql-backups-data:/backup
+      - ./mountPoint/backup:/backup_localsettings
       - mediawiki-image-data:/var/www/html/images
     environment:
+      MEDIAWIKI_LOCALSETTINGS_PATH: /backup_localsettings/LocalSettings.php
+      PREBACKUP: /usr/local/bin/mediawiki_backup_pre.sh
+      POSTBACKUP: /usr/local/bin/mediawiki_backup_post.sh
       USERNAME: wikiuser
       PASSWORD: "example"
       DBHOST: database
