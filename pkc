@@ -314,7 +314,6 @@ run_setup() {
 }
 
 create_new_backup() {
-
     # Sort reverse chronologically and pick the most recent item. Default
     # behavior is that there is only one zip file this handles race conditions.
     sqlfile=$(docker run --rm --volumes-from micro-pkc-mediawikibackup busybox \
@@ -331,6 +330,7 @@ create_new_backup() {
             "$tmpdir/$(basename "$imgfile")"
         # Combine db archive with image tarball into single tarball
         tar -cf "backup-$(date +"%Y-%m-%d_%Hh%Mm.%A")".tar -C "$tmpdir" .
+        echo "Your backup is available in the current directory."
         # Clean up the temp dir
         rm -r "$tmpdir"
     else
