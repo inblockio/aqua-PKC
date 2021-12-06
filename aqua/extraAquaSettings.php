@@ -4,7 +4,7 @@
 # $wgMedikColor = "#0582AD";
 
 # Tweeki Settings
-$wgTweekiSkinUseBootstrap4 = false;
+$wgTweekiSkinUseBootstrap4 = true;
 # This adds the drop down option for the MW-actions to the Edit-Button.
 $wgTweekiSkinHideNonAdvanced = [ 'EDIT-EXT-special' => false ];
 
