@@ -155,6 +155,8 @@ do_edit MediaWiki:Tweeki-sidebar-right 'EDIT-EXT,SIDEBAR,TOC' "Add original side
 # Specify custom Weeki navbar:
 # - Change style to dark
 do_edit MediaWiki:Tweeki-navbar-class 'navbar navbar-default navbar-fixed-top navbar-expand-lg fixed-top navbar-dark bg-dark' "Modify Tweeki navbar class"
+# Make sure modal is on top of navbar
+do_edit MediaWiki:Tweeki.css '.oo-ui-windowManager-modal {z-index: 1031}' "Make sure modal has higher z-index than navbar"
 
 # Update login required text
 echo "Please [[Special:OAuth2Client/redirect|log in with Ethereum]] to view other pages." | php maintenance/edit.php -s "Use PKC login required text" -u "$WALLET_ADDRESS" MediaWiki:Loginreqpagetext
