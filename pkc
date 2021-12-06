@@ -41,9 +41,8 @@ Options:
   --private             disable anonymous page read
   --web-public          expect --server <mediawiki.domain> --eauth-server <eauth.domain> --le-email <your@email.com>
   --empty-wiki          setup without default wiki content
+  --disable-autobackup  disable MediaWiki auto backup service
 EOF
-#  --auto-backup         expects two values <time in minutes>:<number of backups to keep>
-
 }
 
 check_wallet_address() {
@@ -139,7 +138,7 @@ ensure_submodules() {
         echo "Source: $SOURCE"
         ln -sf "$SOURCE" "$DEST"
     fi
-    
+
     # Download latest PKC-Content repo
     git submodule update --init --recursive --remote
 }
@@ -199,8 +198,17 @@ prepare_dotenv() {
     cat .env.template >> .env
 }
 
+do_docker_compose_up_maybe_backup() {
+    sudo docker-compose up -d
+    if [ -f .autobackup ]; then
+        echo "Starting cron for auto-backup"
+        sudo docker exec micro-pkc-mediawiki service cron start
+    fi
+}
+
 run_setup() {
     local web_public=false
+    local enable_autobackup=true
     while [ "$#" -gt 0 ]; do
         case "$1" in
             -h|--help)
@@ -239,6 +247,10 @@ run_setup() {
                 web_public=true
                 shift
                 ;;
+            --disable-autobackup)
+                enable_autobackup=false
+                shift
+                ;;
             *)    # unknown option
                 usage_setup
                 exit 0
@@ -249,6 +261,14 @@ run_setup() {
     check_dependencies
     check_wallet_address
     prepare_dotenv
+
+    # We persists the option of whether auto-backup is enabled or not in .autobackup.
+    # TODO: use .env instead
+    if [ "$enable_autobackup" = true ]; then
+        touch .autobackup
+    else
+        rm -f .autobackup
+    fi
 
     if [ "$web_public" = true ]; then
         validate_web_public_detail "$PKC_SERVER" "$EAUTH_SERVER" "$LETSENCRYPT_EMAIL"
@@ -279,7 +299,7 @@ run_setup() {
 
     echo "Executing docker-compose up -d. Be prepared to type your password."
     # Support version 1 / 2 of docker-compose
-    sudo docker-compose up -d
+    do_docker_compose_up_maybe_backup
     # Sleep; just to be sure that the container has initialized well.
     echo "Sleeping for 10 seconds to wait for the database to be ready."
     echo "Here's an invitation to grab a ☕ or take a deep breath."
@@ -296,6 +316,15 @@ run_setup() {
 
     # TODO REMOVE THIS ONCE PELITH HAS FIXED THEIR RETRY BUG
     sudo docker exec micro-pkc-eauth pkill node
+
+    # Prepare auto backup
+    sudo cp aqua/do_backup_wrapper.sh mountPoint/backup
+    if [ "$enable_autobackup" = true ]; then
+        echo "Enabling auto-backup every 30 minutes"
+        sudo docker exec micro-pkc-mediawiki sh -c '(echo "*/30 * * * * /backup/do_backup_wrapper.sh") | sort - | uniq - | crontab -'
+    else
+        echo "Note: auto-backup is disabled"
+    fi
 
     echo "Done!"
 }
@@ -339,7 +368,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         start)
-            sudo docker-compose up -d
+            do_docker_compose_up_maybe_backup
             break
             ;;
         backup)
@@ -353,7 +382,7 @@ while [[ $# -gt 0 ]]; do
             restore_all "$most_recent"
             # A reset is required to flush outdated cache from the system.
             sudo docker-compose stop
-            sudo docker-compose up -d
+            do_docker_compose_up_maybe_backup
             break
             ;;
         nuke)
