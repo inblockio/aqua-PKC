@@ -152,6 +152,9 @@ do_edit() {
 
 # Add original sidebar to Tweeki right sidebar
 do_edit MediaWiki:Tweeki-sidebar-right 'EDIT-EXT,SIDEBAR,TOC' "Add original sidebar to Tweeki right sidebar"
+# Specify custom Weeki navbar:
+# - Change style to dark
+do_edit MediaWiki:Tweeki-navbar-class 'navbar navbar-default navbar-fixed-top navbar-expand-lg fixed-top navbar-dark bg-dark' "Modify Tweeki navbar class"
 
 # Update login required text
 echo "Please [[Special:OAuth2Client/redirect|log in with Ethereum]] to view other pages." | php maintenance/edit.php -s "Use PKC login required text" -u "$WALLET_ADDRESS" MediaWiki:Loginreqpagetext
