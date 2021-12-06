@@ -35,9 +35,9 @@ while [ "$#" -gt 0 ]; do
 done
 
 # Extensions removed:
-# - ConfirmEdit, because unecessary spam protection
+# - ConfirmEdit, because unnecessary spam protection
 # - EmbedVideo, because not working in MW 37
-# - SpamBlacklist because unecessary spam protection
+# - SpamBlacklist because unnecessary spam protection
 BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
 EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,MW-OAuth2Client"
 
