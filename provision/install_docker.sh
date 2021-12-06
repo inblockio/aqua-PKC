@@ -22,7 +22,7 @@ sudo add-apt-repository \
 
 sudo apt-get update
 sudo apt-get install -y docker-ce
-sudo groupadd docker
+getent group docker || sudo groupadd docker
 sudo usermod -aG docker "$USER"
 
 # Install Docker Compose
