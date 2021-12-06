@@ -7,6 +7,10 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
+# For output coloring
+LIGHT_GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 usage() {
     cat <<'EOF'
 Usage:
@@ -341,6 +345,7 @@ while [[ $# -gt 0 ]]; do
         backup)
             sudo docker exec micro-pkc-mediawiki /MediaWiki_Backup/backup.sh \
                     -p "$(date -u +"%Y-%m-%dT%H-%M-%S_UTC")" -d /backup -w /var/www/html -s -f
+            echo -e "${LIGHT_GREEN}Done! Your backup is located in ./mountPoint/backup.${NC}"
             break
             ;;
         restore)
