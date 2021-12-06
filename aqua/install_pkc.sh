@@ -143,8 +143,15 @@ chown -R www-data:www-data /var/www/html/images
 # Update sidebar
 php maintenance/edit.php -s "Use PKC sidebar" -u "$WALLET_ADDRESS" MediaWiki:Sidebar < aqua/sidebar.wiki
 
+do_edit() {
+    local page="$1"
+    local content="$2"
+    local message="$3"
+    echo "$content" | php maintenance/edit.php -s "$message" -u "$WALLET_ADDRESS" "$page"
+}
+
 # Add original sidebar to Tweeki right sidebar
-echo 'EDIT-EXT,SIDEBAR,TOC' | php maintenance/edit.php -s "Add original sidebar to Tweeki right sidebar" -u "$WALLET_ADDRESS" MediaWiki:Tweeki-sidebar-right
+do_edit MediaWiki:Tweeki-sidebar-right 'EDIT-EXT,SIDEBAR,TOC' "Add original sidebar to Tweeki right sidebar"
 
 # Update login required text
 echo "Please [[Special:OAuth2Client/redirect|log in with Ethereum]] to view other pages." | php maintenance/edit.php -s "Use PKC login required text" -u "$WALLET_ADDRESS" MediaWiki:Loginreqpagetext
