@@ -157,8 +157,10 @@ do_edit MediaWiki:Tweeki-sidebar-right 'EDIT-EXT,SIDEBAR,TOC' "Add original side
 do_edit MediaWiki:Tweeki-navbar-class 'navbar navbar-default navbar-fixed-top navbar-expand-lg fixed-top navbar-dark bg-dark' "Modify Tweeki navbar class"
 # Make sure modal is on top of navbar
 do_edit MediaWiki:Tweeki.css '.oo-ui-windowManager-modal {z-index: 1031}' "Make sure modal has higher z-index than navbar"
-# Make sure search bar is in the middle
-do_edit MediaWiki:Tweeki-navbar-right 'SEARCH,TOOLBOX,PERSONAL' "Make sure search bar is in the middle"
+# Modify right navbar:
+# - Make sure search bar is in the middle
+# - Make sure there is login button when not logged in
+do_edit MediaWiki:Tweeki-navbar-right 'SEARCH,TOOLBOX,PERSONAL,LOGIN' "Put search bar in the middle; show login"
 
 # Update login required text
 echo "Please [[Special:OAuth2Client/redirect|log in with Ethereum]] to view other pages." | php maintenance/edit.php -s "Use PKC login required text" -u "$WALLET_ADDRESS" MediaWiki:Loginreqpagetext
