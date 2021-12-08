@@ -181,6 +181,3 @@ fi
 # docker compose down.
 mv $MW_DIR/LocalSettings.php /backup/LocalSettings.php
 ln -s /backup/LocalSettings.php $MW_DIR/LocalSettings.php
-
-# Tweeki Skin: This loads the settings from a custom set value
-curl -s "$PKC_SERVER/index.php/MediaWiki:Tweeki-navbar-right"
