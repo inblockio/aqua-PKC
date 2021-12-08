@@ -9,7 +9,7 @@ version: '3'
 services:
   database:
     container_name: micro-pkc-database
-    image: mariadb:10.6.4
+    image: mariadb:10.6.5
     restart: always
     networks:
       - common
@@ -29,7 +29,7 @@ services:
 
   mediawiki:
     container_name: micro-pkc-mediawiki
-    image: 0xc000007b/micro-pkc-mediawiki:37-1php74
+    image: inblockio/micro-pkc-mediawiki:1.0.0-alpha
     restart: always
     networks:
       - common
@@ -56,7 +56,7 @@ services:
 
   eauth:
     container_name: micro-pkc-eauth
-    image: 0xc000007b/micro-pkc-eauth
+    image: inblockio/micro-pkc-eauth:1.0.0-alpha
     restart: always
     networks:
       - common
