@@ -71,3 +71,7 @@ $wgOAuth2Client['configuration']['service_login_link_text'] = 'Login with Ethere
 $wgWhitelistRead = ['Main Page', 'Special:OAuth2Client', 'Special:OAuth2Client/redirect'];
 # We need a trailing newline below so that the resulting LocalSettings.php looks nice. Don't delete!
 
+# Visual Editor
+$wgDefaultUserOptions['visualeditor-enable'] = 1;
+# Optional: Enable VisualEditor's experimental code features
+$wgDefaultUserOptions['visualeditor-enable-experimental'] = 1;
