@@ -25,6 +25,11 @@ sudo apt-get install -y docker-ce
 getent group docker || sudo groupadd docker
 sudo usermod -aG docker "$USER"
 
+# Explicitly start the Docker daemon
+# TODO this is probably not necessary on Ubuntu, but necessary on WSL; and so
+# should be tested, just for curiosity's sake.
+sudo service docker start
+
 # Install Docker Compose
 # @see {https://docs.docker.com/compose/cli-command/#install-on-linux}
 # Install 1.29.2, because the docker-compose provided by Ubuntu is outdated
