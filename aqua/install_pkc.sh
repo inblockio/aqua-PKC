@@ -107,6 +107,7 @@ disable_extension() {
     sed -i "s/wfLoadExtension( '$name' );/#wfLoadExtension( '$name' );/" LocalSettings.php
 }
 
+disable_extension VisualEditor
 disable_extension ConfirmEdit
 disable_extension SpamBlacklist
 
