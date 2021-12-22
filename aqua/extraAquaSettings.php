@@ -49,12 +49,12 @@ $wgGroupPermissions['*']['edit'] = false;
 # Prevent new user registrations except by sysops
 $wgGroupPermissions['*']['createaccount'] = false;
 
-// TODO generate a better secret
-$wgOAuth2Client['client']['id']     = 'pkc'; // The client ID assigned to you by the provider
-$wgOAuth2Client['client']['secret'] = 'pkc'; // The client secret assigned to you by the provider
+# TODO generate a better secret
+$wgOAuth2Client['client']['id']     = 'pkc';  # The client ID assigned to you by the provider
+$wgOAuth2Client['client']['secret'] = 'pkc';  # The client secret assigned to you by the provider
 
-// The following params are used only for the OAuth2 client extension
-// configuration.
+# The following params are used only for the OAuth2 client extension
+# configuration.
 $EAUTH_PORT = 'EAUTH_PORT_PLACEHOLDER';
 $pkcServer = 'PKC_SERVER';
 $parsedPkcServer = parse_url($pkcServer);
