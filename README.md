@@ -25,7 +25,7 @@ If you want to install the PKC so that it is publicly accessible from the web:
 Other flags:
 1. `./pkc setup --private` is setting the wiki into private mode by default. Except the main page all pages will not be visible to not registered users.
 2. `./pkc setup --empty-wiki` will not pre-populate the wiki from https://github.com/inblockio/PKC-Content which includes default pages for how to use the PKC and other helpful resources.
-3. `./pkc --nuke` is a command which deletes the mountpoint (the persistent data) and deletes the current instances of the docker containers.
+3. `./pkc nuke` is a command which deletes the mountpoint (the persistent data) and deletes the current instances of the docker containers.
 
 **Test if deployment was successful:**\
 Go to localhost:9352 and see if you can open your 'Personal Knowledge Container'\
