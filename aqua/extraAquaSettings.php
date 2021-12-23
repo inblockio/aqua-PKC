@@ -49,10 +49,6 @@ $wgGroupPermissions['*']['edit'] = false;
 # Prevent new user registrations except by sysops
 $wgGroupPermissions['*']['createaccount'] = false;
 
-# TODO generate a better secret
-$wgOAuth2Client['client']['id']     = 'pkc';  # The client ID assigned to you by the provider
-$wgOAuth2Client['client']['secret'] = 'pkc';  # The client secret assigned to you by the provider
-
 # The following params are used only for the OAuth2 client extension
 # configuration.
 $EAUTH_PORT = 'EAUTH_PORT_PLACEHOLDER';
@@ -60,6 +56,9 @@ $pkcServer = 'PKC_SERVER';
 $parsedPkcServer = parse_url($pkcServer);
 $pkcHost = $parsedPkcServer['scheme'] . '://' . $parsedPkcServer['host'];
 $eauthServer = "$pkcHost:$EAUTH_PORT";
+# TODO generate a better secret
+$wgOAuth2Client['client']['id']     = 'pkc';  # The client ID assigned to you by the provider
+$wgOAuth2Client['client']['secret'] = 'pkc';  # The client secret assigned to you by the provider
 $wgOAuth2Client['configuration']['authorize_endpoint']     = "$eauthServer/oauth/authorize"; // Authorization URL
 $wgOAuth2Client['configuration']['access_token_endpoint']  = "http://eauth:$EAUTH_PORT/oauth/token"; // Token URL
 $wgOAuth2Client['configuration']['api_endpoint']           = "http://eauth:$EAUTH_PORT/oauth/user"; // URL to fetch user JSON
