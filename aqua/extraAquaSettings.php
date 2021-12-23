@@ -49,6 +49,13 @@ $wgGroupPermissions['*']['edit'] = false;
 # Prevent new user registrations except by sysops
 $wgGroupPermissions['*']['createaccount'] = false;
 
+# IMPORTANT: We currently fork MW-OAuth2-Client so that it doesn't auto-create new
+# user when it doesn't exist yet. If you happen to enable user auto-create,
+# expect that MediaWiki will append "1" to the username if the user already
+# exists to prevent collision. This is not a problem when the username is e.g.
+# "Szabo", which MW auto-creates to "Szabo1", but is a problem when the
+# username is a long wallet address, which makes the -1 suffix harder to spot.
+#
 # The following params are used only for the OAuth2 client extension
 # configuration.
 $EAUTH_PORT = 'EAUTH_PORT_PLACEHOLDER';
