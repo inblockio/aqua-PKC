@@ -6,6 +6,12 @@ This should work for other environments like Windows and Mac if the requirements
 
 ## Requirements
 
+Recommended hardware requirements: 
+* x86_64 architecture with 
+* 1 CPU 2.2 GHZ 
+* 1 GB RAM 
+* 8 GB SSD Harddrive (do more to store media files)
+
 1. Install git, for Ubuntu: `sudo apt-get install git`
 2. Install docker.
     * for [macOS](https://docs.docker.com/desktop/mac/install/)
