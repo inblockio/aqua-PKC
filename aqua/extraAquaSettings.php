@@ -79,6 +79,11 @@ $wgOAuth2Client['configuration']['service_login_link_text'] = 'Login with Ethere
 $wgWhitelistRead = ['Main Page', 'Special:OAuth2Client', 'Special:OAuth2Client/redirect'];
 # We need a trailing newline below so that the resulting LocalSettings.php looks nice. Don't delete!
 
+# The following line is added to override a legacy MW behavior.
+# We want this so that all the transcluded content are properly hashed and
+# controlled.
+$wgParserCacheType = CACHE_NONE;
+
 # Deactivate Visual Editor as it does not work on localhost currently.
 # Visual Editor
 # $wgDefaultUserOptions['visualeditor-enable'] = 1;
