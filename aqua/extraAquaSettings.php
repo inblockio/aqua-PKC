@@ -92,3 +92,34 @@ $wgParserCacheType = CACHE_NONE;
 
 $wgDefaultUserOptions['visualeditor-autodisable'] = true;
 $wgDefaultUserOptions['visualeditor-newwikitext'] = 1;
+
+# Add new file types to the existing list from DefaultSettings.php
+$wgFileExtensions = array(
+   # MS Document Formats
+   'docx',
+   'doc',
+   'xlsx',
+   'xls',
+   'pptx',
+   'ppt',
+   # Open Document Formats
+   'odt',
+   'ods',
+   'odp',
+   'odg',
+   # PDF
+   'pdf',
+   # Picture Formats
+   'png',
+   'gif',
+   # Audio and Video Formats
+   'mpp',
+   'mp3',
+   'mp4',
+   'ogg',
+   # Archives
+   'zip',
+   '7z',
+   'tar.gz',
+);
+
