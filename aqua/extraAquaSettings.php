@@ -79,10 +79,15 @@ $wgOAuth2Client['configuration']['service_login_link_text'] = 'Login with Ethere
 $wgWhitelistRead = ['Main Page', 'Special:OAuth2Client', 'Special:OAuth2Client/redirect'];
 # We need a trailing newline below so that the resulting LocalSettings.php looks nice. Don't delete!
 
-# The following line is added to override a legacy MW behavior.
+# The following lines are added to override a legacy MW behavior.
 # We want this so that all the transcluded content are properly hashed and
-# controlled.
+# controlled. Even in hosted environments those caches should stay disabled to
+# ensure that files which are imported will be verified against the import
+# instead of a potential available cache. See documentation:
+# https://www.mediawiki.org/wiki/Manual:FAQ#How_do_I_completely_disable_caching?
+$wgEnableParserCache = false; // deprecated method
 $wgParserCacheType = CACHE_NONE;
+$wgCachePages = false;
 
 # Deactivate Visual Editor as it does not work on localhost currently.
 # Visual Editor
@@ -94,7 +99,7 @@ $wgDefaultUserOptions['visualeditor-autodisable'] = true;
 $wgDefaultUserOptions['visualeditor-newwikitext'] = 1;
 
 # Add new file types to the existing list from DefaultSettings.php
-$wgFileExtensions = array(
+$wgFileExtensions = array_merge( $wgFileExtensions, [
    # MS Document Formats
    'docx',
    'doc',
@@ -121,5 +126,5 @@ $wgFileExtensions = array(
    'zip',
    '7z',
    'tar.gz',
+]
 );
-
