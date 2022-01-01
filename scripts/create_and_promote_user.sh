@@ -63,4 +63,4 @@ USERNAME=$(echo "$USERNAME" | tr "\[A-Z\]" "\[a-z\]")
 
 echo "INFO: The username is converted to lowercase to $USERNAME"
 
-sudo docker exec micro-pkc-mediawiki php maintenance/createAndPromote.php $SYSOP "$USERNAME" "$PASSWORD"
+sudo docker exec micro-pkc-mediawiki php maintenance/createAndPromote.php $SYSOP "$USERNAME" "$PASSWORD" --force
