@@ -162,7 +162,7 @@ do_edit MediaWiki:Tweeki.css '.oo-ui-windowManager-modal {z-index: 1031}' "Make 
 # - Make sure there is login button when not logged in
 do_edit MediaWiki:Tweeki-navbar-right 'SEARCH,TOOLBOX,PERSONAL,LOGIN' "Put search bar in the middle; show login"
 # Modify login text
-do_edit MediaWiki:Tweeki-login 'Wallet-Login' "Replace Login / Create"
+do_edit MediaWiki:Tweeki-login 'Wallet Login' "Replace Login / Create"
 
 # Update login required text
 echo "Please [[Special:OAuth2Client/redirect|log in with Ethereum]] to view other pages." | php maintenance/edit.php -s "Use PKC login required text" -u "$WALLET_ADDRESS" MediaWiki:Loginreqpagetext
