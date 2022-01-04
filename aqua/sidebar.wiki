@@ -1,6 +1,6 @@
 * Data Accounting
 ** Special:VerifiedExport|Export Verified Page
 ** Special:VerifiedImport|Import Verified Page
-** Special:Witness|Domain Manifest Generator
-** Special:WitnessPublisher|Domain Manifest Publisher
+** Special:Witness|Domain Snapshot Generator
+** Special:WitnessPublisher|Domain Snapshot Publisher
 ** Special:DataAccountingConfig|Data Accounting Configurator
