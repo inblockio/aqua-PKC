@@ -160,7 +160,7 @@ do_edit MediaWiki:Tweeki.css '.oo-ui-windowManager-modal {z-index: 1031}' "Make 
 # Modify right navbar:
 # - Make sure search bar is in the middle
 # - Make sure there is login button when not logged in
-do_edit MediaWiki:Tweeki-navbar-right 'SEARCH,TOOLBOX,PERSONAL,LOGIN' "Put search bar in the middle; show login"
+do_edit MediaWiki:Tweeki-navbar-right 'SEARCH,PERSONAL,LOGIN,TOOLBOX' "Put search bar in the middle; show login"
 # Modify login text
 do_edit MediaWiki:Tweeki-login 'Wallet Login' "Replace Login / Create"
 
