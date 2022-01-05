@@ -3,4 +3,4 @@
 ** Special:VerifiedImport|Import Verified Page
 ** Special:Witness|Domain Snapshot Generator
 ** Special:WitnessPublisher|Domain Snapshot Publisher
-** Special:DataAccountingConfig|Data Accounting Configurator
+** Special:DataAccountingConfig|Configuration ⚙️
