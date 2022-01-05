@@ -4,25 +4,30 @@ Author: inblockio / 23. August 2021
 Installation for Linux (Tested in Ubuntu 20.04) of your Personal Knowledge Container\
 This should work for other environments like Windows and Mac if the requirements are met.
 
+_Please read the this entire page before installing._
+
 ## Requirements
 
-Recommended hardware requirements: 
+Hardware requirements: 
 * x86_64 architecture with 
 * 1 CPU 2.2 GHZ 
 * 1 GB RAM 
-* 8 GB SSD Harddrive (do more to store media files)
+* 8 GB SSD Harddrive (or more to store large media files)
 
-1. Install git, for Ubuntu: `sudo apt-get install git`
-2. Install docker.
+Environment requirements:
+1. [git](https://github.com/git-guides/install-git)
+2. [docker](https://docs.docker.com/get-started/)
     * for [macOS](https://docs.docker.com/desktop/mac/install/)
     * for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
     * for [Windows](https://docs.docker.com/desktop/windows/install/), note: be sure you have [WSL 2 installed](https://docs.microsoft.com/en-us/windows/wsl/install) first.
-3. Clone this repo: `git clone https://github.com/inblockio/micro-PKC`
+3. Available ports at `8089` for Eauth and `9352` for MediaWiki. (`MEDIAWIKI_PORT` and `EAUTH_PORT` may be customized in the `.env` file. 
+4. Browser based Ethereum key manager (e.g.[metamask](https://metamask.io/)
 
 ## Installation
 
-1. `cd micro-PKC`
-2. Run `./pkc setup --wallet-address <your wallet address>`
+1. `git clone https://github.com/inblockio/micro-PKC`
+2. `cd micro-PKC`
+3. `./pkc setup --wallet-address <your ETH wallet address>`
 
 If you want to install the PKC so that it is publicly accessible from the web:
 1. Register your subdomains, e.g. `pkc.yourdomain.com` and `eauth.yourdomain.com` to the public IP address of your server
