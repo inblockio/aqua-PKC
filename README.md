@@ -1,7 +1,7 @@
 # micro-PKC (Personal Knowledge Container)
 Author: inblockio / 23. August 2021
 
-Installation for Linux (Tested in Ubuntu 20.04) of your Personal Knowledge Container\
+Installation for Linux (Tested in Ubuntu 20.04) of your Personal Knowledge Container(PKC)\
 This should work for other environments like Windows and Mac if the requirements are met.
 
 _Please read the this entire page before installing._
@@ -15,26 +15,26 @@ Hardware requirements:
 * 8 GB SSD Harddrive (or more to store large media files)
 
 Environment requirements:
-1. [git](https://github.com/git-guides/install-git)
-2. [docker](https://docs.docker.com/get-started/)
-    * for [macOS](https://docs.docker.com/desktop/mac/install/)
-    * for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-    * for [Windows](https://docs.docker.com/desktop/windows/install/), note: be sure you have [WSL 2 installed](https://docs.microsoft.com/en-us/windows/wsl/install) first.
-3. Available ports at `8089` for Eauth and `9352` for MediaWiki. (`MEDIAWIKI_PORT` and `EAUTH_PORT` may be customized in the `.env` file. 
-4. Browser based Ethereum key manager (e.g.[metamask](https://metamask.io/)
+1. Git [Git install](https://github.com/git-guides/install-git)
+2. Docker [Docker Getting Started](https://docs.docker.com/get-started/)
+    * for [Docker install for MacOS](https://docs.docker.com/desktop/mac/install/)
+    * for [Docker install for Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+    * for [Dokcer install for Windows](https://docs.docker.com/desktop/windows/install/), note: be sure you have [WSL 2 installed](https://docs.microsoft.com/en-us/windows/wsl/install) first.
+3. Available ports at `8089` for Eauth and `9352` for MediaWiki. (`MEDIAWIKI_PORT` and `EAUTH_PORT` may be customized in the `.env` file.) 
+4. Browser based Ethereum key manager (e.g.[Metamask](https://metamask.io/))
 
 ## Installation
 
 1. `git clone https://github.com/inblockio/micro-PKC`
 2. `cd micro-PKC`
-3. `./pkc setup --wallet-address <your ETH wallet address>`
+3. `./pkc setup --wallet-address <your ETH wallet address>` 
 
 If you want to install the PKC so that it is publicly accessible from the web:
-1. Register your subdomains, e.g. `pkc.yourdomain.com` and `eauth.yourdomain.com` to the public IP address of your server
+1. Modify the A record for your domain to register the subdomains, e.g. `pkc.yourdomain.com` and `eauth.yourdomain.com`, to the public IP address of your server
 2. Run `./pkc setup --web-public --wallet-address <your wallet address> --server <mediawiki.domain> --eauth-server <eauth.domain> --le-email <your@email.com>`
 
 Other flags:
-1. `./pkc setup --private` is setting the wiki into private mode by default. Except the main page all pages will not be visible to not registered users.
+1. `./pkc setup --private` is setting the wiki into private mode by default. Except the main page all pages will not be visible to non-registered users.
 2. `./pkc setup --empty-wiki` will not pre-populate the wiki from https://github.com/inblockio/PKC-Content which includes default pages for how to use the PKC and other helpful resources.
 3. `./pkc nuke` is a command which deletes the mountpoint (the persistent data) and deletes the current instances of the docker containers.
 
@@ -52,12 +52,12 @@ Keep in mind that this software is in alpha-release stage. Please report bugs an
 
 ## Repository Dependencies Github
 
-Those repositories are automatically installed by the `pkc` CLI during the setup. 
+The following repositories are automatically installed by the `pkc` CLI during setup. 
 - MediaWiki extension https://github.com/inblockio/DataAccounting
   This contains all scripts and information for the 'Verified Page History' implementation.
   languages: PHP, JavaScript, Shell
 - Dockerized PKC https://github.com/inblockio/micro-PKC
-  For running the PKC MediaWiki including the DataAccounting extension via Docker Compose.
+  For running the PKC MediaWiki including the DataAccounting extension via [Docker Compose](https://docs.docker.com/compose/).
   languages: Shell, PHP, JavaScript (and Docker of course)
 - Content for population of a fresh installed pkc https://github.com/inblockio/PKC-Content
   This contains all the content which is pulled into the PKC through the create of an initial set of pages.
@@ -81,6 +81,9 @@ Those repositories need to be manually set up and installed. For more details vi
 
 ## Image Dependencies DockerHub
 
-- Authentication server for ethereum wallets via OAUTH2 pelith/node-eauth-server
-- Custom build mediawiki image based on the standard MediaWiki docker image fantasticofox/docker-aqua-mediawiki 
-- A mariadb database container as a database endpoint for the above services xlp0/mariadb
+- Authentication server for Ethereum wallets via OAUTH2 pelith/node-eauth-server
+- Custom build MediaWiki image based on the standard MediaWiki docker image fantasticofox/docker-aqua-mediawiki 
+- A MariaDB database container as a database endpoint for the above services xlp0/mariadb
+
+## Some Caveats
+- If using "Crypto Wallets" feature of the Brave browser, metamask login will not function properly. To fix, disable "Crypto Wallets" extension in the Brave browser. 
