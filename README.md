@@ -1,7 +1,7 @@
 # micro-PKC (Personal Knowledge Container)
 Author: inblockio / 23. August 2021
 
-Installation for Linux (Tested in Ubuntu 20.04) of your Personal Knowledge Container(PKC)\
+Installation for Linux (Tested in Ubuntu 20.04) of your Personal Knowledge Container (PKC)\
 This should work for other environments like Windows and Mac if the requirements are met.
 
 _Please read the this entire page before installing._
