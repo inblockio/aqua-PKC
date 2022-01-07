@@ -158,7 +158,7 @@ do_edit MediaWiki:Tweeki-navbar-class 'navbar navbar-default navbar-fixed-top na
 # Customize Tweeki
 ## Hide Toolbox from Sidebar
 ## Make sure modal is on top of navbar
-do_edit MediaWiki:Tweeki.css '#sidebar-right div:nth-last-child(2) {display:none}, .oo-ui-windowManager-modal {z-index: 1031}' "Customize Tweeki"
+do_edit MediaWiki:Tweeki.css '#sidebar-right div:nth-last-child(2) {display:none}; .oo-ui-windowManager-modal {z-index: 1031}' "Customize Tweeki"
 # Modify right navbar:
 # - Make sure search bar is in the middle
 # - Make sure there is login button when not logged in
