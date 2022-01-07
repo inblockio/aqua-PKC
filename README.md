@@ -20,8 +20,8 @@ Environment requirements:
     * for [macOS](https://docs.docker.com/desktop/mac/install/)
     * for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
     * for [Windows](https://docs.docker.com/desktop/windows/install/), note: be sure you have [WSL 2 installed](https://docs.microsoft.com/en-us/windows/wsl/install) first.
-3. Available ports at `8089` for Eauth and `9352` for MediaWiki. (`MEDIAWIKI_PORT` and `EAUTH_PORT` may be customized in the `.env` file. 
-4. Browser based Ethereum key manager (e.g.[metamask](https://metamask.io/)
+3. Available ports at `8089` for Eauth and `9352` for MediaWiki. (`MEDIAWIKI_PORT` and `EAUTH_PORT` may be customized in the `.env` file)
+4. Browser based Ethereum key manager (e.g.[metamask](https://metamask.io/))
 
 ## Installation
 
@@ -52,7 +52,7 @@ Keep in mind that this software is in alpha-release stage. Please report bugs an
 
 ## Repository Dependencies Github
 
-Those repositories are automatically installed by the `pkc` CLI during the setup. 
+These repositories are automatically installed by the `pkc` CLI during the setup. 
 - MediaWiki extension https://github.com/inblockio/DataAccounting
   This contains all scripts and information for the 'Verified Page History' implementation.
   languages: PHP, JavaScript, Shell
@@ -71,7 +71,7 @@ Those repositories are automatically installed by the `pkc` CLI during the setup
 
 ##  Repository Dependencies Github: Verification
 
-Those repositories need to be manually set up and installed. For more details visit each repository.
+These repositories need to be manually set up and installed. For more details visit each repository.
 - CLI page verifier https://github.com/inblockio/data-accounting-external-verifier
   A CLI JavaScript client for verifying DataAccounting pages.
   languages: JavaScript
