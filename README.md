@@ -86,4 +86,4 @@ These repositories need to be manually set up and installed. For more details vi
 - A MariaDB database container as a database endpoint for the above services xlp0/mariadb
 
 ## Some Caveats
-- If using "Crypto Wallets" feature of the Brave browser, metamask login will not function properly. To fix, disable "Crypto Wallets" extension in the Brave browser. 
+- If using "Crypto Wallets" feature of the Brave browser, MetaMask login will not function properly. To fix, disable "Crypto Wallets" extension in the Brave browser.
