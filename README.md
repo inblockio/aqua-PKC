@@ -21,13 +21,13 @@ Environment requirements:
     * for [Docker install for Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
     * for [Docker install for Windows](https://docs.docker.com/desktop/windows/install/), note: be sure you have [WSL 2 installed](https://docs.microsoft.com/en-us/windows/wsl/install) first.
 3. Available ports at `8089` for Eauth and `9352` for MediaWiki. (`MEDIAWIKI_PORT` and `EAUTH_PORT` may be customized in the `.env` file.) 
-4. Browser based Ethereum key manager (e.g.[Metamask](https://metamask.io/))
+4. Browser based Ethereum key manager (e.g.[MetaMask](https://metamask.io/))
 
 ## Installation
 
 1. `git clone https://github.com/inblockio/micro-PKC`
 2. `cd micro-PKC`
-3. `./pkc setup --wallet-address <your ETH wallet address>` 
+3. `./pkc setup --wallet-address <your ETH wallet address>`
 
 If you want to install the PKC so that it is publicly accessible from the web:
 1. Modify the A record for your domain to register the subdomains, e.g. `pkc.yourdomain.com` and `eauth.yourdomain.com`, to the public IP address of your server
