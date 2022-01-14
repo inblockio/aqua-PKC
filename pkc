@@ -172,6 +172,10 @@ validate_web_public_detail() {
 setup_proxy_server() {
     echo "Setting up Nginx proxy server with Let's Encrypt"
     (cd proxy_server && sudo docker-compose up -d)
+    echo "Ensuring that the Nginx server allows 100 MB file upload"
+    # See https://github.com/nginx-proxy/nginx-proxy/issues/981#issuecomment-345434827
+    sudo docker exec proxy_server_proxy_1 sh -c 'echo "client_max_body_size 100M;" > /etc/nginx/conf.d/custom_proxy_settings.conf'
+    (cd proxy_server && sudo docker-compose restart proxy)
     echo "Sleeping for 3s 💤 💤"
     sleep 3
     echo "Proxy setup done!"
