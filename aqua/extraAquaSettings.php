@@ -91,12 +91,16 @@ $wgCachePages = false;
 
 # Deactivate Visual Editor as it does not work on localhost currently.
 # Visual Editor
-# $wgDefaultUserOptions['visualeditor-enable'] = 1;
+ $wgDefaultUserOptions['visualeditor-enable'] = 1;
 # Optional: Enable VisualEditor's experimental code features
 # $wgDefaultUserOptions['visualeditor-enable-experimental'] = 1;
 
-$wgDefaultUserOptions['visualeditor-autodisable'] = true;
+#$wgDefaultUserOptions['visualeditor-autodisable'] = true;
 $wgDefaultUserOptions['visualeditor-newwikitext'] = 1;
+wfLoadExtension( 'Parsoid', "$IP/vendor/wikimedia/parsoid/extension.json" );
+$wgVirtualRestConfig['modules']['parsoid'] = array(
+	'url' => 'http://localhost' . $wgScriptPath . '/rest.php',
+);
 
 # Add new file types to the existing list from DefaultSettings.php
 $wgFileExtensions = array_merge( $wgFileExtensions, [
