@@ -113,7 +113,8 @@ ensure_submodules() {
         echo "DataAccounting repo doesn't exist. Downloading..."
         # We need to do this line in a subshell so that the current directory is
         # not modified.
-        (cd .. && git clone https://github.com/inblockio/DataAccounting.git)
+        local version=v1.0.0-alpha.2
+        (cd .. && git clone https://github.com/inblockio/DataAccounting.git && cd DataAccounting && git checkout "$version")
     else
         echo "DataAccounting repo exists. But you may want to update it after this setup."
     fi
