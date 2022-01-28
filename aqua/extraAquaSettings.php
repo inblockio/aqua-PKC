@@ -76,7 +76,7 @@ $wgOAuth2Client['configuration']['email'] = 'email'; // JSON path to email
 
 $wgOAuth2Client['configuration']['scopes'] = 'openid email profile'; //Permissions
 $wgOAuth2Client['configuration']['service_login_link_text'] = 'Login with Ethereum wallet'; // the text of the login link
-$wgWhitelistRead = ['Main Page', 'Special:OAuth2Client', 'Special:OAuth2Client/redirect'];
+$wgWhitelistRead = ['Aqua Demo', 'Main Page', 'Special:OAuth2Client', 'Special:OAuth2Client/redirect', 'Spezial:OAuth2Client', 'Spezial:OAuth2Client/redirect'];
 # We need a trailing newline below so that the resulting LocalSettings.php looks nice. Don't delete!
 
 # The following lines are added to override a legacy MW behavior.
