@@ -1,4 +1,4 @@
-# micro-PKC (Personal Knowledge Container)
+# aqua-PKC (Personal Knowledge Container)
 Author: inblockio / 23. August 2021
 
 Installation for Linux (Tested in Ubuntu 20.04) of your Personal Knowledge Container (PKC)\
@@ -25,8 +25,8 @@ Environment requirements:
 
 ## Installation
 
-1. `git clone https://github.com/inblockio/micro-PKC`
-2. `cd micro-PKC`
+1. `git clone https://github.com/inblockio/aqua-PKC`
+2. `cd aqua-PKC`
 3. `./pkc setup --wallet-address <your ETH wallet address>`
 
 If you want to install the PKC so that it is publicly accessible from the web:
@@ -56,7 +56,7 @@ The following repositories are automatically installed by the `pkc` CLI during s
 - MediaWiki extension https://github.com/inblockio/DataAccounting
   This contains all scripts and information for the 'Verified Page History' implementation.
   languages: PHP, JavaScript, Shell
-- Dockerized PKC https://github.com/inblockio/micro-PKC
+- Dockerized PKC https://github.com/inblockio/aqua-PKC
   For running the PKC MediaWiki including the DataAccounting extension via [Docker Compose](https://docs.docker.com/compose/).
   languages: Shell, PHP, JavaScript (and Docker of course)
 - Content for population of a fresh installed pkc https://github.com/inblockio/PKC-Content

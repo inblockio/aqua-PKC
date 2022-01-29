@@ -12,8 +12,8 @@ if [ -z "$server" ]; then
 fi
 
 # access remote server
-ssh ubuntu@"$server" 'bash -c "cd /home/ubuntu/micro-PKC && ./pkc backup"'
+ssh ubuntu@"$server" 'bash -c "cd /home/ubuntu/aqua-PKC && ./pkc backup"'
 
 # pull backups from remote server
-rsync -a --progress --stats --append-verify ubuntu@"$server":/home/ubuntu/micro-PKC/mountPoint/backup/2021* ./"$server"/
+rsync -a --progress --stats --append-verify ubuntu@"$server":/home/ubuntu/aqua-PKC/mountPoint/backup/2021* ./"$server"/
 
