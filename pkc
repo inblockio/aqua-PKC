@@ -109,14 +109,18 @@ ensure_submodules() {
     mkdir -p mountPoint/extensions
 
     # Ensure DataAccounting repo exists
+    local version=v1.0.0-alpha.2  # Remember to update version_timestamp variable below
+    local version_timestamp=1643351163
     if [ ! -d ../DataAccounting ]; then
         echo "DataAccounting repo doesn't exist. Downloading..."
         # We need to do this line in a subshell so that the current directory is
         # not modified.
-        local version=v1.0.0-alpha.2
         (cd .. && git clone https://github.com/inblockio/DataAccounting.git && cd DataAccounting && git checkout "$version")
     else
-        echo "DataAccounting repo exists. But you may want to update it after this setup."
+        if [ "$(cd ../DataAccounting && git show -s --format=%ct HEAD)" -lt $version_timestamp ]; then
+            echo "DataAccounting repo exists. But its version is outdated. Needs at least $version"
+            exit 1
+        fi
     fi
 
     # Ensure MediaWiki_Backup repo exists
