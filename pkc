@@ -340,6 +340,7 @@ run_setup() {
     fi
 
     echo "Done!"
+    echo "Visit $PKC_SERVER to access your PKC instance."
 }
 
 restore_all() {
