@@ -75,7 +75,7 @@ install_media_wiki(){
 retry_counter=0
 while ! install_media_wiki; do
     if [ $retry_counter -gt 4 ]; then
-        echo "MediaWiki intallation retries exceeded"
+        echo "MediaWiki installation retries exceeded"
         break
     fi
     retry_counter=$((retry_counter+1))

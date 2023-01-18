@@ -325,7 +325,8 @@ run_setup() {
 
     # We always download the favicon fresh, so that it is always up to date.
     echo "Downloading browser favicon"
-    sudo docker exec micro-pkc-mediawiki curl https://raw.githubusercontent.com/inblockio/aqua-branding/main/logos/aqua-white-1024x1024-32x32.png -o favicon.ico
+	# Add 10 s timeout to this command.
+    timeout 10 sudo docker exec micro-pkc-mediawiki curl https://raw.githubusercontent.com/inblockio/aqua-branding/main/logos/aqua-white-1024x1024-32x32.png -o favicon.ico
 
     # TODO REMOVE THIS ONCE PELITH HAS FIXED THEIR RETRY BUG
     sudo docker exec micro-pkc-eauth pkill node
