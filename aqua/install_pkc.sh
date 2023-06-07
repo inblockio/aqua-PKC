@@ -14,8 +14,8 @@ while [ "$#" -gt 0 ]; do
             shift
             shift
             ;;
-        --eauth-server)
-            EAUTH_SERVER="$2"
+        --siweoidc-server)
+            SIWEOIDC_SERVER="$2"
             shift
             shift
             ;;
@@ -39,7 +39,7 @@ done
 # - EmbedVideo, because not working in MW 37
 # - SpamBlacklist because unnecessary spam protection
 BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
-EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,MW-OAuth2Client"
+EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,PluggableAuth,OpenIDConnect"
 
 admin_password="$(openssl rand -base64 20)"
 
@@ -72,6 +72,9 @@ install_media_wiki(){
                     "$WALLET_ADDRESS"
 }
 
+(cd extensions && curl https://extdist.wmflabs.org/dist/extensions/OpenIDConnect-REL1_39-4712c82.tar.gz > aaa.tar.gz && tar xf aaa.tar.gz && rm aaa.tar.gz)
+(cd extensions && curl https://extdist.wmflabs.org/dist/extensions/PluggableAuth-REL1_39-1884a12.tar.gz > aaa.tar.gz && tar xf aaa.tar.gz && rm aaa.tar.gz)
+
 retry_counter=0
 while ! install_media_wiki; do
     if [ $retry_counter -gt 4 ]; then
@@ -94,12 +97,9 @@ fi
 # Specify PKC_SERVER
 sed -i "s|PKC_SERVER|$PKC_SERVER|" LocalSettings.php
 
-# Specify Eauth port
-sed -i "s/EAUTH_PORT_PLACEHOLDER/$EAUTH_PORT/" LocalSettings.php
-
-# Put in Eauth server if specified
-if [ -n "$EAUTH_SERVER" ]; then
-sed -i "s|eauthServer = .*|eauthServer = '$EAUTH_SERVER';|" LocalSettings.php
+# Put in SIWE server if specified
+if [ -n "$SIWEOIDC_SERVER" ]; then
+sed -i "s|siweServer = .*|siweServer = '$SIWEOIDC_SERVER';|" LocalSettings.php
 fi
 
 disable_extension() {

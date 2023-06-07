@@ -39,7 +39,7 @@ Options:
   -w, --wallet-address <your crypto wallet address>
   -s, --server         <your server name; defaults to http://localhost:9352>
   --private             disable anonymous page read
-  --web-public          expect --server <mediawiki.domain> --eauth-server <eauth.domain> --le-email <your@email.com>
+  --web-public          expect --server <mediawiki.domain> --siwe-server <siwe.domain> --le-email <your@email.com>
   --empty-wiki          setup without default wiki content
   --disable-autobackup  disable MediaWiki auto backup service
 EOF
@@ -150,7 +150,7 @@ ensure_submodules() {
 
 validate_web_public_detail() {
     local pkc_server=$1
-    local eauth_server=$2
+    local siweoidc_server=$2
     local letsencrypt_email=$3
     if [ -z "$pkc_server" ]; then
         echo "Error: You specified '--web-public' but didn't specify the MediaWiki server via '--server'"
@@ -160,12 +160,12 @@ validate_web_public_detail() {
         echo "Error: Your MediaWiki server must not contain the https scheme"
         exit 1
     fi
-    if [ -z "$eauth_server" ]; then
-        echo "Error: You specified '--web-public' but didn't specify the Eauth server via '--eauth-server'"
+    if [ -z "$siweoidc_server" ]; then
+        echo "Error: You specified '--web-public' but didn't specify the SIWE OIDC server via '--siweoidc-server'"
         exit 1
     fi
-    if [[ "$eauth_server" == *"https:"* ]]; then
-        echo "Error: Your Eauth server must not contain the https scheme"
+    if [[ "$siweoidc_server" == *"https:"* ]]; then
+        echo "Error: Your SIWE OIDC server must not contain the https scheme"
         exit 1
     fi
     if [ -z "$letsencrypt_email" ]; then
@@ -188,12 +188,12 @@ setup_proxy_server() {
 
 prepare_web_public() {
     local pkc_server=$1
-    local eauth_server=$2
+    local siweoidc_server=$2
     local letsencrypt_email=$3
     setup_proxy_server
     echo "Applying your domain details"
     sed -i "s|MEDIAWIKI_HOST=.*|MEDIAWIKI_HOST=$pkc_server|" .env
-    sed -i "s|EAUTH_HOST=.*|EAUTH_HOST=$eauth_server|" .env
+    sed -i "s|SIWEOIDC_HOST=.*|SIWEOIDC_HOST=$siweoidc_server|" .env
     sed -i "s/LETSENCRYPT_EMAIL=.*/LETSENCRYPT_EMAIL=$letsencrypt_email/" .env
     if ! grep -q "proxy_server_net" docker-compose.yml; then
         echo "  proxy_server_net:" >> docker-compose.yml
@@ -234,8 +234,8 @@ run_setup() {
                 shift
                 shift
                 ;;
-            --eauth-server)
-                EAUTH_SERVER="$2"
+            --siweoidc-server)
+                SIWEOIDC_SERVER="$2"
                 shift
                 shift
                 ;;
@@ -280,19 +280,23 @@ run_setup() {
     fi
 
     if [ "$web_public" = true ]; then
-        validate_web_public_detail "$PKC_SERVER" "$EAUTH_SERVER" "$LETSENCRYPT_EMAIL"
+        validate_web_public_detail "$PKC_SERVER" "$SIWEOIDC_SERVER" "$LETSENCRYPT_EMAIL"
         echo "MediaWiki server name: $PKC_SERVER"
-        echo "Eauth server name: $EAUTH_SERVER"
+        echo "SIWE OIDC server name: $SIWEOIDC_SERVER"
         echo "Let's Encrypt email: $LETSENCRYPT_EMAIL"
-        prepare_web_public "$PKC_SERVER" "$EAUTH_SERVER" "$LETSENCRYPT_EMAIL"
+        prepare_web_public "$PKC_SERVER" "$SIWEOIDC_SERVER" "$LETSENCRYPT_EMAIL"
         # Add https:// scheme
         PKC_SERVER="https://$PKC_SERVER"
-        EAUTH_SERVER="https://$EAUTH_SERVER"
+        SIWEOIDC_SERVER="https://$SIWEOIDC_SERVER"
     else
         if [ -z "$PKC_SERVER" ]; then
             PKC_SERVER=http://localhost:9352
         fi
+		if [ -z "$SIWEOIDC_SERVER" ];  then
+			SIWEOIDC_SERVER=http://localhost:9353
+		fi
         echo "Server name: $PKC_SERVER"
+		echo "SIWE server: $SIWEOIDC_SERVER"
     fi
 
     # Convert wallet address to lower case
@@ -301,10 +305,11 @@ run_setup() {
 
     ensure_submodules
 
-    echo "Specifying the server name into Eauth"
+    echo "Specifying the server name into SIWE OIDC"
     # use perl to account for cross-OS limitations of sed
     # https://stackoverflow.com/questions/4247068/sed-command-with-i-option-failing-on-mac-but-works-on-linux/14813278#14813278
     perl -i -p -e "s|PKC_SERVER|$PKC_SERVER|" .env
+	perl -i -p -e "s|SIWEOIDC_SERVER|$SIWEOIDC_SERVER|" .env
 
     echo "Executing docker-compose up -d. Be prepared to type your password."
     # Support version 1 / 2 of docker-compose
@@ -319,16 +324,13 @@ run_setup() {
     sudo docker exec micro-pkc-mediawiki ./aqua/install_pkc.sh \
                         --wallet-address "$WALLET_ADDRESS" \
                         --pkc-server "$PKC_SERVER" \
-                        --eauth-server "$EAUTH_SERVER" \
+                        --siweoidc-server "$SIWEOIDC_SERVER" \
                         ${empty_wiki:+--empty-wiki} \
                         ${private:+--private} || true
 
     # We always download the favicon fresh, so that it is always up to date.
     echo "Downloading browser favicon"
     sudo docker exec micro-pkc-mediawiki curl https://raw.githubusercontent.com/inblockio/aqua-branding/main/logos/aqua-white-1024x1024-32x32.png -o favicon.ico
-
-    # TODO REMOVE THIS ONCE PELITH HAS FIXED THEIR RETRY BUG
-    sudo docker exec micro-pkc-eauth pkill node
 
     # Prepare auto backup
     sudo cp aqua/do_backup_wrapper.sh mountPoint/backup
