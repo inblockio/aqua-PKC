@@ -14,10 +14,7 @@ services:
     networks:
       - common
     environment:
-      # The following line is replaced by a script in
-      # provision/mariadb/01-databases.sql because we need to initialize 2
-      # databases: my_wiki and eauth.
-      # MYSQL_DATABASE: my_wiki
+      MYSQL_DATABASE: my_wiki
       MYSQL_USER: wikiuser
       MYSQL_PASSWORD: example
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
@@ -29,7 +26,7 @@ services:
 
   mediawiki:
     container_name: micro-pkc-mediawiki
-    image: inblockio/micro-pkc-mediawiki:1.0.0-alpha.2
+    image: inblockio/micro-pkc-mediawiki:1.0.0-alpha.3
     restart: always
     networks:
       - common
@@ -43,7 +40,7 @@ services:
       - VIRTUAL_HOST=${MEDIAWIKI_HOST}
       - LETSENCRYPT_HOST=${MEDIAWIKI_HOST}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
-      - EAUTH_PORT=${EAUTH_PORT}
+      - SIWEOIDC_PORT=${SIWEOIDC_PORT}
     volumes:
       - ./mountPoint/images:/var/www/html/images
       - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
@@ -52,28 +49,43 @@ services:
       - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
     depends_on:
       - database
-      - eauth
+      - siwe-oidc
 
-  eauth:
-    container_name: micro-pkc-eauth
-    image: inblockio/micro-pkc-eauth:1.0.0-alpha
+  siwe-oidc:
+    image: ghcr.io/spruceid/siwe_oidc:latest
+    ports:
+      - ${SIWEOIDC_PORT}:${SIWEOIDC_PORT}
+    environment:
+      SIWEOIDC_ADDRESS: "0.0.0.0"
+      SIWEOIDC_REDIS_URL: "redis://redis"
+      SIWEOIDC_DEFAULT_CLIENTS: ${SIWEOIDC_DEFAULT_CLIENTS}
+      SIWEOIDC_BASE_URL: ${SIWEOIDC_BASE_URL}
+      RUST_LOG: "siwe_oidc=debug,tower_http=debug"
+      VIRTUAL_HOST: ${SIWEOIDC_HOST}
+      LETSENCRYPT_HOST: ${SIWEOIDC_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    env_file:
+      - .env
+    depends_on:
+      - redis
     restart: always
     networks:
       - common
       # Do not delete the comment below! It is used for adding an external
       # network for deploying an internet-accessible PKC .
       #WEBPUBLICPLACEHOLDER
-    env_file:
-      - .env
+
+  redis:
+    image: redis
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
-      - ${EAUTH_PORT}:${EAUTH_PORT}
-    environment:
-      - VIRTUAL_HOST=${EAUTH_HOST}
-      - LETSENCRYPT_HOST=${EAUTH_HOST}
-      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
-      - VIRTUAL_PORT=${EAUTH_PORT}
-    depends_on:
-      - database
+      - "6379:6379"
+    networks:
+      - common
 
 networks:
   # We specify the internal network as common, so that the services in this

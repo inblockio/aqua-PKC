@@ -19,26 +19,6 @@ $wgGroupPermissions['*']['embed_pdf'] = true;
 
 $wgShowExceptionDetails = true;
 
-# Modify the default Login button to become OAuth2 login.
-function ModifyDefaultLogin(&$personal_urls, &$wgTitle) {
-	$keys = ["login", "anonlogin", "login-private"];
-	foreach ($keys as $key) {
-		if (array_key_exists($key, $personal_urls)) {
-			$old_url_arr = explode("&", $personal_urls[$key]["href"]);
-			$params = "";
-			if (count($old_url_arr) > 1) {
-				// Add URL params only when they exist.
-				$params = "&" . $old_url_arr[1];
-			}
-			$personal_urls[$key]["href"] = "/index.php?title=Special:OAuth2Client/redirect" . $params;
-		}
-	}
-
-	return true;
-}
-
-$wgHooks['PersonalUrls'][] = 'ModifyDefaultLogin';
-
 # Disable reading by anonymous users using `./pkc setup --private -w WALLET_ADDRESS`
 # WARNING: If false, remote verification via API will be denied access.
 $wgGroupPermissions['*']['read'] = true;
@@ -58,25 +38,24 @@ $wgGroupPermissions['*']['createaccount'] = false;
 #
 # The following params are used only for the OAuth2 client extension
 # configuration.
-$EAUTH_PORT = 'EAUTH_PORT_PLACEHOLDER';
 $pkcServer = 'PKC_SERVER';
 $parsedPkcServer = parse_url($pkcServer);
 $pkcHost = $parsedPkcServer['scheme'] . '://' . $parsedPkcServer['host'];
-$eauthServer = "$pkcHost:$EAUTH_PORT";
+$siweServer = "SIWE_SERVER_PLACEHOLDER";
+
+# For OIDC
 # TODO generate a better secret
-$wgOAuth2Client['client']['id']     = 'pkc';  # The client ID assigned to you by the provider
-$wgOAuth2Client['client']['secret'] = 'pkc';  # The client secret assigned to you by the provider
-$wgOAuth2Client['configuration']['authorize_endpoint']     = "$eauthServer/oauth/authorize"; // Authorization URL
-$wgOAuth2Client['configuration']['access_token_endpoint']  = "http://eauth:$EAUTH_PORT/oauth/token"; // Token URL
-$wgOAuth2Client['configuration']['api_endpoint']           = "http://eauth:$EAUTH_PORT/oauth/user"; // URL to fetch user JSON
-$wgOAuth2Client['configuration']['redirect_uri']           = "$pkcServer/index.php/Special:OAuth2Client/callback"; // URL for OAuth2 server to redirect to
+$wgPluggableAuth_Config['Login with Ethereum'] = [
+   'plugin' => 'OpenIDConnect',
+   'data' => [
+       'providerURL' => $siweServer,
+       'clientID' => 'siwe',
+       'clientsecret' => 'siweaqua',
+       'preferred_username' => 'preferred_username'
+   ]
+];
 
-$wgOAuth2Client['configuration']['username'] = 'address'; // JSON path to username
-$wgOAuth2Client['configuration']['email'] = 'email'; // JSON path to email
-
-$wgOAuth2Client['configuration']['scopes'] = 'openid email profile'; //Permissions
-$wgOAuth2Client['configuration']['service_login_link_text'] = 'Login with Ethereum wallet'; // the text of the login link
-$wgWhitelistRead = ['Aqua Demo', 'Main Page', 'Special:OAuth2Client', 'Special:OAuth2Client/redirect', 'Spezial:OAuth2Client', 'Spezial:OAuth2Client/redirect'];
+$wgWhitelistRead = ['Aqua Demo', 'Main Page', 'Special:OAuth2Client', 'Special:OAuth2Client/redirect', 'Spezial:OAuth2Client', 'Spezial:OAuth2Client/redirect', 'Special:PluggableAuthLogin', 'Spezial:PluggableAuthLogin'];
 # We need a trailing newline below so that the resulting LocalSettings.php looks nice. Don't delete!
 
 # The following lines are added to override a legacy MW behavior.
