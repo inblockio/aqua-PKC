@@ -110,6 +110,8 @@ disable_extension() {
 #disable_extension VisualEditor
 disable_extension ConfirmEdit
 disable_extension SpamBlacklist
+# Dependency issues in MW 1.39. Also, since PKC is not public, not needed
+disable_extension AbuseFilter
 
 # Enable file upload
 sed -i "s/wgEnableUploads = false;/wgEnableUploads = true;/" LocalSettings.php
