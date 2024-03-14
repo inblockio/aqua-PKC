@@ -184,4 +184,6 @@ fi
 # Move the actual LocalSettings.php file to a backup folder that persists after a
 # docker compose down.
 mv $MW_DIR/LocalSettings.php /backup/LocalSettings.php
-ln -s /backup/LocalSettings.php $MW_DIR/LocalSettings.php
+# Symlinks dont seem to work
+# ln -s /backup/LocalSettings.php $MW_DIR/LocalSettings.php
+echo -e '<?php\nrequire_once "/backup/LocalSettings.php";' > $MW_DIR/LocalSettings.php
