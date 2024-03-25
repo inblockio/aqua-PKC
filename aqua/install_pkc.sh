@@ -75,6 +75,9 @@ install_media_wiki(){
 (cd extensions && curl https://extdist.wmflabs.org/dist/extensions/OpenIDConnect-REL1_39-4712c82.tar.gz > aaa.tar.gz && tar xf aaa.tar.gz && rm aaa.tar.gz)
 (cd extensions && curl https://extdist.wmflabs.org/dist/extensions/PluggableAuth-REL1_39-1884a12.tar.gz > aaa.tar.gz && tar xf aaa.tar.gz && rm aaa.tar.gz)
 
+echo "Running composer update"
+composer update --no-dev
+
 retry_counter=0
 while ! install_media_wiki; do
     if [ $retry_counter -gt 4 ]; then

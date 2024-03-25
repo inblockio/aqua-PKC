@@ -293,7 +293,7 @@ run_setup() {
             PKC_SERVER=http://localhost:9352
         fi
 		if [ -z "$SIWEOIDC_SERVER" ];  then
-			SIWEOIDC_SERVER=http://localhost:9353
+			SIWEOIDC_SERVER=http://siwe-oidc:9353
 		fi
         echo "Server name: $PKC_SERVER"
 		echo "SIWE server: $SIWEOIDC_SERVER"
