@@ -53,6 +53,9 @@ if [ -f LocalSettings.php ]; then
 fi
 
 install_media_wiki(){
+	
+    echo "Running composer update"
+    composer update --no-dev
 
     echo "Installing MediaWiki"
     # TODO install intersection extension
