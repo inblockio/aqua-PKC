@@ -51,7 +51,8 @@ $wgPluggableAuth_Config['Login with Ethereum'] = [
        'providerURL' => $siweServer,
        'clientID' => 'siwe',
        'clientsecret' => 'siweaqua',
-       'preferred_username' => 'preferred_username'
+       'preferred_username' => 'preferred_username',
+       'scope' => [ 'openid', 'profile' ],
    ]
 ];
 
