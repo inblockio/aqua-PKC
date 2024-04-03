@@ -11,7 +11,6 @@
 # DefaultSettings for MediaWiki
 # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
 
-version: '3'
 services:
   database:
     container_name: micro-pkc-database-dev

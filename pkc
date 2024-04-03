@@ -293,7 +293,7 @@ run_setup() {
             PKC_SERVER=http://localhost:9352
         fi
 		if [ -z "$SIWEOIDC_SERVER" ];  then
-			SIWEOIDC_SERVER=http://siwe-oidc:9353
+			SIWEOIDC_SERVER=http://localhost:9353
 		fi
         echo "Server name: $PKC_SERVER"
 		echo "SIWE server: $SIWEOIDC_SERVER"
@@ -305,7 +305,7 @@ run_setup() {
 
     ensure_submodules
 
-    echo "Specifying the server name into SIWE OIDC"
+	echo "Specifying the server name into SIWE OIDC"
     # use perl to account for cross-OS limitations of sed
     # https://stackoverflow.com/questions/4247068/sed-command-with-i-option-failing-on-mac-but-works-on-linux/14813278#14813278
     perl -i -p -e "s|PKC_SERVER|$PKC_SERVER|" .env
@@ -320,6 +320,12 @@ run_setup() {
     sleep 10
 
     echo "Installing MediaWiki"
+	if [ "$SIWEOIDC_SERVER" = "http://localhost:9353" ]; then
+		siwe_container_name=$(sudo docker compose ps --format '{{.Name}}' siwe-oidc)
+		siwe_container_ip_address=$(sudo docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$siwe_container_name")
+		SIWEOIDC_SERVER="http://$siwe_container_ip_address:9353"
+		echo "local SIWE server is now: $SIWEOIDC_SERVER"
+	fi
     # TODO split failure cases and remove || true
     sudo docker exec micro-pkc-mediawiki ./aqua/install_pkc.sh \
                         --wallet-address "$WALLET_ADDRESS" \
