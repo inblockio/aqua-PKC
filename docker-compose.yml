@@ -53,10 +53,8 @@ services:
 
   siwe-oidc:
     image: ghcr.io/spruceid/siwe_oidc:latest
-    hostname: siwe-oidc
     ports:
-      #init SIWEOIDC_IP to correctly bind container to host
-      - ${SIWEOIDC_IP}${SIWEOIDC_PORT}:${SIWEOIDC_PORT}
+      - ${SIWEOIDC_PORT}:${SIWEOIDC_PORT}
     environment:
       SIWEOIDC_ADDRESS: "0.0.0.0"
       SIWEOIDC_REDIS_URL: "redis://redis"
