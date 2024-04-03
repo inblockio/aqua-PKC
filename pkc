@@ -301,7 +301,7 @@ run_setup() {
 
     # Convert wallet address to lower case
     # This is because the address returned in Metamask API is in lower case
-    WALLET_ADDRESS=$(echo "$WALLET_ADDRESS" | tr "\[A-Z\]" "\[a-z\]")
+    # WALLET_ADDRESS=$(echo "$WALLET_ADDRESS" | tr "\[A-Z\]" "\[a-z\]")
 
     ensure_submodules
 
