@@ -26,7 +26,7 @@ services:
 
   mediawiki:
     container_name: micro-pkc-mediawiki
-    image: inblockio/micro-pkc-mediawiki:1.0.0-alpha.3
+    image: inblockio/micro-pkc-mediawiki:1.0.0-alpha.4
     restart: always
     networks:
       - common
