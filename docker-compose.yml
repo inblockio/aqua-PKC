@@ -4,6 +4,8 @@
 #
 # See comment in docker-compose.dev.yml if you want to run for development.
 
+version: '3'
+
 services:
   database:
     container_name: micro-pkc-database
