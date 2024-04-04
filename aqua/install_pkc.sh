@@ -105,7 +105,7 @@ sed -i "s|PKC_SERVER|$PKC_SERVER|" LocalSettings.php
 
 # Put in SIWE server if specified
 if [ -n "$SIWEOIDC_SERVER" ]; then
-	sed -i "s|siweServer = .*|siweServer = '$SIWEOIDC_SERVER';|" LocalSettings.php
+sed -i "s|siweServer = .*|siweServer = '$SIWEOIDC_SERVER';|" LocalSettings.php
 fi
 
 disable_extension() {
