@@ -72,7 +72,9 @@ install_media_wiki(){
                     "$WALLET_ADDRESS"
 }
 
-(cd extensions && curl https://extdist.wmflabs.org/dist/extensions/OpenIDConnect-REL1_39-4712c82.tar.gz > aaa.tar.gz && tar xf aaa.tar.gz && rm aaa.tar.gz)
+# https://www.mediawiki.org/wiki/Special:ExtensionDistributor/OpenIDConnect
+(cd extensions && curl https://extdist.wmflabs.org/dist/extensions/OpenIDConnect-REL1_39-194d805.tar.gz > aaa.tar.gz && tar xf aaa.tar.gz && rm aaa.tar.gz)
+# https://www.mediawiki.org/wiki/Special:ExtensionDistributor/PluggableAuth
 (cd extensions && curl https://extdist.wmflabs.org/dist/extensions/PluggableAuth-REL1_39-1884a12.tar.gz > aaa.tar.gz && tar xf aaa.tar.gz && rm aaa.tar.gz)
 
 echo "Running composer update"
