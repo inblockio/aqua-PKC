@@ -41,6 +41,7 @@ services:
       - LETSENCRYPT_HOST=${MEDIAWIKI_HOST}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
       - SIWEOIDC_PORT=${SIWEOIDC_PORT}
+      - SIWEOIDC_HOST=${SIWEOIDC_HOST}
     volumes:
       - ./mountPoint/images:/var/www/html/images
       - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
