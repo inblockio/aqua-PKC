@@ -52,7 +52,7 @@ services:
       - siwe-oidc
 
   siwe-oidc:
-    image: ghcr.io/spruceid/siwe_oidc:latest
+    image: ghcr.io/spruceid/siwe_oidc:20221208081605782143
     ports:
       - ${SIWEOIDC_PORT}:${SIWEOIDC_PORT}
     environment:
