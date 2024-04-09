@@ -59,6 +59,10 @@ $wgPluggableAuth_Config['Login with Ethereum'] = [
 // Allow OIDC to create users
 $GLOBALS['wgGroupPermissions']['*']['autocreateaccount'] = true;
 
+// Helper vars to replace SIWE URL for in-container calls
+$wgSIWEhost = getenv( 'SIWEOIDC_HOST', true ) ?: getenv( 'SIWEOIDC_HOST' ) ?: 'localhost';
+$wgSIWEport = getenv( 'SIWEOIDC_PORT', true ) ?: getenv( 'SIWEOIDC_PORT' ) ?: 'localhost';
+
 $wgWhitelistRead = ['Aqua Demo', 'Main Page', 'Special:OAuth2Client', 'Special:OAuth2Client/redirect', 'Spezial:OAuth2Client', 'Spezial:OAuth2Client/redirect', 'Special:PluggableAuthLogin', 'Spezial:PluggableAuthLogin'];
 # We need a trailing newline below so that the resulting LocalSettings.php looks nice. Don't delete!
 
