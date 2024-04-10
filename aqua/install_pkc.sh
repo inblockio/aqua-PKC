@@ -131,6 +131,7 @@ sed -i "s/wgEnableUploads = false;/wgEnableUploads = true;/" LocalSettings.php
 
 # Insert smart contract address to LocalSettings.php.
 echo "\$daSmartContractAddress = '0x45f59310ADD88E6d23ca58A0Fa7A55BEE6d2a611';" >> LocalSettings.php
+echo "\$daWalletAddress = '$WALLET_ADDRESS';" >> LocalSettings.php
 
 # Insert witness network to LocalSettings.php
 cat <<EOF >> LocalSettings.php
