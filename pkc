@@ -10,6 +10,13 @@ fi
 # For output coloring
 LIGHT_GREEN='\033[0;32m'
 NC='\033[0m' # No Color
+COMPOSE_CMD="docker-compose"
+MAYBE_SUDO="sudo"
+if [ -f .use_podman ]; then
+    USE_PODMAN=true
+    COMPOSE_CMD="podman-compose"
+    MAYBE_SUDO=""
+fi
 
 usage() {
     cat <<'EOF'
@@ -42,6 +49,7 @@ Options:
   --web-public          expect --server <mediawiki.domain> --eauth-server <eauth.domain> --le-email <your@email.com>
   --empty-wiki          setup without default wiki content
   --disable-autobackup  disable MediaWiki auto backup service
+  --podman              use podman instead of Docker
 EOF
 }
 
@@ -60,7 +68,7 @@ check_wallet_address() {
     fi
 }
 
-check_dependencies() {
+check_docker_installation() {
     local initsys
 
     # Check Docker installation
@@ -72,12 +80,6 @@ check_dependencies() {
     # Check docker-compose installation
     if [[ ! -x "$(command -v docker-compose)" ]]; then
         echo "Error: docker-compose is not yet installed. Aborting PKC installation." >&2
-        exit 1
-    fi
-
-    # Check git installation
-    if [[ ! -x "$(command -v git)" ]]; then
-        echo "Error: Git is not yet installed. Aborting PKC installation." >&2
         exit 1
     fi
 
@@ -101,6 +103,29 @@ check_dependencies() {
             sleep 1
         done
         echo ""
+    fi
+}
+
+check_dependencies() {
+    # Check git installation
+    if [[ ! -x "$(command -v git)" ]]; then
+        echo "Error: Git is not yet installed. Aborting PKC installation." >&2
+        exit 1
+    fi
+
+    if [ "$USE_PODMAN" = true ]; then
+        echo "Using podman"
+        touch .use_podman
+        if [[ ! -x "$(command -v podman)" ]]; then
+            echo "Error: podman is not yet installed. Aborting PKC installation." >&2
+            exit 1
+        fi
+        if [[ ! -x "$(command -v podman-compose)" ]]; then
+            echo "Error: podman-compose is not yet installed. Aborting PKC installation." >&2
+            exit 1
+        fi
+    else
+        check_docker_installation
     fi
 }
 
@@ -176,11 +201,11 @@ validate_web_public_detail() {
 
 setup_proxy_server() {
     echo "Setting up Nginx proxy server with Let's Encrypt"
-    (cd proxy_server && sudo docker-compose up -d)
+    (cd proxy_server && $MAYBE_SUDO $COMPOSE_CMD up -d)
     echo "Ensuring that the Nginx server allows 100 MB file upload"
     # See https://github.com/nginx-proxy/nginx-proxy/issues/981#issuecomment-345434827
-    sudo docker exec proxy_server_proxy_1 sh -c 'echo "client_max_body_size 100M;" > /etc/nginx/conf.d/custom_proxy_settings.conf'
-    (cd proxy_server && sudo docker-compose restart proxy)
+    $MAYBE_SUDO docker exec proxy_server_proxy_1 sh -c 'echo "client_max_body_size 100M;" > /etc/nginx/conf.d/custom_proxy_settings.conf'
+    (cd proxy_server && $MAYBE_SUDO $COMPOSE_CMD restart proxy)
     echo "Sleeping for 3s 💤 💤"
     sleep 3
     echo "Proxy setup done!"
@@ -208,10 +233,10 @@ prepare_dotenv() {
 }
 
 do_docker_compose_up_maybe_backup() {
-    sudo docker-compose up -d
+    $MAYBE_SUDO $COMPOSE_CMD up -d
     if [ -f .autobackup ]; then
         echo "Starting cron for auto-backup"
-        sudo docker exec micro-pkc-mediawiki service cron start
+        $MAYBE_SUDO docker exec micro-pkc-mediawiki service cron start
     fi
 }
 
@@ -258,6 +283,12 @@ run_setup() {
                 ;;
             --disable-autobackup)
                 enable_autobackup=false
+                shift
+                ;;
+            --podman)
+                USE_PODMAN=true
+                COMPOSE_CMD="podman-compose"
+                MAYBE_SUDO=""
                 shift
                 ;;
             *)    # unknown option
@@ -316,7 +347,7 @@ run_setup() {
 
     echo "Installing MediaWiki"
     # TODO split failure cases and remove || true
-    sudo docker exec micro-pkc-mediawiki ./aqua/install_pkc.sh \
+    $MAYBE_SUDO docker exec micro-pkc-mediawiki ./aqua/install_pkc.sh \
                         --wallet-address "$WALLET_ADDRESS" \
                         --pkc-server "$PKC_SERVER" \
                         --eauth-server "$EAUTH_SERVER" \
@@ -325,16 +356,16 @@ run_setup() {
 
     # We always download the favicon fresh, so that it is always up to date.
     echo "Downloading browser favicon"
-    sudo docker exec micro-pkc-mediawiki curl https://raw.githubusercontent.com/inblockio/aqua-branding/main/logos/aqua-white-1024x1024-32x32.png -o favicon.ico
+    $MAYBE_SUDO docker exec micro-pkc-mediawiki curl https://raw.githubusercontent.com/inblockio/aqua-branding/main/logos/aqua-white-1024x1024-32x32.png -o favicon.ico
 
     # TODO REMOVE THIS ONCE PELITH HAS FIXED THEIR RETRY BUG
-    sudo docker exec micro-pkc-eauth pkill node
+    $MAYBE_SUDO docker exec micro-pkc-eauth pkill node
 
     # Prepare auto backup
-    sudo cp aqua/do_backup_wrapper.sh mountPoint/backup
+    $MAYBE_SUDO cp aqua/do_backup_wrapper.sh mountPoint/backup
     if [ "$enable_autobackup" = true ]; then
         echo "Enabling auto-backup every 30 minutes"
-        sudo docker exec micro-pkc-mediawiki sh -c '(echo "*/30 * * * * /backup/do_backup_wrapper.sh") | sort - | uniq - | crontab -'
+        $MAYBE_SUDO docker exec micro-pkc-mediawiki sh -c '(echo "*/30 * * * * /backup/do_backup_wrapper.sh") | sort - | uniq - | crontab -'
     else
         echo "Note: auto-backup is disabled"
     fi
@@ -378,7 +409,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         stop)
-            sudo docker-compose stop
+            $MAYBE_SUDO $COMPOSE_CMD stop
             break
             ;;
         start)
@@ -386,7 +417,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         backup)
-            sudo docker exec micro-pkc-mediawiki /MediaWiki_Backup/backup.sh \
+            $MAYBE_SUDO docker exec micro-pkc-mediawiki /MediaWiki_Backup/backup.sh \
                     -p "$(date -u +"%Y-%m-%dT%H-%M-%S_UTC")" -d /backup -w /var/www/html -s -f
             echo -e "${LIGHT_GREEN}Done! Your backup is located in ./mountPoint/backup.${NC}"
             break
@@ -395,7 +426,7 @@ while [[ $# -gt 0 ]]; do
             most_recent=$(ls -t mountPoint/backup/*.tar.gz | head -n 1 | xargs basename)
             restore_all "$most_recent"
             # A reset is required to flush outdated cache from the system.
-            sudo docker-compose stop
+            $MAYBE_SUDO $COMPOSE_CMD stop
             do_docker_compose_up_maybe_backup
             break
             ;;
@@ -411,8 +442,8 @@ while [[ $# -gt 0 ]]; do
                 [yY][eE][sS]|[yY])
                     echo "💥💥💥💥 Kaaboooom!!!💥💥💥💥"
                     set -x
-                    sudo docker-compose down
-                    sudo rm -r mountPoint
+                    $MAYBE_SUDO $COMPOSE_CMD down
+                    $MAYBE_SUDO rm -r mountPoint
                     set +x
                     echo "🏜️ It's all gone 🏜️"
                     ;;
