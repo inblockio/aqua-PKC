@@ -109,8 +109,8 @@ ensure_submodules() {
     mkdir -p mountPoint/extensions
 
     # Ensure DataAccounting repo exists
-    local version=v1.0.0-alpha.3  # Remember to update version_timestamp variable below
-    local version_timestamp=1643351163
+    local version=v1.0.0-alpha.4  # Remember to update version_timestamp variable below
+    local version_timestamp=1713019795
     if [ ! -d ../DataAccounting ]; then
         echo "DataAccounting repo doesn't exist. Downloading..."
         # We need to do this line in a subshell so that the current directory is
