@@ -358,13 +358,13 @@ run_setup() {
 restore_all() {
     archive_file=$1
     # Extract tarball and restore images
-    docker exec -it micro-pkc-mediawiki /MediaWiki_Backup/extract_and_restore_images.sh -a "/backup/$archive_file" -w /var/www/html
+    sudo docker exec -it micro-pkc-mediawiki /MediaWiki_Backup/extract_and_restore_images.sh -a "/backup/$archive_file" -w /var/www/html
     # Restore database
-    docker exec -it micro-pkc-database /MediaWiki_Backup/restore_database.sh /backup/database.sql.gz
+    sudo docker exec -it micro-pkc-database /MediaWiki_Backup/restore_database.sh /backup/database.sql.gz
     # Clean up database sql file
-    docker exec -it micro-pkc-database rm /backup/database.sql.gz
+    sudo docker exec -it micro-pkc-database rm /backup/database.sql.gz
     # Toggle read-only off
-    docker exec -it micro-pkc-mediawiki /MediaWiki_Backup/toggle_read_only_off.sh /var/www/html
+    sudo docker exec -it micro-pkc-mediawiki /MediaWiki_Backup/toggle_read_only_off.sh /var/www/html
 }
 
 if [ $# -eq 0 ]; then
