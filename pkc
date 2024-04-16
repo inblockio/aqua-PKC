@@ -110,7 +110,7 @@ ensure_submodules() {
 
     # Ensure DataAccounting repo exists
     local version=v1.0.0-alpha.4  # Remember to update version_timestamp variable below
-    local version_timestamp=1713019795
+    local version_timestamp=1712061384
     if [ ! -d ../DataAccounting ]; then
         echo "DataAccounting repo doesn't exist. Downloading..."
         # We need to do this line in a subshell so that the current directory is
