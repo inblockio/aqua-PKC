@@ -137,9 +137,9 @@ echo "\$daWalletAddress = '$WALLET_ADDRESS';" >> LocalSettings.php
 cat <<EOF >> LocalSettings.php
 # Possible values are:
 # - mainnet
-# - goerli
+# - sepolia
 # - See more at https://besu.hyperledger.org/en/stable/Concepts/NetworkID-And-ChainID/
-\$daWitnessNetwork = 'goerli';
+\$daWitnessNetwork = 'sepolia';
 EOF
 
 # Insert signature injection configuration to LocalSettings.php
