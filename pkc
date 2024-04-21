@@ -39,7 +39,7 @@ Options:
   -w, --wallet-address <your crypto wallet address>
   -s, --server         <your server name; defaults to http://localhost:9352>
   --private             disable anonymous page read
-  --web-public          expect --server <mediawiki.domain> --siwe-server <siwe.domain> --le-email <your@email.com>
+  --web-public          expect --server <mediawiki.domain> --siweoidc-server <siwe.domain> --le-email <your@email.com>
   --empty-wiki          setup without default wiki content
   --disable-autobackup  disable MediaWiki auto backup service
 EOF
