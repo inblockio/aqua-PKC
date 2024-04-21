@@ -63,6 +63,7 @@ services:
       SIWEOIDC_BASE_URL: ${SIWEOIDC_BASE_URL}
       RUST_LOG: "siwe_oidc=debug,tower_http=debug"
       VIRTUAL_HOST: ${SIWEOIDC_HOST}
+      VIRTUAL_PORT: ${SIWEOIDC_PORT}
       LETSENCRYPT_HOST: ${SIWEOIDC_HOST}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     env_file:
