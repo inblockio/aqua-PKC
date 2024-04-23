@@ -2,6 +2,7 @@ version: '3'
 services:
   proxy:
     image: nginxproxy/nginx-proxy:alpine
+    container_name: proxy_server_proxy_1
     labels:
       - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
     networks:
@@ -20,6 +21,7 @@ services:
 
   letsencrypt:
     image: nginxproxy/acme-companion:latest
+    container_name: proxy_server_letsencrypt_1
     depends_on:
       - proxy
     networks:
