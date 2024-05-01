@@ -20,8 +20,7 @@ Environment requirements:
     * for [Docker install for macOS](https://docs.docker.com/desktop/mac/install/)
     * for [Docker install for Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
     * for [Docker install for Windows](https://docs.docker.com/desktop/windows/install/), note: be sure you have [WSL 2 installed](https://docs.microsoft.com/en-us/windows/wsl/install) first.
-3. Available ports at `8089` for Eauth and `9352` for MediaWiki. (`MEDIAWIKI_PORT` and `EAUTH_PORT` may be customized in the `.env` file)
-4. Browser based Ethereum key manager (e.g.[MetaMask](https://metamask.io/))
+3. Browser based Ethereum key manager (e.g.[MetaMask](https://metamask.io/))
 
 ## Installation
 

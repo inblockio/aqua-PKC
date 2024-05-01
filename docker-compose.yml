@@ -32,7 +32,7 @@ services:
       - common
       # Do not delete the comment below! It is used for adding an external
       # network for deploying an internet-accessible PKC .
-      #WEBPUBLICPLACEHOLDER
+      - proxy_server_net
     entrypoint: '/var/www/html/aqua/entrypoint_mediawiki.sh'
     environment:
       - VIRTUAL_HOST=${MEDIAWIKI_HOST}
@@ -71,7 +71,7 @@ services:
       - common
       # Do not delete the comment below! It is used for adding an external
       # network for deploying an internet-accessible PKC .
-      #WEBPUBLICPLACEHOLDER
+      - proxy_server_net
 
   redis:
     image: redis
@@ -89,3 +89,5 @@ networks:
   # other, separate docker-compose.yml using external networks.
   common:
 
+  proxy_server_net:
+    external: true
