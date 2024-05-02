@@ -1,0 +1,83 @@
+# do not start this compose-file!
+#use ./pkc.... instead
+
+version: '3'
+
+services:
+  database:
+    container_name: micro-pkc-database
+    image: mariadb:10.6.5
+    restart: always
+    networks:
+      - common
+    environment:
+      MYSQL_DATABASE: my_wiki
+      MYSQL_USER: wikiuser
+      MYSQL_PASSWORD: example
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    volumes:
+      - ./mountPoint/mariadb:/var/lib/mysql
+      - ./provision/mariadb:/docker-entrypoint-initdb.d
+      - ./mountPoint/backup:/backup
+      - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
+
+  mediawiki:
+    container_name: micro-pkc-mediawiki
+    image: inblockio/micro-pkc-mediawiki:1.0.0-alpha.4
+    restart: always
+    networks:
+      - common
+      - proxy_server_net
+    entrypoint: '/var/www/html/aqua/entrypoint_mediawiki.sh'
+    environment:
+      - VIRTUAL_HOST=${MEDIAWIKI_HOST}
+      - LETSENCRYPT_HOST=${MEDIAWIKI_HOST}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      - SIWEOIDC_PORT=${SIWEOIDC_PORT}
+      - SIWEOIDC_HOST=${SIWEOIDC_HOST}
+    volumes:
+      - ./mountPoint/images:/var/www/html/images
+      - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
+      - ./mountPoint/backup:/backup
+      - ./aqua:/var/www/html/aqua
+      - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
+    depends_on:
+      - database
+      - siwe-oidc
+
+  siwe-oidc:
+    image: ghcr.io/spruceid/siwe_oidc:20221208081605782143
+    environment:
+      SIWEOIDC_ADDRESS: "0.0.0.0"
+      SIWEOIDC_REDIS_URL: "redis://redis"
+      SIWEOIDC_DEFAULT_CLIENTS: ${SIWEOIDC_DEFAULT_CLIENTS}
+      SIWEOIDC_BASE_URL: ${SIWEOIDC_BASE_URL}
+      RUST_LOG: "siwe_oidc=debug,tower_http=debug"
+      VIRTUAL_HOST: ${SIWEOIDC_HOST}
+      VIRTUAL_PORT: ${SIWEOIDC_PORT}
+      LETSENCRYPT_HOST: ${SIWEOIDC_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    restart: always
+    networks:
+      - common
+      - proxy_server_net
+
+  redis:
+    image: redis
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - common
+
+networks:
+  common:
+  proxy_server_net:
+    external: true
+
