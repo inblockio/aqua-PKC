@@ -203,7 +203,7 @@ prepare_dotenv() {
 }
 
 do_docker_compose_up_maybe_backup() {
-    if [ -z "$web_public" ]; then
+    if [ "$web_public" = true ]; then
       sudo docker-compose -f docker-compose-web.yml up -d
     else
       sudo docker-compose -f docker-compose-local.yml up -d
@@ -425,6 +425,7 @@ while [[ $# -gt 0 ]]; do
 #                    check if proxy_server_net network exists. if true = web_public
                     if [[ $(sudo docker network ls | grep proxy_server_net ) ]]; then
                       sudo docker-compose -f docker-compose-web.yml down
+                      sudo docker network rm proxy_server_net
                     else
                       sudo docker-compose -f docker-compose-local.yml down
                     fi
