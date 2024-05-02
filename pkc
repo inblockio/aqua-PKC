@@ -195,11 +195,6 @@ prepare_web_public() {
     sed -i "s|MEDIAWIKI_HOST=.*|MEDIAWIKI_HOST=$pkc_server|" .env
     sed -i "s|SIWEOIDC_HOST=.*|SIWEOIDC_HOST=$siweoidc_server|" .env
     sed -i "s/LETSENCRYPT_EMAIL=.*/LETSENCRYPT_EMAIL=$letsencrypt_email/" .env
-    if ! grep -q "proxy_server_net" docker-compose.yml; then
-        echo "  proxy_server_net:" >> docker-compose.yml
-        echo "    external: true" >> docker-compose.yml
-        sed -i "s/#WEBPUBLICPLACEHOLDER/- proxy_server_net/" docker-compose.yml
-    fi
 }
 
 prepare_dotenv() {
@@ -208,7 +203,11 @@ prepare_dotenv() {
 }
 
 do_docker_compose_up_maybe_backup() {
-    sudo docker-compose up -d
+    if [ -z "$web_public" ]; then
+      sudo docker-compose -f docker-compose-web.yml up -d
+    else
+      sudo docker-compose -f docker-compose-local.yml up -d
+    fi
     if [ -f .autobackup ]; then
         echo "Starting cron for auto-backup"
         sudo docker exec micro-pkc-mediawiki service cron start
@@ -423,7 +422,12 @@ while [[ $# -gt 0 ]]; do
                 [yY][eE][sS]|[yY])
                     echo "💥💥💥💥 Kaaboooom!!!💥💥💥💥"
                     set -x
-                    sudo docker-compose down
+#                    check if proxy_server_net network exists. if true = web_public
+                    if [[ $(sudo docker network ls | grep proxy_server_net ) ]]; then
+                      sudo docker-compose -f docker-compose-web.yml down
+                    else
+                      sudo docker-compose -f docker-compose-local.yml down
+                    fi
                     sudo rm -r mountPoint
                     set +x
                     echo "🏜️ It's all gone 🏜️"

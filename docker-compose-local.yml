@@ -1,8 +1,5 @@
-# This Docker Compose file is used to run the project's published image
-#
-# Usage: docker compose up [-d] [--env-file=path/to/file]
-#
-# See comment in docker-compose.dev.yml if you want to run for development.
+# do not start this compose-file!
+#use ./pkc.... instead
 
 version: '3'
 
@@ -11,6 +8,8 @@ services:
     container_name: micro-pkc-database
     image: mariadb:10.6.5
     restart: always
+    ports:
+      - "3306:3306"
     networks:
       - common
     environment:
@@ -30,9 +29,6 @@ services:
     restart: always
     networks:
       - common
-      # Do not delete the comment below! It is used for adding an external
-      # network for deploying an internet-accessible PKC .
-      #WEBPUBLICPLACEHOLDER
     ports:
       - ${MEDIAWIKI_PORT}:80
     entrypoint: '/var/www/html/aqua/entrypoint_mediawiki.sh'
@@ -73,9 +69,6 @@ services:
     restart: always
     networks:
       - common
-      # Do not delete the comment below! It is used for adding an external
-      # network for deploying an internet-accessible PKC .
-      #WEBPUBLICPLACEHOLDER
 
   redis:
     image: redis
@@ -90,8 +83,5 @@ services:
       - common
 
 networks:
-  # We specify the internal network as common, so that the services in this
-  # docker-compose.yml can be configured to interact with the services in the
-  # other, separate docker-compose.yml using external networks.
   common:
 
