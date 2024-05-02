@@ -6,3 +6,4 @@ aqua/MediaWiki_Backup
 /.idea/
 /proxy_server/proxy/
 /aqua-PKC.iml
+/.autobackup
