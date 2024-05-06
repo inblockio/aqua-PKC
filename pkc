@@ -108,21 +108,6 @@ ensure_submodules() {
     # Ensure submodule dependencies are downloaded
     mkdir -p mountPoint/extensions
 
-    # Ensure DataAccounting repo exists
-    local version=v1.0.0-alpha.4  # Remember to update version_timestamp variable below
-    local version_timestamp=1712061384
-    if [ ! -d ../DataAccounting ]; then
-        echo "DataAccounting repo doesn't exist. Downloading..."
-        # We need to do this line in a subshell so that the current directory is
-        # not modified.
-        (cd .. && git clone https://github.com/inblockio/DataAccounting.git && cd DataAccounting && git checkout "$version")
-    else
-        if [ "$(cd ../DataAccounting && git show -s --format=%ct HEAD)" -lt $version_timestamp ]; then
-            echo "DataAccounting repo exists. But its version is outdated. Needs at least $version"
-            exit 1
-        fi
-    fi
-
     # Ensure MediaWiki_Backup repo exists
     if [ ! -d aqua/MediaWiki_Backup ]; then
         echo "MediaWiki_Backup repo doesn't exist. Downloading..."
@@ -132,17 +117,6 @@ ensure_submodules() {
         (cd aqua/MediaWiki_Backup && git pull)
     fi
     ln -sf "$PWD/aqua/MediaWiki_Backup" mountPoint/MediaWiki_Backup
-
-    PARENTDIR="$(dirname "$PWD")"
-    DEST=mountPoint/extensions/DataAccounting
-    if [[ -L "$DEST" && -d "$DEST" ]]; then
-        true
-    else
-        echo "Making a symlink for the DataAccounting repo..."
-        SOURCE="$PARENTDIR/DataAccounting"
-        echo "Source: $SOURCE"
-        ln -sf "$SOURCE" "$DEST"
-    fi
 
     # Download latest PKC-Content repo
     git submodule update --init --recursive --remote
@@ -425,7 +399,6 @@ while [[ $# -gt 0 ]]; do
 #                    check if proxy_server_net network exists. if true = web_public
                     if [[ $(sudo docker network ls | grep proxy_server_net ) ]]; then
                       sudo docker-compose -f docker-compose-web.yml down
-                      sudo docker network rm proxy_server_net
                     else
                       sudo docker-compose -f docker-compose-local.yml down
                     fi
