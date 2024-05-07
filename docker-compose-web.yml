@@ -37,7 +37,6 @@ services:
       - SIWEOIDC_HOST=${SIWEOIDC_HOST}
     volumes:
       - ./mountPoint/images:/var/www/html/images
-      - ./mountPoint/extensions/DataAccounting:/var/www/html/extensions/DataAccounting
       - ./mountPoint/backup:/backup
       - ./aqua:/var/www/html/aqua
       - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
