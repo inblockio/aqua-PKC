@@ -59,8 +59,4 @@ if [ -z "$PASSWORD" ]; then
   echo "No password specified. So we auto-generated one for you: $PASSWORD"
 fi
 
-USERNAME=$(echo "$USERNAME" | tr "\[A-Z\]" "\[a-z\]")
-
-echo "INFO: The username is converted to lowercase to $USERNAME"
-
 sudo docker exec micro-pkc-mediawiki php maintenance/createAndPromote.php $SYSOP "$USERNAME" "$PASSWORD" --force
