@@ -328,6 +328,15 @@ run_setup() {
     echo "Visit $PKC_SERVER to access your PKC instance."
 }
 
+stop_container() {
+  #check if proxy_server_net network exists. if true = web_public
+  if [[ $(sudo docker network ls | grep proxy_server_net ) ]]; then
+    sudo docker-compose -f docker-compose-web.yml down
+  else
+    sudo docker-compose -f docker-compose-local.yml down
+  fi
+}
+
 restore_all() {
     archive_file=$1
     # Extract tarball and restore images
@@ -363,7 +372,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         stop)
-            sudo docker-compose stop
+            stop_container
             break
             ;;
         start)
@@ -396,12 +405,7 @@ while [[ $# -gt 0 ]]; do
                 [yY][eE][sS]|[yY])
                     echo "💥💥💥💥 Kaaboooom!!!💥💥💥💥"
                     set -x
-#                    check if proxy_server_net network exists. if true = web_public
-                    if [[ $(sudo docker network ls | grep proxy_server_net ) ]]; then
-                      sudo docker-compose -f docker-compose-web.yml down
-                    else
-                      sudo docker-compose -f docker-compose-local.yml down
-                    fi
+                    stop_container
                     sudo rm -r mountPoint
                     set +x
                     echo "🏜️ It's all gone 🏜️"

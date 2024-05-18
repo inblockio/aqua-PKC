@@ -87,3 +87,12 @@ These repositories need to be manually set up and installed. For more details vi
 
 ## Some Caveats
 - If using "Crypto Wallets" feature of the Brave browser, MetaMask login will not function properly. To fix, disable "Crypto Wallets" extension in the Brave browser.
+
+## Development
+- Background: We need the content of the "mediawiki-extensions-Aqua" repository to deploy MediaWiki with all functions. To ensure this, a Docker image from this repository is used, which already includes the files. To enable development and have these changes applied live directly, we need to override the DataAccounting folder in the container with a volume. This works as follows:
+
+1. Clone mediawiki-extensions-Aqua
+2. Adjust docker-compose-local.yml / docker-compose-web.yml:
+
+   1. Add a new volume to the "mediawiki" container:
+   <path on the host to the mediawiki-extensions-Aqua repo (e.g., ./DataAccounting)>:/var/www/html/extensions/DataAccounting
