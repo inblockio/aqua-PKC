@@ -23,7 +23,9 @@ services:
 
   mediawiki:
     container_name: micro-pkc-mediawiki
-    image: ghcr.io/inblockio/mediawiki-extensions-aqua:main
+    build:
+      dockerfile: Dockerfile
+      context: .
     restart: always
     networks:
       - common

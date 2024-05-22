@@ -39,7 +39,7 @@ done
 # - EmbedVideo, because not working in MW 37
 # - SpamBlacklist because unnecessary spam protection
 BASE_EXTENSIONS="CategoryTree,Cite,CiteThisPage,Gadgets,ImageMap,InputBox,Interwiki,LocalisationUpdate,MultimediaViewer,Nuke,OATHAuth,PageImages,ParserFunctions,PDFEmbed,PdfHandler,Poem,Renameuser,ReplaceText,Scribunto,SecureLinkFixer,SyntaxHighlight_GeSHi,TemplateData,TextExtracts,TitleBlacklist,WikiEditor"
-EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,PluggableAuth,OpenIDConnect"
+EXTENSIONS="$BASE_EXTENSIONS,PDFEmbed,DataAccounting,PluggableAuth,OpenIDConnect,PageForms"
 
 admin_password="$(openssl rand -base64 20)"
 
