@@ -182,7 +182,7 @@ do_edit MediaWiki:Tweeki-navbar-class 'navbar navbar-default navbar-fixed-top na
 # - Make sure search bar is in the middle
 # - Make sure there is login button when not logged in
 # - Add "new page" button
-do_edit MediaWiki:Tweeki-navbar-right 'NEWPAGE,SEARCH,PERSONAL,LOGIN,TOOLBOX' "Put search bar in the middle; show login"
+do_edit MediaWiki:Tweeki-navbar-right 'INBOX,NEWPAGE,SEARCH,PERSONAL,LOGIN,TOOLBOX' "Put search bar in the middle; show login"
 # Modify login text
 do_edit MediaWiki:Tweeki-login 'Wallet Login' "Replace Login / Create"
 
