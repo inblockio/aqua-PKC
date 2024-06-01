@@ -178,9 +178,9 @@ prepare_dotenv() {
 
 do_docker_compose_up_maybe_backup() {
     if [ "$web_public" = true ]; then
-      sudo docker-compose -f docker-compose-web.yml up -d
+      sudo docker-compose -f docker-compose-web.yml up --pull always -d
     else
-      sudo docker-compose -f docker-compose-local.yml up -d
+      sudo docker-compose -f docker-compose-local.yml up --pull always -d
     fi
     if [ -f .autobackup ]; then
         echo "Starting cron for auto-backup"
