@@ -288,10 +288,20 @@ run_setup() {
     # Support version 1 / 2 of docker-compose
     do_docker_compose_up_maybe_backup
     # Sleep; just to be sure that the container has initialized well.
-    echo "Sleeping for 10 seconds to wait for the database to be ready."
-    echo "Here's an invitation to grab a ☕ or take a deep breath."
-    sleep 10
 
+    if [ -n "$(which nc)" ]; then
+        # netcat available
+        echo "Waiting for database connection..."
+        until nc -z -v -w30 localhost 3306
+        do
+            sleep 0.1
+        done
+    else
+        echo "netcat not available: Sleeping for 10 seconds to wait for the database to be ready."
+        echo "Here's an invitation to grab a ☕ or take a deep breath."
+        sleep 10
+    fi
+    
     echo "Installing MediaWiki"
     # TODO split failure cases and remove || true
     sudo docker exec micro-pkc-mediawiki ./aqua/install_pkc.sh \
