@@ -9,7 +9,7 @@ services:
     image: mariadb:10.6.5
     restart: always
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     networks:
       - common
     environment:
@@ -30,7 +30,7 @@ services:
     networks:
       - common
     ports:
-      - ${MEDIAWIKI_PORT}:80
+      - 127.0.0.1:${MEDIAWIKI_PORT}:80
     entrypoint: '/var/www/html/aqua/entrypoint_mediawiki.sh'
     environment:
       - VIRTUAL_HOST=${MEDIAWIKI_HOST}
@@ -50,7 +50,7 @@ services:
   siwe-oidc:
     image: ghcr.io/spruceid/siwe_oidc:20221208081605782143
     ports:
-      - ${SIWEOIDC_PORT}:${SIWEOIDC_PORT}
+      - 127.0.0.1:${SIWEOIDC_PORT}:${SIWEOIDC_PORT}
     environment:
       SIWEOIDC_ADDRESS: "0.0.0.0"
       SIWEOIDC_REDIS_URL: "redis://redis"
@@ -77,7 +77,7 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     restart: always
     networks:
       - common
