@@ -360,7 +360,7 @@ restore_all() {
 }
 
 check_docker_compose() {
-  if ! command -v docker-compose;
+  if ! command -v docker-compose &> /dev/null;
   then
     install_docker_compose
   elif ! (docker-compose --version | grep "v2.");
