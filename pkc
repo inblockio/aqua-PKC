@@ -359,6 +359,15 @@ restore_all() {
     docker exec -it micro-pkc-mediawiki /MediaWiki_Backup/toggle_read_only_off.sh /var/www/html
 }
 
+check_docker_compose() {
+  if ! command -v docker-compose &> /dev/null || ! (docker-compose --version | grep "v2." &> /dev/null );
+  then
+    echo "Please install Docker-Compose v2.X"
+    echo "command: sudo curl -L \"https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-x86_64\" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose"
+    exit 0
+  fi
+}
+
 if [ $# -eq 0 ]; then
     # If no argument is provided, provide info and exit early.
     usage
@@ -377,15 +386,18 @@ while [[ $# -gt 0 ]]; do
             exit 0
             ;;
         setup)
+            check_docker_compose
             shift
             run_setup "$@"
             break
             ;;
         stop)
+            check_docker_compose
             stop_container
             break
             ;;
         start)
+            check_docker_compose
             do_docker_compose_up_maybe_backup
             break
             ;;
@@ -396,6 +408,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         restore)
+            check_docker_compose
             most_recent=$(ls -t mountPoint/backup/*.tar.gz | head -n 1 | xargs basename)
             restore_all "$most_recent"
             # A reset is required to flush outdated cache from the system.
@@ -404,6 +417,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         nuke)
+            check_docker_compose
             # Check we are in the aqua-PKC repository
             current_repository=$(git config --get remote.origin.url)
             if [[ "$current_repository" != *"aqua-PKC"* ]]; then
