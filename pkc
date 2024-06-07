@@ -349,6 +349,8 @@ stop_container() {
   fi
   if [[ $(docker network ls | grep proxy_server_net ) ]]; then
     docker-compose -f docker-compose-web.yml down
+#    proxy only runs in web deployment
+    docker-compose -f proxy_server/docker-compose.yml down
   else
     docker-compose -f docker-compose-local.yml down
   fi
