@@ -64,43 +64,38 @@ check_dependencies() {
     local initsys
 
     # Check Docker installation
-    if [[ ! -x "$(command -v docker)" ]]; then
+    if ! which docker; then
         echo "Error: Docker is not yet installed. Aborting PKC installation." >&2
         exit 1
     fi
 
     # Check docker-compose installation
-    if [[ ! -x "$(command -v docker-compose)" ]]; then
+    if ! which docker-compose; then
         echo "Error: docker-compose is not yet installed. Aborting PKC installation." >&2
         exit 1
     fi
 
     # Check git installation
-    if [[ ! -x "$(command -v git)" ]]; then
+    if ! which git; then
         echo "Error: Git is not yet installed. Aborting PKC installation." >&2
         exit 1
     fi
 
-    # Check Docker daemon running
-    initsys=$(ps 1 | head -n 2 | tail -n 1 | awk '{print $5}')
-    if [[ $initsys == *"systemd"* ]]; then
-        echo "systemd init system detected. Ensuring Docker is running..."
-        sudo systemctl start docker.service
-    elif [[ $initsys == *"launchd"* ]]; then
-        echo "launchd init system detected. Ensuring Docker is running..."
-        if [[ ! "$(docker version)" == *"Engine"* ]]; then
-            open /Applications/Docker.app
-            echo "Waiting for Docker Desktop to start..."
+    if ! docker info; then
+        echo "Docker not running, please start it."
+        initsys=$(ps 1 | head -n 2 | tail -n 1 | awk '{print $5}')
+        if [[ $initsys == *"systemd"* ]]; then
+            echo "systemd init system detected, start docker using:"
+            echo "$ systemctl start docker.service"
+        elif [[ $initsys == *"launchd"* ]]; then
+            echo "launchd init system detected, start docker using:"
+            echo "$ open /Applications/Docker.app"
+        else
+            echo "different init system than systemd or launchd, you're on your own"
         fi
-        local i=1
-        local sp="/-\|"
-        echo -n ' '
-        until [[ "$(docker version 2>/dev/null)" == *"Engine"* ]]; do
-            # shellcheck disable=SC2059
-            printf "\b${sp:i++%${#sp}:1}"
-            sleep 1
-        done
-        echo ""
+        echo "if docker is started and the script still fails, please add your user to the docker group to be able to command docker without super-user privileges:"
+        echo "# usermod -aG docker ${USER}"
+        exit 1
     fi
 }
 
@@ -111,10 +106,10 @@ ensure_submodules() {
     # Ensure MediaWiki_Backup repo exists
     if [ ! -d aqua/MediaWiki_Backup ]; then
         echo "MediaWiki_Backup repo doesn't exist. Downloading..."
-        (cd aqua && git clone https://github.com/inblockio/MediaWiki_Backup.git)
+        git clone https://github.com/inblockio/MediaWiki_Backup.git aqua/MediaWiki_Backup
     else
         echo "Updating MediaWiki_Backup repo..."
-        (cd aqua/MediaWiki_Backup && git pull)
+        git -C aqua/MediaWiki_Backup pull
     fi
     ln -sf "$PWD/aqua/MediaWiki_Backup" mountPoint/MediaWiki_Backup
 
@@ -150,11 +145,11 @@ validate_web_public_detail() {
 
 setup_proxy_server() {
     echo "Setting up Nginx proxy server with Let's Encrypt"
-    (cd proxy_server && sudo docker-compose up -d)
+    docker-compose -f proxy_server/docker-compose.yml up -d
     echo "Ensuring that the Nginx server allows 100 MB file upload"
     # See https://github.com/nginx-proxy/nginx-proxy/issues/981#issuecomment-345434827
-    sudo docker exec proxy_server_proxy_1 sh -c 'echo "client_max_body_size 100M;" > /etc/nginx/conf.d/custom_proxy_settings.conf'
-    (cd proxy_server && sudo docker-compose restart proxy)
+    docker exec proxy_server_proxy_1 sh -c 'echo "client_max_body_size 100M;" > /etc/nginx/conf.d/custom_proxy_settings.conf'
+    docker-compose -f proxy_server/docker-compose.yml restart proxy
     echo "Sleeping for 3s 💤 💤"
     sleep 3
     echo "Proxy setup done!"
@@ -178,19 +173,21 @@ prepare_dotenv() {
 
 do_docker_compose_up_maybe_backup() {
     if [ "$web_public" = true ]; then
-      sudo docker-compose -f docker-compose-web.yml up --pull always -d
+      docker-compose -f docker-compose-web.yml pull
+      docker-compose -f docker-compose-web.yml up -d
     else
-      sudo docker-compose -f docker-compose-local.yml up --pull always -d
+      docker-compose -f docker-compose-local.yml pull
+      docker-compose -f docker-compose-local.yml up -d
     fi
     if [ -f .autobackup ]; then
         echo "Starting cron for auto-backup"
-        sudo docker exec micro-pkc-mediawiki service cron start
+        docker exec micro-pkc-mediawiki service cron start
     fi
 }
 
 run_setup() {
     local web_public=false
-    local enable_autobackup=true
+    local enable_autobackup=false
     while [ "$#" -gt 0 ]; do
         case "$1" in
             -h|--help)
@@ -229,8 +226,8 @@ run_setup() {
                 web_public=true
                 shift
                 ;;
-            --disable-autobackup)
-                enable_autobackup=false
+            --enable-autobackup)
+                enable_autobackup=true
                 shift
                 ;;
             *)    # unknown option
@@ -304,7 +301,7 @@ run_setup() {
     
     echo "Installing MediaWiki"
     # TODO split failure cases and remove || true
-    sudo docker exec micro-pkc-mediawiki ./aqua/install_pkc.sh \
+    docker exec micro-pkc-mediawiki ./aqua/install_pkc.sh \
                         --wallet-address "$WALLET_ADDRESS" \
                         --pkc-server "$PKC_SERVER" \
                         --siweoidc-server "$SIWEOIDC_SERVER" \
@@ -315,7 +312,7 @@ run_setup() {
     echo "Downloading browser favicon"
 
     # Setting a timeout for the curl command and redirecting stderr to stdout to handle both output and error
-    if timeout 15 sudo docker exec micro-pkc-mediawiki bash -c "curl https://raw.githubusercontent.com/inblockio/aqua-branding/main/logos/aqua-white-1024x1024-32x32.png -o favicon.ico 2>&1"; then
+    if timeout 15 docker exec micro-pkc-mediawiki bash -c "curl https://raw.githubusercontent.com/inblockio/aqua-branding/main/logos/aqua-white-1024x1024-32x32.png -o favicon.ico 2>&1"; then
         echo "Download favicon successful."
     else
         # This block executes if curl fails due to timeout or any other reason
@@ -326,10 +323,12 @@ run_setup() {
     fi
 
     # Prepare auto backup
-    sudo cp aqua/do_backup_wrapper.sh mountPoint/backup
     if [ "$enable_autobackup" = true ]; then
+        echo "to enable backups, we need to write to mountPoint which needs super-user privileges:"
+        echo "> sudo cp aqua/do_backup_wrapper.sh mountPoint/backup"
+        sudo cp aqua/do_backup_wrapper.sh mountPoint/backup
         echo "Enabling auto-backup every 30 minutes"
-        sudo docker exec micro-pkc-mediawiki sh -c '(echo "*/30 * * * * /backup/do_backup_wrapper.sh") | sort - | uniq - | crontab -'
+        docker exec micro-pkc-mediawiki sh -c '(echo "*/30 * * * * /backup/do_backup_wrapper.sh") | sort - | uniq - | crontab -'
     else
         echo "Note: auto-backup is disabled"
     fi
@@ -340,10 +339,20 @@ run_setup() {
 
 stop_container() {
   #check if proxy_server_net network exists. if true = web_public
-  if [[ $(sudo docker network ls | grep proxy_server_net ) ]]; then
-    sudo docker-compose -f docker-compose-web.yml down
+  local env_existed
+  env_existed=false
+  if test -f .env; then
+    env_existed=true
   else
-    sudo docker-compose -f docker-compose-local.yml down
+    cp .env.template .env
+  fi
+  if [[ $(docker network ls | grep proxy_server_net ) ]]; then
+    docker-compose -f docker-compose-web.yml down
+  else
+    docker-compose -f docker-compose-local.yml down
+  fi
+  if [ "$env_existed" = false ]; then
+    rm .env
   fi
 }
 
@@ -390,7 +399,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
         backup)
-            sudo docker exec micro-pkc-mediawiki /MediaWiki_Backup/backup.sh \
+            docker exec micro-pkc-mediawiki /MediaWiki_Backup/backup.sh \
                     -p "$(date -u +"%Y-%m-%dT%H-%M-%S_UTC")" -d /backup -w /var/www/html -s -f
             echo -e "${LIGHT_GREEN}Done! Your backup is located in ./mountPoint/backup.${NC}"
             break
@@ -399,7 +408,7 @@ while [[ $# -gt 0 ]]; do
             most_recent=$(ls -t mountPoint/backup/*.tar.gz | head -n 1 | xargs basename)
             restore_all "$most_recent"
             # A reset is required to flush outdated cache from the system.
-            sudo docker-compose stop
+            docker-compose stop
             do_docker_compose_up_maybe_backup
             break
             ;;
@@ -416,7 +425,11 @@ while [[ $# -gt 0 ]]; do
                     echo "💥💥💥💥 Kaaboooom!!!💥💥💥💥"
                     set -x
                     stop_container
-                    sudo rm -r mountPoint
+                    if [ -d mountPoint ]; then
+                        echo "mountPoint which contains all the files is actually only writable with elevated privileges, as such you will need to enter your password for sudo here."
+                        echo "> sudo rm -r mountPoint"
+                        sudo rm -r mountPoint
+                    fi
                     set +x
                     echo "🏜️ It's all gone 🏜️"
                     ;;
