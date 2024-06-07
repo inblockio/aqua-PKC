@@ -93,8 +93,9 @@ check_dependencies() {
         else
             echo "different init system than systemd or launchd, you're on your own"
         fi
-        echo "if docker is started and the script still fails, please add your user to the docker group to be able to command docker without super-user privileges:"
+        echo "If docker is started and the script still fails, please add your user to the docker group to be able to command docker without super-user privileges:"
         echo "# usermod -aG docker ${USER}"
+        echo "Restart user-sessio afterwards to apply changes."
         exit 1
     fi
 }
@@ -425,12 +426,12 @@ while [[ $# -gt 0 ]]; do
                     echo "💥💥💥💥 Kaaboooom!!!💥💥💥💥"
                     set -x
                     stop_container
+                    set +x
                     if [ -d mountPoint ]; then
                         echo "mountPoint which contains all the files is actually only writable with elevated privileges, as such you will need to enter your password for sudo here."
                         echo "> sudo rm -r mountPoint"
                         sudo rm -r mountPoint
                     fi
-                    set +x
                     echo "🏜️ It's all gone 🏜️"
                     ;;
                 *)
