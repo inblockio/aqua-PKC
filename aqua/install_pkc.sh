@@ -199,7 +199,10 @@ if [[ ! $empty_wiki ]]; then
         echo "Populating $file into wiki"
         php maintenance/edit.php -a -u "$WALLET_ADDRESS" "$( extract_page_title "$file" )" < "$file"
     done
+    # Import Aqua-Chains as JSON (The pages which should be imported must be stored in the ./import directory in the root folder)
+    ../scripts/push_pages.sh
 fi
+
 
 # Move the actual LocalSettings.php file to a backup folder that persists after a
 # docker compose down.

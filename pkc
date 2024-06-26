@@ -299,7 +299,7 @@ run_setup() {
         echo "Here's an invitation to grab a ☕ or take a deep breath."
         sleep 10
     fi
-    
+
     echo "Installing MediaWiki"
     # TODO split failure cases and remove || true
     docker exec micro-pkc-mediawiki ./aqua/install_pkc.sh \
@@ -311,6 +311,13 @@ run_setup() {
 
     # We always download the favicon fresh, so that it is always up to date.
     echo "Downloading browser favicon"
+
+
+if [[ ! $empty_wiki ]]; then
+    echo "Importing Aqua-Chains from import folder ..."
+    # Import Aqua-Chains as JSON (The pages which should be imported must be stored in the ./import directory in the root folder)
+    ./scripts/push_pages.sh
+fi
 
     # Setting a timeout for the curl command and redirecting stderr to stdout to handle both output and error
     if timeout 15 docker exec micro-pkc-mediawiki bash -c "curl https://raw.githubusercontent.com/inblockio/aqua-branding/main/logos/aqua-white-1024x1024-32x32.png -o favicon.ico 2>&1"; then
