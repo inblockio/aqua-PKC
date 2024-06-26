@@ -53,7 +53,7 @@ if [ -f LocalSettings.php ]; then
 fi
 
 install_media_wiki(){
-
+	
     echo "Running composer update"
     composer update --no-dev
 
@@ -73,16 +73,6 @@ install_media_wiki(){
                     --scriptpath="" \
                     "Personal Knowledge Container" \
                     "$WALLET_ADDRESS"
-
-    php extensions/DataAccounting/maintenance/createSysopUser.php Guardian
-    generate_guardian_token 32
-    echo "Guardian security token is: $GUARDIAN_TOKEN"
-}
-
-generate_guardian_token() {
-    local token_length=$1
-    TOKEN=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c "$token_length")
-    GUARDIAN_TOKEN=$(echo -n "$TOKEN" | base64)
 }
 
 echo "Running composer update"
@@ -121,10 +111,6 @@ disable_extension() {
     local name="$1"
     sed -i "s/wfLoadExtension( '$name' );/#wfLoadExtension( '$name' );/" LocalSettings.php
 }
-
-# Insert guardian token to LocalSettings.php
-echo "Set guardian token in LocalSettings.php"
-sed -i "\$ a \$daGuardianToken='${GUARDIAN_TOKEN}';" LocalSettings.php
 
 #disable_extension VisualEditor
 disable_extension ConfirmEdit
