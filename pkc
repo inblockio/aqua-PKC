@@ -186,6 +186,12 @@ do_docker_compose_up_maybe_backup() {
     fi
 }
 
+check_negative_software() {
+  if which sestatus; then
+    echo "Warn: SELinux is installed! Sometimes SELinux blocks the mount points, causing MediaWiki and MariaDB to not start!!!"
+  fi
+}
+
 run_setup() {
     local web_public=false
     local enable_autobackup=false
@@ -238,6 +244,7 @@ run_setup() {
         esac
     done
 
+    check_negative_software
     check_dependencies
     check_wallet_address
     prepare_dotenv
