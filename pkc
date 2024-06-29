@@ -317,6 +317,9 @@ if [[ ! $empty_wiki ]]; then
     echo "Importing Aqua-Chains from import folder ..."
     # Import Aqua-Chains as JSON (The pages which should be imported must be stored in the ./import directory in the root folder)
     ./scripts/push_pages.sh
+    # Import Aqua-Chains as JSON directly into the user-space without going into the inbox first
+    # This is used to store Aqua-Contract templates directly and populate the PKC with default data with shared genesis_hash
+    ./scripts/push_pages_directly.sh
 fi
 
     # Setting a timeout for the curl command and redirecting stderr to stdout to handle both output and error

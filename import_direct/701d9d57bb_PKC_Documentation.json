@@ -1,0 +1,39 @@
+{
+    "pages": [
+        {
+            "genesis_hash": "71736b3d11a4e73fea341f204d89ec95f6ba731611fbbd37582b39022007dd77c8de3440a3ca82d4c231240c9a8926e11d17aba2b86dadc391936ed8c8ad1dc9",
+            "domain_id": "701d9d57bb",
+            "title": "PKC_Documentation",
+            "namespace": 0,
+            "chain_height": 1,
+            "revisions": {
+                "71736b3d11a4e73fea341f204d89ec95f6ba731611fbbd37582b39022007dd77c8de3440a3ca82d4c231240c9a8926e11d17aba2b86dadc391936ed8c8ad1dc9": {
+                    "content": {
+                        "rev_id": 11,
+                        "content": {
+                            "main": "= Get Ready =\nFollow these steps to setup your local environment:\n<br><br>\n'''Install and setup the Personal Knowledge Container''' - https:\/\/github.com\/inblockio\/micro-PKC <br> <br>\nFollow the instructions in the README.md to set up your own PKC running locally with Docker.\n<br> <br>\n'''Install and Set Up MetaMask''' - https:\/\/metamask.io\/ <br> <br>\nThis will be your digital wallet to keep track of your identity,\nyou will use it to:\n* Login to your Personal Knowledge Container (PKC)\n* Sign a page \n* And timestamp a page\n<br>\n'''Build and Install the Latest 'VerifyPage Extension''' - https:\/\/github.com\/inblockio\/VerifyPage <br><br>\nYou will use this to verify the integrity of pages in the PKC.\n\n= Basic Concepts =\nEach page in your PKC is a ''Mobile, Permissioned Content-Blockchain.'' <br>\n\nThis means you can modify it, export it, send it to a collaborator, and import it with their changes, all in a cryptographically secure way that ensures nothing can be tampered with. \n\n''Automated Witnessing'' creates counterfeit proof-timestamps of each change in your PKC, and can be published to the Ethereum Blockchain to prove its existence. This is especially helpful in legal settings, or in scientific publishing and patenting, where you would like to prove ownership of a document at a particular time. Your database state is tied to a particular transaction on the public blockchain in a way that cannot be altered or falsified.\n\n= PKC Usage =\n\nThese are the basic actions you will need to use your PKC:\n\n* '''Sign in'''\n** The first step is to sign in with your MetaMask wallet\n** Click on the drop down menu in the upper right corner and click on the \"Login with Ethereum wallet\".\n** In the Eauth window that opens, follow the steps for \"Login with Ethereum wallet\", using MetaMask. \n** A popup will ask you which wallet you would like to use to login with, and to sign an Authentication Request for EAuth. \n** When you have authorised the sign in request, you will be redirected to the PKC page, where you should now see your wallett address in the top right. \n\n* '''Verify data'''\n** While on any page in the PKC, click on the \"Verify Page\" button in the extension to verify the history of that document.\n\n* '''Sign Page'''\n** While on any page in the PKC, at the top click on \"Actions > Crypto Sign\"\n** Follow the instructions in your Metamask wallet to sign the page\n** You should now see the signature in a new table titled \"Data Accounting Signatures\" at the bottom of the page\n\n* '''Make and Publish a Change'''\n** Click on \"Actions > Edit\", make any changes you would like, and then click on \"Save Changes\"\n\n* '''Export page'''\n** Save the document revision blockchain in XML format\n** Go to \"Export Verified Page\" in the left sidebar. \n** Type the names of the pages you would like to export in the \"Add pages manually\" field\n** Make sure \"Save as file\" is checked\n** Click \"Export\" \n\n* '''Import page'''\n** Add the document, along with revision history, to your PKC \n** Go to \"Import Verified Page\" in the left sidebar.\n** Select the file you would like to import with \"Choose file\"\n** Modify any options you would like to customise\n** Click \"Upload file\"\n\n* '''Domain Snapshot Generator'''\n** Generate Merkle tree for all documents in the PKC\n** This can be published to a witness network as proof of existence of your documents in time.\n\n* '''Domain Snapshot Publisher'''\n** Publish a generated Domain Snapshot to the witness network (Blockchain)\n\n* '''Data Accounting Configurator'''\n** Select which smart contract and witness network are used to verify witness events.\n\n== Advanced ==\n\n* Broken page?\nOpen an issue in https:\/\/github.com\/inblockio\/micro-PKC copying any relevant error messages.\n\n= FAQ =\nQuestion: Can I install the PKC also on my private machine? \nAnswer: Yes! We encourage everyone to run their own PKC. Because we use docker, you can set up PKC on all major platforms like Windows, Mac and Linux.\n\nQuestion: Can I add other user to my PKC? \nAnswer: Yes you can, but only if it is run as a server which is reachable. Which means you have set it up with a DNS-Hostname which has a public IP address in the internet or in your network. Keep in mind, that other user might have access to data you don't want them to have access to. PKC is build on mediawiki which was never designed to keep data private. The best way to do so is to keep your instance disconnected from the internet and run it as a local instance only. If you choose to share your PKC anyway you might want to reduce access via firewalls and or additional permission restrictions within mediawiki.",
+                            "transclusion-hashes": ""
+                        },
+                        "content_hash": "3d7ba2df8b88d5f27d9aeb7cb90a94dc34e33047e88b4a122687fc8fc3d65c18ae0395fc51a7f3a651455db76ab872d386f5b8ce024d750ee67cdeb3347dc10a"
+                    },
+                    "metadata": {
+                        "domain_id": "701d9d57bb",
+                        "time_stamp": "20240629125730",
+                        "previous_verification_hash": "",
+                        "merge_hash": "",
+                        "metadata_hash": "816df1b0622732c872073d481b35c825d9354099721e26ef13f832d99a42e941e795ad0ca3d3e6371b88b6c2f6dfa993265612c63bc55eb3d19eb1a31a7125b1",
+                        "verification_hash": "71736b3d11a4e73fea341f204d89ec95f6ba731611fbbd37582b39022007dd77c8de3440a3ca82d4c231240c9a8926e11d17aba2b86dadc391936ed8c8ad1dc9"
+                    },
+                    "signature": null,
+                    "witness": null
+                }
+            }
+        }
+    ],
+    "site_info": {
+        "sitename": "Personal Knowledge Container",
+        "base": "http:\/\/localhost:9352\/index.php\/Main_Page",
+        "generator": "MediaWiki 1.39.4",
+        "version": "0.3.0"
+    }
+}

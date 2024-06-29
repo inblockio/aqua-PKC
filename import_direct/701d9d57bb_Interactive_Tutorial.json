@@ -1,0 +1,39 @@
+{
+    "pages": [
+        {
+            "genesis_hash": "306911a9d3741f2cc936d208a8a597d323a77107db548aa18c652f3c300698bd2617dbaf9c4976f26276e321c372f2627039e7ba74fdcbeea012f5d29cfd523b",
+            "domain_id": "701d9d57bb",
+            "title": "Interactive_Tutorial",
+            "namespace": 0,
+            "chain_height": 1,
+            "revisions": {
+                "306911a9d3741f2cc936d208a8a597d323a77107db548aa18c652f3c300698bd2617dbaf9c4976f26276e321c372f2627039e7ba74fdcbeea012f5d29cfd523b": {
+                    "content": {
+                        "rev_id": 8,
+                        "content": {
+                            "main": "Dear Colleague,<br>\nWe've been observing some periodic variations in the orbital pattern of Jupiter and would like to share with you our findings.\n\n{| class=\"wikitable\"\n|-\n! Date\n! Deviation: Latitude\n! Deviation: Longitude\n|-\n| 13\/09\/21\n| +0.03\n| +0.02\n|-\n| 17\/09\/21\n| +0.02\n| +0.04\n|-\n| 22\/09\/21\n| 0.00\n| +0.05\n|-\n| 27\/9\/21\n| -0.01\n| +0.03\n|-\n| 01\/10\/21\n| -0.05\n| +0.01\n|-\n| 05\/10\/21\n| -0.04\n| -0.01\n|}\n<br>\nWe think there may be another group racing to publish similar findings. We would love for you to be a part of ''Peer-to-Peer Reviewing'' this report, and to verify the date at which you saw this document.\n<br>\n\nThank you for your help! <br>\n<br>\nKindest Regards,<br>\nAqua Scientific\n\n<br>\n<hr>\n<br>\n\n* First, please verify the data and changes using the '''[https:\/\/github.com\/inblockio\/VerifyPage Data Accounting Extension]''' once you have installed it.\n** Click on the extension in the top right corner, and then click on ''Verify Page''\n** You should see the history of edits and that the integrity of the page has been verified\n* Once you have reviewed, please ''sign it with your digital signature''\n** You can do this by clicking on '''Sign \ud83d\udd11''' on this page in your PKC, in the dropdown to the right of ''Edit''\n**Follow the instructions in the MetaMask popup to sign the page with your web wallet.\n\n<br>\n<hr>\n<br>\n\n* Go to '''[[Special:Witness|Domain Snapshot Generator]]''' in your ''PKC'', and click on ''Generate Domain Snapshot''.\n** This will generate an anonymous hash of the state of your database, verifying that our document ''Interactive Tutorial - New Observations on Jupiter'' was present there at this time.\n\n* Then, go to '''[[Special:WitnessPublisher|Domain Snapshot Publisher]]''' and click ''Publish'' next to the newly generated ''Domain Snapshot''\n** Follow the steps on MetaMask in order to publish this Domain Snapshot hash to the Ethereum Blockchain, and prove immutably that you saw this document from us first.\n** Once you have published this to the blockchain, you can click the link to view it on Etherscan.\n\n* Finally, please go to '''[[Special:Export|Export Verified Page]]''' in your PKC, and use the dialogue there to export ''Interactive Tutorial - New Observations on Jupiter'' as an .xml file\n** This new file includes your signature, please email it to ''tutorial_aqua@inblock.io'' and we will add it to the ''Peer-to-Peer Review'' in progress.\n<br><br>",
+                            "transclusion-hashes": ""
+                        },
+                        "content_hash": "244f04a733e6796d9b503783f8e2902287849e7db8bf0ca7b7e95f797120c0f8ca93b23de802d97ac94a7cdcad673dd7747db6d51b02540abaf455c0a3989197"
+                    },
+                    "metadata": {
+                        "domain_id": "701d9d57bb",
+                        "time_stamp": "20240629125729",
+                        "previous_verification_hash": "",
+                        "merge_hash": "",
+                        "metadata_hash": "e4a7b4cb837271ec3e6edc8854a668c929e39c0251a0a951f86de31df1673d9bc314e90b12ba1dc2ef5274553661db6023b670bf982e81bb340f1586bfade3bb",
+                        "verification_hash": "306911a9d3741f2cc936d208a8a597d323a77107db548aa18c652f3c300698bd2617dbaf9c4976f26276e321c372f2627039e7ba74fdcbeea012f5d29cfd523b"
+                    },
+                    "signature": null,
+                    "witness": null
+                }
+            }
+        }
+    ],
+    "site_info": {
+        "sitename": "Personal Knowledge Container",
+        "base": "http:\/\/localhost:9352\/index.php\/Main_Page",
+        "generator": "MediaWiki 1.39.4",
+        "version": "0.3.0"
+    }
+}

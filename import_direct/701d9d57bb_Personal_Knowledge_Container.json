@@ -1,0 +1,39 @@
+{
+    "pages": [
+        {
+            "genesis_hash": "48b9aa9a91a21b2e86fb6b2b66e1d24efdad5db87c6f82fb411ff66ecad816d9c3d8d7d4533e7415a1b17c4303a57ece691a252d7721f2744fd2bf86860832f8",
+            "domain_id": "701d9d57bb",
+            "title": "Personal_Knowledge_Container",
+            "namespace": 0,
+            "chain_height": 1,
+            "revisions": {
+                "48b9aa9a91a21b2e86fb6b2b66e1d24efdad5db87c6f82fb411ff66ecad816d9c3d8d7d4533e7415a1b17c4303a57ece691a252d7721f2744fd2bf86860832f8": {
+                    "content": {
+                        "rev_id": 12,
+                        "content": {
+                            "main": "= About =\n\n<i> def: Personal-Knowledge-Container: A Software used to govern your data with the highest degree of digital sovereignty following the principle of full user-control and ownership.<\/i><br>\n<i> def: Digital Sovereignty: increased digital sovereignty means an increase in possible actions and therefore freedom of choice.<\/i>\n\n\n= Privacy Policy =\n\nThe Personal-Knowledge-Container software used does not collect any usage data nor does send any data in the deployment process.\n\nWe cannot guarantee that some data might be collected in one of the software dependencies. This is subject to audits. \n\n= General Disclaimer =\n\nPersonal Knowledge Container is an openly developed software which is currently in pilot test phase (Starting in 21. September 2021).\nPlease be advised that this means that any usage which results in loss of data, unauthorized access to data or any other damage which might be cause by using this software is not within the responsibility of the parties developing or providing this software.\nThe software is free and open-source and allows for independent audit. If you or a company chooses to use this software in a productive deployment, please ensure that you do an independent audit upfront to ensure that the software is fit for the projected service. We ask for upstream contributions to make this software safer to use for everybody according to the GPLv3 Free Software License.",
+                            "transclusion-hashes": ""
+                        },
+                        "content_hash": "f3cad5298d391569dec3a89262a4f78d46143b156fd1044d5bb4d8fc4147f35becaf90fcc64d9b040f13a40de1cf61478df9a1a793d8446acbcbc2cec1c020f5"
+                    },
+                    "metadata": {
+                        "domain_id": "701d9d57bb",
+                        "time_stamp": "20240629125731",
+                        "previous_verification_hash": "",
+                        "merge_hash": "",
+                        "metadata_hash": "265702002a7d9d3e93990444abac34bbc63dc8bfd85ef7f228c69f6a703a39f868824990588d80f9bde64101a778c754bf87345c60af7692104661db2c63dbfe",
+                        "verification_hash": "48b9aa9a91a21b2e86fb6b2b66e1d24efdad5db87c6f82fb411ff66ecad816d9c3d8d7d4533e7415a1b17c4303a57ece691a252d7721f2744fd2bf86860832f8"
+                    },
+                    "signature": null,
+                    "witness": null
+                }
+            }
+        }
+    ],
+    "site_info": {
+        "sitename": "Personal Knowledge Container",
+        "base": "http:\/\/localhost:9352\/index.php\/Main_Page",
+        "generator": "MediaWiki 1.39.4",
+        "version": "0.3.0"
+    }
+}
