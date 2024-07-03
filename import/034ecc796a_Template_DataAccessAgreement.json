@@ -1,0 +1,39 @@
+{
+    "pages": [
+        {
+            "genesis_hash": "725c2b99a955a690e50a1f22f356a64b02c144dd5adcbc09ac09f861fe2cc45a47185d7a9f5ecc60af86c0e60545aabe8c8c9c34feff92ea1da511ec0e2ef2ac",
+            "domain_id": "034ecc796a",
+            "title": "DataAccessAgreement",
+            "namespace": 10,
+            "chain_height": 1,
+            "revisions": {
+                "725c2b99a955a690e50a1f22f356a64b02c144dd5adcbc09ac09f861fe2cc45a47185d7a9f5ecc60af86c0e60545aabe8c8c9c34feff92ea1da511ec0e2ef2ac": {
+                    "content": {
+                        "rev_id": 51,
+                        "content": {
+                            "main": "<includeonly>\n'''Sender:''' {{{sender}}}<br>\n'''Receiver:''' {{{receiver}}}<br>\n'''Pages:''' {{#arraymap:{{{pages|}}}|,|page|[[page]]|, |and}}<br>\n'''Terms:''' {{{terms|}}}<br>\n<br>\n----\nThis is a Data Access Agreement. <br>\nYou can use this contract to share pages with other users. To do so you can choose from two options:<br>\n1) Share without terms. For this you enter your own wallet address (sender) and the target wallet address (receiver) and the page you want to share. Save the contract and sign it with your wallet to make the contract effective.<br>\n2) Share with terms. For contract to be valid you need to repeat the steps in 1) after those steps you share this contract with the receiver who signs it and sends it back to you. Then the contract will be valid.<br>\n<\/includeonly>\n<noinclude>\n<templatedata>\n{\n\t\"params\": {\n\t\t\"sender\": {\n\t\t\t\"type\": \"wiki-user-name\",\n\t\t\t\"required\": true,\n            \"description\": \"Enter your own wallet address.\"\n\t\t},\n\t\t\"receiver\": {\n\t\t\t\"type\": \"wiki-user-name\",\n\t\t\t\"required\": true,\n            \"description\": \"Enter the wallet address who you want to share the page with.\"\n\t\t},\n\t\t\"pages\": {\n\t\t\t\"type\": \"wiki-page-name\",\n\t\t\t\"required\": true,\n            \"description\": \"Enter the titles of the pages you want to share.\"\n\t\t},\n\t\t\"terms\": {\n\t\t\t\"type\": \"string\",\n\t\t\t\"required\": false,\n            \"description\": \"If you want add terms under which you want to share pages.\"\n\t\t}\n\t},\n\t\"description\": \"This is a contract to share pages.\",\n\t\"format\": \"{{_\\n|_=_\\n}}\"\n}\n<\/templatedata>\n<\/noinclude>",
+                            "transclusion-hashes": ""
+                        },
+                        "content_hash": "1877d1fb3e27263a8c9ef6c94a01d17a1c8e47d258b041e548e9a3706db4ec7e924bd97e09ef86b7e5904f9c779c7a6ed31272c24cfdcaa023bf07642483bf87"
+                    },
+                    "metadata": {
+                        "domain_id": "034ecc796a",
+                        "time_stamp": "20240703150300",
+                        "previous_verification_hash": "",
+                        "merge_hash": "",
+                        "metadata_hash": "325a0977b1f56ac4f4570db93c15f872955c7f0de1b41422a812d3793ff75da7545ae296e9f120bd636614275a898363314a41c460200432fc83b5a6b0a5a46d",
+                        "verification_hash": "725c2b99a955a690e50a1f22f356a64b02c144dd5adcbc09ac09f861fe2cc45a47185d7a9f5ecc60af86c0e60545aabe8c8c9c34feff92ea1da511ec0e2ef2ac"
+                    },
+                    "signature": null,
+                    "witness": null
+                }
+            }
+        }
+    ],
+    "site_info": {
+        "sitename": "Personal Knowledge Container",
+        "base": "http:\/\/localhost:9352\/index.php\/Main_Page",
+        "generator": "MediaWiki 1.39.4",
+        "version": "0.3.0"
+    }
+}
