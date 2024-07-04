@@ -340,8 +340,8 @@ fi
     # Prepare auto backup
     if [ "$enable_autobackup" = true ]; then
         echo "to enable backups, we need to write to mountPoint which needs super-user privileges:"
-        echo "> sudo cp aqua/do_backup_wrapper.sh mountPoint/backup"
-        sudo cp aqua/do_backup_wrapper.sh mountPoint/backup
+        echo "> cp aqua/do_backup_wrapper.sh mountPoint/backup"
+        cp aqua/do_backup_wrapper.sh mountPoint/backup
         echo "Enabling auto-backup every 30 minutes"
         docker exec micro-pkc-mediawiki sh -c '(echo "*/30 * * * * /backup/do_backup_wrapper.sh") | sort - | uniq - | crontab -'
     else
@@ -444,9 +444,8 @@ while [[ $# -gt 0 ]]; do
                     stop_container
                     set +x
                     if [ -d mountPoint ]; then
-                        echo "mountPoint which contains all the files is actually only writable with elevated privileges, as such you will need to enter your password for sudo here."
-                        echo "> sudo rm -r mountPoint"
-                        sudo rm -r mountPoint
+                        echo "> rm -r mountPoint"
+                        rm -r mountPoint
                     fi
                     echo "🏜️ It's all gone 🏜️"
                     ;;
