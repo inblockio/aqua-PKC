@@ -1,0 +1,59 @@
+{
+    "pages": [
+        {
+            "genesis_hash": "48cd6eb49abec0223ad9a1f583404b63805bc80ccd804cd9e15b8ab5ed475111fd9bd0a8b36fc170aebf146a5cd83aa6745788c8db9b648ddc4e7929192545d7",
+            "domain_id": "b1272e3359",
+            "title": "TlsIdentityClaim",
+            "namespace": 10,
+            "chain_height": 2,
+            "revisions": {
+                "48cd6eb49abec0223ad9a1f583404b63805bc80ccd804cd9e15b8ab5ed475111fd9bd0a8b36fc170aebf146a5cd83aa6745788c8db9b648ddc4e7929192545d7": {
+                    "content": {
+                        "rev_id": 19,
+                        "content": {
+                            "main": "<includeonly>\n'''Host:''' {{{host}}}<br>\n'''Port:''' {{{port}}}<br>\n'''Guardian Address:''' {{{guardian}}}<br>\n<br>\n----\nThis is a Client TLS Certificate of the Guardian. <br>\n\n<\/includeonly>\n<noinclude>\n<templatedata>\n{\n\t\"params\": {\n\t\t\"host\": {\n\t\t\t\"type\": \"line\",\n\t\t\t\"required\": true,\n\t\t\t\"description\": \"IP Address of the Host\"\n\t\t},\n\t\t\"port\": {\n\t\t\t\"type\": \"line\",\n\t\t\t\"required\": true,\n\t\t\t\"description\": \"Port\"\n\t\t},\n\t\t\"guardian\": {\n\t\t\t\"type\": \"wiki-user-name\",\n\t\t\t\"required\": true,\n\t\t\t\"description\": \"Wallet address of the Guardian.\"\n\t\t}\n\t},\n\t\"description\": \"This is a TLS certificate of a Guardian\",\n\t\"format\": \"{{_\\n|_=_\\n}}\",\n\t\"paramOrder\": [\n\t\t\"host\",\n\t\t\"port\",\n\t\t\"guardian\"\n\t]\n}\n<\/templatedata>\n<\/noinclude>",
+                            "transclusion-hashes": ""
+                        },
+                        "content_hash": "a0c6d645396161c0aa1c762ef4cf3d9beab08c6a4f58623b5a5b4d000352751733e300f84a8ceceb1db519ebae2656ec6806389f61b3a3fe69e7ceba7a269e64"
+                    },
+                    "metadata": {
+                        "domain_id": "799c0cb6c5",
+                        "time_stamp": "20240706091153",
+                        "previous_verification_hash": "",
+                        "merge_hash": "",
+                        "metadata_hash": "22e1bb591c2f0bb918860336c61c1104d46a9be27a8e7f237918c83b81622a67ca9f87e8d4591149d811591cd788eb31208403dc56ba00dd3db1e3c3db86c5bb",
+                        "verification_hash": "48cd6eb49abec0223ad9a1f583404b63805bc80ccd804cd9e15b8ab5ed475111fd9bd0a8b36fc170aebf146a5cd83aa6745788c8db9b648ddc4e7929192545d7"
+                    },
+                    "signature": null,
+                    "witness": null
+                },
+                "65293e2487f6f86cbc222f1901655292370bb5faa6875461cb61163ab90473dba2833fa6805ffe3f35317c2b80a8318c41047db0afc576eb65609620630268e9": {
+                    "content": {
+                        "rev_id": 21,
+                        "content": {
+                            "main": "<includeonly>\n'''Host:''' {{{host}}}<br>\n'''Port:''' {{{port}}}<br>\n'''Guardian Address:''' {{{guardian}}}<br>\n<br>\n----\nThis is a Client TLS Certificate of the Guardian. <br>\n\n<\/includeonly>\n<noinclude>\n<templatedata>\n{\n\t\"params\": {\n\t\t\"host\": {\n\t\t\t\"type\": \"line\",\n\t\t\t\"required\": true,\n\t\t\t\"description\": \"IP Address of the Host\"\n\t\t},\n\t\t\"port\": {\n\t\t\t\"type\": \"line\",\n\t\t\t\"required\": true,\n\t\t\t\"description\": \"Port\"\n\t\t},\n\t\t\"guardian\": {\n\t\t\t\"type\": \"wiki-user-name\",\n\t\t\t\"required\": true,\n\t\t\t\"description\": \"Wallet address of the Guardian.\"\n\t\t}\n\t},\n\t\"description\": \"This is a TLS certificate of a Guardian\",\n\t\"format\": \"{{_\\n|_=_\\n}}\",\n\t\"paramOrder\": [\n\t\t\"guardian\",\n\t\t\"host\",\n\t\t\"port\"\n\t]\n}\n<\/templatedata>\n<\/noinclude>",
+                            "transclusion-hashes": ""
+                        },
+                        "content_hash": "426a1b6d994e042deb55a1373ae87f44e4d117f3d9045e756fa8b1c129479c4d923577a19b7492d959db5d0c26a484d24172615f9021450beede9f28f0b7e3d3"
+                    },
+                    "metadata": {
+                        "domain_id": "b1272e3359",
+                        "time_stamp": "20240706093031",
+                        "previous_verification_hash": "48cd6eb49abec0223ad9a1f583404b63805bc80ccd804cd9e15b8ab5ed475111fd9bd0a8b36fc170aebf146a5cd83aa6745788c8db9b648ddc4e7929192545d7",
+                        "merge_hash": "",
+                        "metadata_hash": "9231f7560d6e5e357959cbe03a3105e771c61d26f67799adb5e8f71bce98e238dced4505a775fe0e5f5fb325ce516a2ff1508adb10b25fb1fa1adab06d678843",
+                        "verification_hash": "65293e2487f6f86cbc222f1901655292370bb5faa6875461cb61163ab90473dba2833fa6805ffe3f35317c2b80a8318c41047db0afc576eb65609620630268e9"
+                    },
+                    "signature": null,
+                    "witness": null
+                }
+            }
+        }
+    ],
+    "site_info": {
+        "sitename": "Personal Knowledge Container",
+        "base": "http:\/\/localhost:9352\/index.php\/Main_Page",
+        "generator": "MediaWiki 1.39.4",
+        "version": "0.3.0"
+    }
+}
