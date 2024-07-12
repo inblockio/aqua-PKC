@@ -1,0 +1,39 @@
+{
+    "pages": [
+        {
+            "genesis_hash": "2c82d270181179987518d620c102a0fc9db1d5ed7238795cc87d9e1de70ed3b6f67236dd3152881d620f9270b7dcb7fea72bd7e9b859dc2478a3058b078f5204",
+            "domain_id": "501f11d3d2",
+            "title": "GuardianServitude",
+            "namespace": 10,
+            "chain_height": 1,
+            "revisions": {
+                "2c82d270181179987518d620c102a0fc9db1d5ed7238795cc87d9e1de70ed3b6f67236dd3152881d620f9270b7dcb7fea72bd7e9b859dc2478a3058b078f5204": {
+                    "content": {
+                        "rev_id": 47,
+                        "content": {
+                            "main": "This is your '''Guardian Servitude'''.<br><br>\nTo confirm that the signing Guardian is yours, <br>please validate that the signature in this page is the wallet address of your Guardian.<br><br>\nWhen confirmed, '''please sign it with your wallet'''.<br>\n----\nExport this together with your Guardian TLS certificate to establish connection with other users and their Guardians. Send the exported files for them to import.<br>",
+                            "transclusion-hashes": ""
+                        },
+                        "content_hash": "2dbced7516c29b480874961da47e8dbcf84b5883932f22ca286daf956445c8f58c4f620ca977573784749d25d2d250cfed75e910602e62ae80beb9b185d56c52"
+                    },
+                    "metadata": {
+                        "domain_id": "501f11d3d2",
+                        "time_stamp": "20240704152455",
+                        "previous_verification_hash": "",
+                        "merge_hash": "",
+                        "metadata_hash": "21e2c8b48d1d647331e482d5750724db814417cf886b41f2e5e3d47feaccab30c15fe3c5ecf204b0e5f3a7ff2d9f3627dc8fc0bcb645f7daa5c84707805bbacd",
+                        "verification_hash": "2c82d270181179987518d620c102a0fc9db1d5ed7238795cc87d9e1de70ed3b6f67236dd3152881d620f9270b7dcb7fea72bd7e9b859dc2478a3058b078f5204"
+                    },
+                    "signature": null,
+                    "witness": null
+                }
+            }
+        }
+    ],
+    "site_info": {
+        "sitename": "Personal Knowledge Container",
+        "base": "http:\/\/localhost:9352\/index.php\/Main_Page",
+        "generator": "MediaWiki 1.39.4",
+        "version": "0.3.0"
+    }
+}
