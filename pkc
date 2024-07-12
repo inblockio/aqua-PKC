@@ -322,8 +322,10 @@ run_setup() {
 
 if [[ ! $empty_wiki ]]; then
     echo "Importing Aqua-Chains from import folder ..."
-    # Import Aqua-Chains as JSON (The pages which should be imported must be stored in the ./import directory in the root folder)
+    # Import Aqua-Chains as JSON (The pages which should be imported must be stored in the ./import directory)
     ./scripts/push_pages.sh
+    # Import Aqua-Chains as JSON bypassing the inbox (The pages which should be imported must be stored in the ./import_direct directory)
+    ./scripts/push_pages_directly.sh
 fi
 
     # Setting a timeout for the curl command and redirecting stderr to stdout to handle both output and error

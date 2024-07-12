@@ -41,7 +41,7 @@ function pushHashChainJson {
             }')
 
             # Perform POST request
-            response=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" --data "$payload" "$apiUrl/import?direct=false")
+            response=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" --data "$payload" "$apiUrl/import?direct=true")
             #commenting out to write to file response=$(curl -s -o response.txt -w "%{http_code}" -X POST -H "Content-Type: application/json" --data "$payload" "$apiUrl/import")
             if [[ "$response" != "200" ]]; then
                 echo "/import failed"
@@ -53,7 +53,7 @@ function pushHashChainJson {
 }
 
 # Main loop over JSON files in directory
-folderPath="import"
+folderPath="import_direct"
 for filename in "$folderPath"/*.json; do
     if [[ -f "$filename" ]]; then
         echo "Processing $filename"
