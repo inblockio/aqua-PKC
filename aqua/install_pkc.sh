@@ -77,8 +77,6 @@ install_media_wiki(){
 
 echo "Running composer update"
 composer update --no-dev
-echo "Applying patches"
-./apply-patches.sh
 
 retry_counter=0
 while ! install_media_wiki; do
