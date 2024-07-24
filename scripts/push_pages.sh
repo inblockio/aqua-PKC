@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 server="http://localhost:9352"
 apiUrl="$server/rest.php/data_accounting"
