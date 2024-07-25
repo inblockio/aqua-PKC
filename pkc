@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+
+#TODO replace with ids insted of container-names
+DATABASE_CONTAINER_NAME=micro-pkc-database
+
 set -e
 
 if [ "$EUID" -eq 0 ]; then
@@ -294,18 +298,18 @@ run_setup() {
     do_docker_compose_up_maybe_backup
     # Sleep; just to be sure that the container has initialized well.
 
-    if [ -n "$(which nc)" ]; then
-        # netcat available
-        echo "Waiting for database connection..."
-        until nc -z -v -w30 localhost 3306
-        do
-            sleep 0.1
-        done
-    else
-        echo "netcat not available: Sleeping for 10 seconds to wait for the database to be ready."
-        echo "Here's an invitation to grab a ☕ or take a deep breath."
-        sleep 10
-    fi
+    counter=0
+
+    until [ $counter -gt 5 ]
+    do
+      if [[ $(docker ps -f health=healthy -f name=$DATABASE_CONTAINER_NAME --format=json) ]]; then
+        echo "Database up!"
+        break
+      fi
+      echo "Waiting for database to be available..."
+      ((counter=counter+1))
+      sleep 5
+    done
 
     echo "Installing MediaWiki"
     # TODO split failure cases and remove || true
