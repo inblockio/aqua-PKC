@@ -6,7 +6,7 @@ version: '3'
 services:
   database:
     container_name: micro-pkc-database
-    image: mariadb:10.6.5
+    image: mariadb:11.2.4
     restart: always
     ports:
       - "127.0.0.1:3306:3306"
@@ -17,11 +17,17 @@ services:
       MYSQL_USER: wikiuser
       MYSQL_PASSWORD: example
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MARIADB_MYSQL_LOCALHOST_USER: 1
     volumes:
       - ./mountPoint/mariadb:/var/lib/mysql
       - ./provision/mariadb:/docker-entrypoint-initdb.d
       - ./mountPoint/backup:/backup
     # - ./mountPoint/MediaWiki_Backup:/MediaWiki_Backup
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      interval: 1s
+      timeout: 5s
+      retries: 60
 
   mediawiki:
     container_name: micro-pkc-mediawiki
@@ -72,7 +78,7 @@ services:
   redis:
     image: redis
     healthcheck:
-      test: ["CMD", "redis-cli","ping"]
+      test: [ "CMD", "redis-cli","ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
